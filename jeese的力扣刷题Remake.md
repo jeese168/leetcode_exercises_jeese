@@ -18,33 +18,8 @@
 
 # 数组
 
-### 461.汉明距离（hot 100）
-
-给你两个整数 `x` 和 `y`，计算并返回它们之间的汉明距离。
-
-**示例 1：**
-
-```java
-输入：x = 1, y = 4
-输出：2
-解释：
-1   (0 0 0 1)
-4   (0 1 0 0)
-       ↑   ↑
-上面的箭头指出了对应二进制位不同的位置。
-```
-
-```java
-class Solution {
-    // 计算两个整数的汉明距离
-    public int hammingDistance(int x, int y) {
-        // 使用异或运算符(^)得到两个整数对应位不同的结果，再使用Integer类的bitCount方法计算结果中1的个数，即为汉明距离
-        return Integer.bitCount(x ^ y);
-    }
-}
-```
-
-### 338.比特位计数（hot 100）(4.1)
+## 1. 位运算问题
+### 338.比特位计数（hot 100）（9.10）
 
 给你一个整数 `n` ，对于 `0 <= i <= n` 中的每个 `i` ，计算其二进制表示中 **`1` 的个数** ，返回一个长度为 `n + 1` 的数组 `ans` 作为答案。
 
@@ -73,23 +48,125 @@ class Solution {
 5 --> 101
 ```
 
+时间复杂度 **O(n log n)**，其本质思想就是二进制中除以2等于右移一位，然后通过获取每一次被淘汰的末位判断是不是1，统计计数得到答案
+```java
+class Solution {  
+    public int[] countBits(int n) {  
+        int[] resultArr = new int[n+1];  
+        for (int i = 0; i <= n; i++) {  
+            resultArr[i] = countBit(i);  
+        }  
+        return resultArr;  
+    }  
+  
+    static int countBit(int n) {  
+        int count = 0;  
+        for(int i = 0;n>0;){  
+            i = n%2;  
+            if(i != 0){  
+                count++;  
+            }  
+            n = n/2;  
+        }  
+        return count;  
+    }  
+}
+```
+**核心：逐位检查每个数的二进制表示**
+
+- 对每个数字，通过不断 `除以2`（等价于右移一位）来遍历所有二进制位
+- 每次检查被"淘汰"的最低位是否为1（通过 `n%2` 判断）
+- 统计所有为1的位数
+
+```text
+例如数字5 (101₂)：
+5 % 2 = 1 → count++, 5 / 2 = 2
+2 % 2 = 0 → count不变, 2 / 2 = 1  
+1 % 2 = 1 → count++, 1 / 2 = 0
+最终count = 2
+```
+
+O(n) 
 ```java
 // 定义Solution类
 class Solution {
-    // 定义countBits方法，参数为整数n，返回一个整型数组
     public int[] countBits(int n) {
-        // 创建一个长度为n+1的整型数组ans，用于存储结果
-        int[] ans = new int[n + 1];
-        // 循环遍历从1到n的每个整数
-        for (int i = 1; i <= n; ++i) {
-            // 计算ans[i]，使用i和i-1的与操作，再加1。ans[i] 实际上就是 ans[i & (i - 1)] 的值加上1，表示比 i 少一个1的数的二进制中1的个数再加上1
-            ans[i] = ans[i & (i - 1)] + 1;
-        }
-        // 返回计算结果数组ans
-        return ans;
+    int[] dp = new int[n + 1];
+    for (int i = 1; i <= n; i++) {
+        // i的1的个数 = i/2的1的个数 + i的最低位
+        dp[i] = dp[i >> 1] + (i & 1);
+    }
+    return dp;
+	}
+}
+```
+**核心：利用已计算结果的递推关系**
+
+关键洞察：`当前数的1的个数 = 该数右移一位后的1的个数 + 当前数的最低位`
+
+```
+dp[i] = dp[i >> 1] + (i & 1)
+```
+
+**为什么这样有效：**
+
+- `i >> 1` 就是把 i 右移一位，相当于"去掉"最低位
+- `i & 1` 就是获取 i 的最低位（0或1）
+- 因为我们已经算过 `dp[i >> 1]`，所以直接复用 + 当前最低位 = 答案
+
+### 461.汉明距离（hot 100）（9.10）
+两个整数之间的 [汉明距离](https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB) 指的是这两个数字对应二进制位不同的位置的数目。
+给你两个整数 `x` 和 `y`，计算并返回它们之间的汉明距离。
+
+**示例 1：**
+
+```java
+输入：x = 1, y = 4
+输出：2
+解释：
+1   (0 0 0 1)
+4   (0 1 0 0)
+       ↑   ↑
+上面的箭头指出了对应二进制位不同的位置。
+```
+
+利用jdk方法
+```java
+class Solution {
+    // 计算两个整数的汉明距离
+    public int hammingDistance(int x, int y) {
+        // 使用异或运算符(^)得到两个整数对应位不同的结果，再使用Integer类的bitCount方法计算结果中1的个数，即为汉明距离
+        return Integer.bitCount(x ^ y);
     }
 }
 ```
+
+自己编写
+```java
+class Solution {  
+    public int hammingDistance(int x, int y) {  
+        int result = x ^ y;  
+  
+        return countOnes(result);  
+    }  
+  
+    private int countOnes(int num) {  
+        int count = 0;  
+        int n = num;  
+  
+        for (int i = 0; n > 0; ) {  
+            i = n % 2;  
+            if (i != 0){  
+                count++;  
+            }  
+            n = n / 2;  
+        }  
+  
+        return count;  
+    }  
+}
+```
+
 
 ### 136.只出现一次的数字（hot 100）
 
@@ -111,6 +188,7 @@ class Solution {
 输出：4
 ```
 
+
 ```java
 class Solution {
     // 定义一个Solution类
@@ -129,7 +207,1540 @@ class Solution {
 }
 ```
 
-### 75.颜色分类（hot 100）（4.7）
+
+## 2. 二分查找及二分查找的性质运用
+### 704.二分查找
+
+给定一个 `n` 个元素有序的（升序）整型数组 `nums` 和一个目标值 `target` ，写一个函数搜索 `nums` 中的 `target`，如果目标值存在返回下标，否则返回 `-1`。
+
+
+**示例 1:**
+
+```
+输入: nums = [-1,0,3,5,9,12], target = 9
+输出: 4
+解释: 9 出现在 nums 中并且下标为 4
+```
+
+**示例 2:**
+
+```
+输入: nums = [-1,0,3,5,9,12], target = 2
+输出: -1
+解释: 2 不存在 nums 中因此返回 -1
+```
+
+```java
+class Solution {
+    // 二分查找算法
+    public int search(int[] nums, int target) {
+        // 定义左指针初始位置为数组第一个元素的索引
+        int left = 0;
+        // 定义右指针初始位置为数组最后一个元素的索引
+        int right = nums.length - 1;
+        // 当左指针小于等于右指针时，进行循环查找
+        while(left <= right){
+            // 计算中间元素的索引
+            int mid = (left + right) / 2;
+            // 如果中间元素等于目标值，则返回中间元素的索引
+            if (nums[mid] == target)
+                return mid;
+            // 如果中间元素大于目标值，则将右指针移动到中间元素的左侧
+            else if (nums[mid] > target)
+                right = mid - 1;
+            // 如果中间元素小于目标值，则将左指针移动到中间元素的右侧
+            else
+                left = mid + 1;
+        }
+        // 若未找到目标值，则返回-1
+        return -1;
+    }
+}
+```
+
+### 74.搜索二维矩阵（new hot100）（9.7）
+
+给你一个满足下述两条属性的 `m x n` 整数矩阵：
+
+- 每行中的整数从左到右按非严格递增顺序排列。
+- 每行的第一个整数大于前一行的最后一个整数。
+
+给你一个整数 `target` ，如果 `target` 在矩阵中，返回 `true` ；否则，返回 `false` 。
+
+
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/05/mat.jpg)
+
+
+
+```
+输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+输出：true
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/mat2.jpg)
+
+
+
+```
+输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+输出：false
+```
+
+```java
+/**
+ * Solution类提供了一个方法来在一个二维矩阵中搜索一个目标值
+ * 这个矩阵是一个按行和列都升序排序的二维数组
+ */
+class Solution {
+    /**
+     * 在二维矩阵中搜索目标值
+     *
+     * @param matrix 一个按行和列都升序排序的二维数组
+     * @param target 要搜索的目标值
+     * @return 如果目标值在矩阵中，则返回true；否则返回false
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        // 初始化左指针和右指针
+        int left = 0, right = matrix.length * matrix[0].length - 1;
+        int mid;
+        // 使用二分查找在二维矩阵中搜索目标值
+        while (left <= right) {
+            mid = (left + right) / 2;
+            // 通过计算行列索引来获取当前mid指向的元素值
+            int row = mid / matrix[0].length;
+            int col = mid % matrix[0].length;
+            if (matrix[row][col] == target) {
+                // 如果找到目标值，返回true
+                return true;
+            } else if (matrix[row][col] > target) {
+                // 如果当前元素值大于目标值，则目标值在左半部分
+                right = mid - 1;
+            } else {
+                // 如果当前元素值小于目标值，则目标值在右半部分
+                left = mid + 1;
+            }
+        }
+        // 如果没有找到目标值，返回false
+        return false;
+    }
+}
+```
+
+
+### 35.搜索插入位置（new hot100）
+
+给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+
+请必须使用时间复杂度为 `O(log n)` 的算法。
+
+
+
+**示例 1:**
+
+```
+输入: nums = [1,3,5,6], target = 5
+输出: 2
+```
+
+**示例 2:**
+
+```
+输入: nums = [1,3,5,6], target = 2
+输出: 1
+```
+
+**示例 3:**
+
+```
+输入: nums = [1,3,5,6], target = 7
+输出: 4
+```
+
+比较常用的解法是左闭右闭区间解法，会有一个查找失败的性质即为：
+- `nums[right] < target < nums[left]`
+- `right` 是最后一个小于 target 的元素位置
+- `left` 是第一个大于 target 的元素位置
+
+**查找失败时的终止状态（`left == right + 1`）是二分查找中最常用、最稳定的副产物之一，几乎所有「查找边界」或「插入位置」类问题都能用它干净利落地解决。**
+
+```java
+/**
+ * Solution类提供了一个方法来解决二分查找问题
+ * 这个类的主要作用是通过二分查找算法在有序数组中找到目标值的位置，或者找到目标值应该被插入的位置
+ */
+class Solution {
+    /**
+     * 使用二分查找在有序数组中查找目标值或者找到目标值应该插入的位置
+     *
+     * @param nums 一个已排序的整数数组
+     * @param target 目标整数，需要在数组中查找
+     * @return 目标整数在数组中的索引位置如果目标整数不存在于数组中，则返回它应该被插入的位置
+     */
+    public int searchInsert(int[] nums, int target) {
+        // 初始化搜索范围的左边界
+        int left = 0;
+        // 初始化搜索范围的右边界
+        int right = nums.length - 1;
+        // 用于存储中间值的索引
+        int mid;
+        // 当左边界小于等于右边界时，进行二分查找
+        while (left <= right) {
+            // 计算中间值的索引
+            mid = (left + right) / 2;
+            // 如果中间值等于目标值，直接返回中间值的索引
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                // 如果中间值大于目标值，调整右边界为中间值索引的前一个
+                right = mid - 1;
+            } else {
+                // 如果中间值小于目标值，调整左边界为中间值索引的后一个
+                left = mid + 1;
+            }
+        }
+        // 如果没有找到目标值，返回左边界，即目标值应该被插入的位置
+        return left;
+    }
+}
+```
+
+
+### 34.在排序数组中查找元素的第一个和最后一个位置（new hot100）（9.7）
+
+给你一个按照非递减顺序排列的整数数组 `nums`，和一个目标值 `target`。请你找出给定目标值在数组中的开始位置和结束位置。
+
+如果数组中不存在目标值 `target`，返回 `[-1, -1]`。
+
+你必须设计并实现时间复杂度为 `O(log n)` 的算法解决此问题。
+
+
+
+**示例 1：**
+
+```
+输入：nums = [5,7,7,8,8,10], target = 8
+输出：[3,4]
+```
+
+**示例 2：**
+
+```
+输入：nums = [5,7,7,8,8,10], target = 6
+输出：[-1,-1]
+```
+
+**示例 3：**
+
+```
+输入：nums = [], target = 0
+输出：[-1,-1]
+```
+
+同样可以利用查找失败性质来进行，通过**控制边界条件**可以使得 `left` 指向第一个 `>= target` 的位置或 `right` 指向最后一个 `<= target` 的位置
+
+```java
+/**
+ * Solution类提供了一种在排序数组中查找元素的起始和结束位置的方法
+ */
+class Solution {
+
+    /**
+     * 在排序数组中查找给定目标值的起始和结束位置
+     * 
+     * @param nums 排序的整数数组
+     * @param target 要查找的目标值
+     * @return 包含目标值的起始和结束位置的数组，如果不存在则返回[-1, -1]
+     */
+    public int[] searchRange(int[] nums, int target) {
+        return new int[]{findFirstIndex(nums, target), findLastIndex(nums, target)};
+    }
+
+    /**
+     * 查找目标值在排序数组中的第一个出现的索引
+     * 
+     * @param nums 排序的整数数组
+     * @param target 目标值
+     * @return 目标值第一次出现的索引，如果不存在则返回-1
+     */
+    int findFirstIndex(int[] nums, int target) {
+        int left = 0, right = nums.length - 1, index = -1; // 初始化左边界、右边界和索引
+        while (left <= right) { // 当左边界不大于右边界时继续循环
+            int mid = (left + right) / 2; // 计算中间索引
+            if (nums[mid] >= target) { // 如果中间元素大于等于目标值，则调整右边界
+                right = mid - 1;
+            } else { // 否则调整左边界
+                left = mid + 1;
+            }
+            if (nums[mid] == target) { // 如果中间元素等于目标值，则记录索引
+                index = mid;
+            }
+        }
+        return index; // 返回目标值的第一个出现位置
+    }
+
+    /**
+     * 查找目标值在排序数组中的最后一个出现的索引
+     * 
+     * @param nums 排序的整数数组
+     * @param target 目标值
+     * @return 目标值最后一次出现的索引，如果不存在则返回-1
+     */
+    int findLastIndex(int[] nums, int target) {
+        int left = 0, right = nums.length - 1, index = -1; // 初始化左边界、右边界和索引
+        while (left <= right) { // 当左边界不大于右边界时继续循环
+            int mid = (left + right) / 2; // 计算中间索引
+            if (nums[mid] <= target) { // 如果中间元素小于等于目标值，则调整左边界
+                left = mid + 1;
+            } else { // 否则调整右边界
+                right = mid - 1;
+            }
+            if (nums[mid] == target) { // 如果中间元素等于目标值，则记录索引
+                index = mid;
+            }
+        }
+        return index; // 返回目标值的最后一个出现位置
+    }
+}
+
+```
+
+同样类似的还有"峰值"查找，**"峰值"指的是局部最大值，也就是某个极大值。** 
+```java
+// 查找峰值元素
+public int findPeakElement(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (mid < nums.length - 1 && nums[mid] < nums[mid + 1]) {
+            left = mid + 1; // 右侧有更大值
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
+```
+
+
+谷值查找简化写的话是**虽然左右边界取值左闭右闭的写法，但是while的边界条件不一样。**
+查找最小值/谷值模版：`while (left < right)` + `right = mid`
+**适用于：寻找最小值、第一个满足条件的位置**
+
+```java
+// 另一种谷值查找的简化实现
+public int findValleySimple(int[] nums) {
+	int left = 0, right = nums.length - 1;
+	while (left < right) {
+		int mid = (left + right) / 2;
+		if (mid < nums.length - 1 && nums[mid] > nums[mid + 1]) {
+			left = mid + 1; // 右侧有更小值
+		} else {
+			right = mid; // 当前位置可能是谷值
+		}
+	}
+	return left;
+}
+```
+
+
+## 3. 旋转排序数组二分查找及单调性应用
+### 153.寻找旋转排序数组中的最小值（new hot100）
+
+已知一个长度为 `n` 的数组，预先按照升序排列，经由 `1` 到 `n` 次 **旋转** 后，得到输入数组。例如，原数组 `nums = [0,1,2,4,5,6,7]` 在变化后可能得到：
+
+- 若旋转 `4` 次，则可以得到 `[4,5,6,7,0,1,2]`
+- 若旋转 `7` 次，则可以得到 `[0,1,2,4,5,6,7]`
+
+注意，数组 `[a[0], a[1], a[2], ..., a[n-1]]` **旋转一次** 的结果为数组 `[a[n-1], a[0], a[1], a[2], ..., a[n-2]]` 。
+
+给你一个元素值 **互不相同** 的数组 `nums` ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 **最小元素** 。
+
+你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
+
+
+
+**示例 1：**
+
+```
+输入：nums = [3,4,5,1,2]
+输出：1
+解释：原数组为 [1,2,3,4,5] ，旋转 3 次得到输入数组。
+```
+
+**示例 2：**
+
+```
+输入：nums = [4,5,6,7,0,1,2]
+输出：0
+解释：原数组为 [0,1,2,4,5,6,7] ，旋转 3 次得到输入数组。
+```
+
+**示例 3：**
+
+```
+输入：nums = [11,13,15,17]
+输出：11
+解释：原数组为 [11,13,15,17] ，旋转 4 次得到输入数组。
+```
+
+类似于上述找谷值的模板
+
+```java
+/**
+ * Solution类用于解决寻找旋转排序数组中的最小值的问题
+ */
+class Solution {
+    /**
+     * 使用二分查找算法寻找旋转排序数组中的最小值
+     *
+     * @param nums 一个旋转排序数组，其中每个元素都是唯一的
+     * @return 数组中的最小值
+     */
+    public int findMin(int[] nums) {
+        // 初始化左指针和右指针
+        int left = 0, right = nums.length - 1;
+        // 当左指针小于右指针时，进行二分查找
+        while (left < right) {
+            // 计算中间位置
+            int mid = (left + right) / 2;
+            // 判断中间元素是否大于右侧元素，以确定最小值所在的区间
+            if (nums[mid] > nums[right]) {
+                // nums[mid] > nums[right] 说明数组的右半部分是无序的（旋转数组的特点），所以最小值一定在右半部分。因此，更新 left = mid + 1。
+                left = mid + 1;
+            } else {
+                // nums[mid] <= nums[right] 说明数组的右半部分是有序的，最小值有可能是 mid 或者更小的元素，因此更新 right = mid。
+                right = mid;
+            }
+        }
+        // 此时左指针和右指针重合，指向最小值
+        return nums[left];
+    }
+}
+```
+
+
+
+**广义的性质**：
+
+ 模板1：`while (left < right)` + `right = mid`
+
+**适用于：寻找最小值、第一个满足条件的位置**
+
+```java
+// 特征：right = mid（保留mid作为候选答案）
+while (left < right) {
+    int mid = (left + right) / 2;
+    if (condition) {
+        left = mid + 1;  // mid不是答案，排除
+    } else {
+        right = mid;     // mid可能是答案，保留
+    }
+}
+return left; // 或者 return right（此时left == right）
+```
+
+模板2：`while (left <= right)` + `right = mid - 1`
+
+**适用于：寻找最大值、最后一个满足条件的位置，或者精确查找**
+
+```java
+// 特征：right = mid - 1（完全排除mid）
+while (left <= right) {
+    int mid = (left + right) / 2;
+    if (condition) {
+        left = mid + 1;   // 排除mid，去右边找
+    } else {
+        right = mid - 1;  // 排除mid，去左边找
+    }
+}
+return left; // 通常返回left
+```
+
+
+**对于"最小值类"问题：**
+
+- 我们要找的是**第一个满足条件**的位置
+- 当`nums[mid]`可能是答案时，我们**不能排除它**，所以用`right = mid`
+- 这保证了答案不会被意外丢弃
+
+对于"最大值/峰值类"问题：
+
+- 峰值的特性是：如果右侧有更大值，那么**当前位置肯定不是峰值**
+- 我们可以安全地排除mid，因为右侧**保证有更好的答案**
+- 所以用`right = mid - 1`完全排除
+
+这背后的核心是**答案的唯一性保证**：
+
+1. **最小值搜索**：我们不确定mid是否就是最终答案，需要"保守"地保留它
+2. **峰值搜索**：基于数学性质，我们能确定某个方向**一定有答案**，所以可以"激进"地排除
+
+- **"保留型"搜索**：用于找最小值、第一个满足条件的位置
+- **"排除型"搜索**：用于找最大值、最后一个满足条件的位置，或利用确定性质的搜索
+
+
+### 33.搜索旋转排序数组（new hot100）（9.7）
+
+整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
+
+在传递给函数之前，`nums` 在预先未知的某个下标 `k`（`0 <= k < nums.length`）上进行了 **旋转**，使数组变为 `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]`（下标 **从 0 开始** 计数）。例如， `[0,1,2,4,5,6,7]` 在下标 `3` 处经旋转后可能变为 `[4,5,6,7,0,1,2]` 。
+
+给你 **旋转后** 的数组 `nums` 和一个整数 `target` ，如果 `nums` 中存在这个目标值 `target` ，则返回它的下标，否则返回 `-1` 。
+
+你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
+
+
+
+**示例 1：**
+
+```
+输入：nums = [4,5,6,7,0,1,2], target = 0
+输出：4
+```
+
+**示例 2：**
+
+```
+输入：nums = [4,5,6,7,0,1,2], target = 3
+输出：-1
+```
+
+**示例 3：**
+
+```
+输入：nums = [1], target = 0
+输出：-1
+```
+
+```java
+/**
+ * 解决方案类，提供数组查找功能
+ */
+class Solution {
+    /**
+     * 使用二分查找算法在旋转排序数组中查找目标值
+     * 旋转排序数组是将原始递增排序的数组在某个点上进行旋转后得到的数组
+     * 例如：[0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2]
+     *
+     * @param nums 旋转排序数组
+     * @param target 需要查找的目标值
+     * @return 目标值在数组中的索引，如果不存在则返回 -1
+     */
+    public int search(int[] nums, int target) {
+        // 初始化左右指针
+        int left = 0, right = nums.length - 1;
+        // 中间指针
+        int mid;
+        // 使用while循环进行二分查找
+        while (left <= right) {
+            // 计算中间位置
+            mid = (left + right) / 2;
+            // 如果中间位置的值等于目标值，直接返回索引
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+	        // 判断右半部分是否是有序的
+            if (nums[mid] < nums[right]) {
+	            
+                // 如果目标值在右半部分的范围内，则调整左指针
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    // 否则调整右指针
+                    right = mid - 1;
+                }
+            } else { 
+	            // 判断左半部分是否是有序的
+                // 如果目标值在左半部分的范围内，则调整右指针
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    // 否则调整左指针
+                    left = mid + 1;
+                }
+            }
+        }
+        // 如果没有找到目标值，返回 -1
+        return -1;
+    }
+}
+```
+
+
+### 4.寻找两个正序数组的中位数（new hot100）（9.6）
+
+给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。
+
+算法的时间复杂度应该为 `O(log (m+n))` 。
+
+
+
+**示例 1：**
+
+```
+输入：nums1 = [1,3], nums2 = [2]
+输出：2.00000
+解释：合并数组 = [1,2,3] ，中位数 2
+```
+
+**示例 2：**
+
+```
+输入：nums1 = [1,2], nums2 = [3,4]
+输出：2.50000
+解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
+```
+
+更优的算法通过二分查找实现。
+```java
+class Solution {  
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {  
+        // 确保 nums1 是较短的数组，这样可以在较短的数组上进行二分搜索，提高效率  
+        if (nums1.length > nums2.length) {  
+            return findMedianSortedArrays(nums2, nums1);  
+        }  
+          
+        // 获取两个数组的长度  
+        int m = nums1.length;  
+        int n = nums2.length;  
+        // 初始化二分查找的边界  
+        int left = 0, right = m;  
+        // cut1 和 cut2 分别表示在 nums1 和 nums2 中的分割点  
+        int cut1 = 0, cut2 = 0;  
+        // 开始二分查找  
+        while (left <= right){  
+            // 计算 nums1 的分割点  
+            cut1 = (left + right)/2;  
+            // 根据 cut1 计算 nums2 的分割点，确保左右两部分元素数量平衡  
+            // 左半部分元素总数为 (m+n+1)/2            cut2 = (n+m+1)/2 - cut1;  
+  
+            // 获取分割点左侧的最大值  
+            // 如果 cut1 为 0，表示 nums1 没有元素在左半部分，设为最小值  
+            int leftmax1 = (cut1 == 0) ? Integer.MIN_VALUE : nums1[cut1 - 1];  
+            // 如果 cut2 为 0，表示 nums2 没有元素在左半部分，设为最小值  
+            int leftmax2 = (cut2 == 0) ? Integer.MIN_VALUE : nums2[cut2 - 1];  
+  
+            // 获取分割点右侧的最小值  
+            // 如果 cut1 等于 m，表示 nums1 所有元素都在左半部分，设为最大值  
+            int rightmin1 = (cut1 == m) ? Integer.MAX_VALUE : nums1[cut1];  
+            // 如果 cut2 等于 n，表示 nums2 所有元素都在左半部分，设为最大值  
+            int rightmin2 = (cut2 == n) ? Integer.MAX_VALUE : nums2[cut2];  
+  
+            // 检查是否找到了正确的分割点  
+            // 左半部分的所有元素都应该小于等于右半部分的所有元素  
+            if(leftmax1 <= rightmin2 && leftmax2 <= rightmin1){  
+                // 如果找到了正确的分割点，根据总长度奇偶性计算中位数  
+                if((n+m)%2 == 0){  
+                    // 总长度为偶数，中位数是中间两个数的平均值  
+                    return (Math.max(leftmax1,leftmax2) + Math.min(rightmin1,rightmin2))/2.0;  
+                }else{  
+                    // 总长度为奇数，中位数是左半部分的最大值  
+                    return Math.max(leftmax1,leftmax2);  
+                }  
+            }else if(leftmax1 > rightmin2){  
+                // nums1 的左半部分太大，需要向左移动分割点  
+                right = cut1 -1;  
+            }else{  
+                // nums1 的左半部分太小，需要向右移动分割点  
+                left = cut1 +1;  
+            }  
+        }  
+        // 理论上不会执行到这里，但为了语法正确性返回默认值  
+        return 0.0;  
+    }  
+}
+```
+
+**核心思想**
+所谓找到两个数组的中位数，从两个数组中各取一部分有序的序列，两个数组各取的数的数量等于中位数的在整体数组的位置，
+"第1个数组取一部分，另外一个数组取另外一个部分，因为这两个数组两个部分内部都是有序的，所以我们以第1个数组为基准，然后确保第2个数组取到的部分是在第1个数组的范围之内"，
+**如果找到了那个数量，那就说明那个所谓分割点拿到了**。
+
+## 4. 常规的子数组类型(一定要记清楚题目，仔细区分)
+
+### 209.长度最小的子数组(9.7)
+
+给定一个含有 `n` 个正整数的数组和一个正整数 `target` **。**
+
+找出该数组中满足其总和大于等于 `target` 的长度最小的 **子数组** `[numsl, numsl+1, ..., numsr-1, numsr]` ，并返回其长度。**如果不存在符合条件的子数组，返回 `0` 。
+
+
+
+**示例 1：**
+
+```
+输入：target = 7, nums = [2,3,1,2,4,3]
+输出：2
+解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+```
+
+**示例 2：**
+
+```
+输入：target = 4, nums = [1,4,4]
+输出：1
+```
+
+**示例 3：**
+
+```
+输入：target = 11, nums = [1,1,1,1,1,1,1,1]
+输出：0
+```
+
+**进阶：**
+- 如果你已经实现 `O(n)` 时间复杂度的解法, 请尝试设计一个 `O(n log(n))` 时间复杂度的解法。
+
+```java
+/**
+ * 解决方案类，提供数组相关的问题解决方法
+ */
+class Solution {
+    /**
+     * 计算满足条件的最短子数组的长度
+     * 
+     * 该方法用于找到一个子数组，使得子数组的所有元素和至少为目标值，
+     * 并返回满足条件的最短子数组的长度如果不存在这样的子数组，则返回0
+     * 
+     * @param target 目标值，子数组的和至少要达到这个值
+     * @param nums 输入的整数数组
+     * @return 返回满足条件的最短子数组的长度，如果不存在则返回0
+     */
+    public int minSubArrayLen(int target, int[] nums) {
+        // 累加和，用于记录当前子数组的和
+        int sum = 0;
+        // 子数组的最小长度，初始值设为最大整数，以便后续比较
+        int count = Integer.MAX_VALUE;
+        // 使用双指针技术遍历数组，i为慢指针，j为快指针
+        for (int i = 0, j = 0; i < nums.length; i++) {
+            // 将当前元素加到子数组的和中
+            sum += nums[i];
+            // 当当前子数组的和大于等于目标值时，尝试缩小子数组的范围
+            while (sum >= target) {
+                // 更新子数组的最小长度
+                count = Math.min(count, i - j + 1);
+                // 移动快指针，减小子数组的范围
+                sum -= nums[j];
+                j++;
+            }
+        }
+
+        // 如果最小长度仍然是初始值，则说明没有找到满足条件的子数组，返回0
+        // 否则返回计算出的最小长度
+        return count == Integer.MAX_VALUE ? 0 : count;
+    }
+}
+```
+
+### 560.和为k的子数组(hot100)(9.6)
+
+给你一个整数数组 `nums` 和一个整数 `k` ，请你统计并返回 *该数组中和为 `k` 的子数组的个数* 。
+
+子数组是数组中元素的连续非空序列。
+
+**示例 1：**
+
+```
+输入：nums = [1,1,1], k = 2
+输出：2
+```
+
+**示例 2：**
+
+```
+输入：nums = [1,2,3], k = 3
+输出：2
+```
+
+
+**优化后的O(N)，用前缀和的思想。**
+
+
+```java
+class Solution {
+    // 定义一个方法，用于计算数组中连续子数组的和等于k的个数
+    public int subarraySum(int[] nums, int k) {
+        // 定义结果变量，用于存储连续子数组的和等于k的个数
+        int result = 0, sum = 0;
+        // 定义一个HashMap，用于存储前缀和及其出现的次数
+        HashMap<Integer, Integer> map = new HashMap<>();
+        // 将前缀和为0的情况放入HashMap中，表示从数组开头到当前位置的和为0
+        map.put(0, 1);
+        // 遍历数组
+        for (int i = 0; i < nums.length; i++) {
+            // 计算当前位置的前缀和
+            sum += nums[i];
+            // 如果HashMap中存在前缀和为sum-k的情况，则说明存在连续子数组的和为k
+            if (map.containsKey(sum - k)) {
+                // 将前缀和为sum-k的次数加到结果中
+                result += map.get(sum - k);
+            }
+            // 将当前前缀和放入HashMap中，并更新其出现的次数
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+        // 返回结果
+        return result;
+    }
+}
+```
+
+**数学原理解释：** 假设我们有两个位置 i 和 j（i < j）：
+
+- 位置 i 的前缀和 = `sum_i`
+- 位置 j 的前缀和 = `sum_j`
+
+那么**从 i+1 到 j 这段子数组的和** = `sum_j - sum_i`
+
+如果我们想要这段子数组的和等于 k，就需要： `sum_j - sum_i = k`
+
+移项得到： `sum_i = sum_j - k`
+
+**核心思想：** 上面说的很详细，既然从 i+1 到 j 这段子数组的和 = `sum_j - sum_i`，那么就可以理解为数组中任意一段子数组的和 = `sum_j - sum_i`进一步具体为任意一段子数组的和设为K，那么已知了`sum_j`和K只需要得到`sum_i`的数量就行。
+所以说，在便利的时候每次记录`sum_i`的数量到map里面就行了，`map.put(sum, map.getOrDefault(sum, 0) + 1);`之所以这么复杂的原因是可能考虑到速度中有负数，所以前缀和可能会多次出现。如果是正数的话，基本上每个前缀只会出现一次。
+
+
+### 581.最短连续无序子数组（hot100）(9.6)
+
+给你一个整数数组 `nums` ，你需要找出一个 **连续子数组** ，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
+
+请你找出符合题意的 **最短** 子数组，并输出它的长度。
+
+**示例 1：**
+
+```
+输入：nums = [2,6,4,8,10,9,15]
+输出：5
+解释：你只需要对 [6, 4, 8, 10, 9] 进行升序排序，那么整个表都会变为升序排序。
+```
+
+**示例 2：**
+
+```
+输入：nums = [1,2,3,4]
+输出：0
+```
+
+**示例 3：**
+
+```
+输入：nums = [1]
+输出：0
+```
+
+这个问题的核心是需要找到一个子数组，使得排序这个子数组后，整个数组变为有序。
+
+这个子数组的起点和终点需要满足：
+
+- 起点是第一个不满足升序的位置。
+- 终点是最后一个不满足升序的位置。
+
+整个思路其实用的贪心，而且用了双指针的方式。
+
+```java
+public class Solution {
+    // 寻找最短无序连续子数组的方法
+    public int findUnsortedSubarray(int[] nums) {
+        // 复制原始数组
+        int[] temp = Arrays.copyOf(nums, nums.length);
+        // 对复制的数组进行排序
+        Arrays.sort(temp);
+        // 初始化左右指针
+        int leftPos = 0;
+        int rightPos = nums.length - 1;
+
+        // 循环直到找到需要调整的子数组
+        while (leftPos <= rightPos && (temp[leftPos] == nums[leftPos] || temp[rightPos] == nums[rightPos])) {
+            // 移动左指针直到找到需要调整的位置
+            if (temp[leftPos] == nums[leftPos]) {
+                leftPos++;
+            }
+            // 移动右指针直到找到需要调整的位置
+            if (temp[rightPos] == nums[rightPos]) {
+                rightPos--;
+            }
+        }
+
+        // 返回需要调整的子数组的长度
+        return rightPos - leftPos + 1 >= 0 ? rightPos - leftPos + 1 : 0;
+    }
+}
+```
+
+## 5. 原地替换算法应用
+### 27.移除元素
+
+
+给你一个数组 `nums` 和一个值 `val`，你需要 **原地** 移除所有数值等于 `val` 的元素。元素的顺序可能发生改变。然后返回 `nums` 中与 `val` 不同的元素的数量。
+
+假设 `nums` 中不等于 `val` 的元素数量为 `k`，要通过此题，您需要执行以下操作：
+
+- 更改 `nums` 数组，使 `nums` 的前 `k` 个元素包含不等于 `val` 的元素。`nums` 的其余元素和 `nums` 的大小并不重要。
+- 返回 `k`。
+
+**用户评测：**
+
+评测机将使用以下代码测试您的解决方案：
+
+```bash
+int[] nums = [...]; // 输入数组  
+int val = ...; // 要移除的值  
+int[] expectedNums = [...]; // 长度正确的预期答案。  
+                            // 它以不等于 val 的值排序。  
+​  
+int k = removeElement(nums, val); // 调用你的实现  
+​  
+assert k == expectedNums.length;  
+sort(nums, 0, k); // 排序 nums 的前 k 个元素  
+for (int i = 0; i < actualLength; i++) {  
+    assert nums[i] == expectedNums[i];  
+}
+```
+
+如果所有的断言都通过，你的解决方案将会 **通过**。
+
+**示例 1：**
+
+```
+输入：nums = [3,2,2,3], val = 3  
+输出：2, nums = [2,2,_,_]  
+解释：你的函数函数应该返回 k = 2, 并且 nums 中的前两个元素均为 2。  
+你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,1,2,2,3,0,4,2], val = 2  
+输出：5, nums = [0,1,4,0,3,_,_,_]  
+解释：你的函数应该返回 k = 5，并且 nums 中的前五个元素为 0,0,1,3,4。  
+注意这五个元素可以任意顺序返回。  
+你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
+```
+
+```java
+// 定义一个名为Solution的类
+class Solution {
+    // 定义一个名为removeElement的方法，接收一个整型数组nums和一个整数val作为参数，返回一个整数
+    public int removeElement(int[] nums, int val) {
+        // 初始化一个变量k，用于记录不等于val的元素个数
+        int k = 0;
+        // 遍历整型数组nums
+        for (int i = 0; i < nums.length; i++){
+            // 如果当前元素不等于val
+            if (nums[i] != val){
+                // 将当前元素移动到数组的前面，并更新k
+                nums[k++] = nums[i];
+            }
+        }
+        // 返回不等于val的元素个数
+        return k;
+    }
+}
+```
+
+### 283.移动零（hot100）（9.9）
+
+给定一个数组 `nums`，编写一个函数将所有 `0` 移动到数组的末尾，同时保持非零元素的相对顺序。
+
+**请注意** ，必须在不复制数组的情况下原地对数组进行操作。
+
+**示例 1:**
+
+```
+输入: nums = [0,1,0,3,12]
+输出: [1,3,12,0,0]
+```
+
+```java
+class Solution {
+    // 定义一个方法，用于将数组中的0移动到数组的末尾
+    public void moveZeroes(int[] nums) {
+        // 定义一个变量k，用于记录非0元素的个数
+        int k = 0;
+        // 遍历数组
+        for (int i = 0; i < nums.length; i++) {
+            // 如果当前元素不为0
+            if (nums[i] != 0) {
+                // 将当前元素赋值给nums[k]，并将k加1
+                nums[k++] = nums[i];
+            }
+        }
+        // 将数组中剩余的位置全部赋值为0
+        while (k < nums.length) {
+            nums[k++] = 0;
+        }
+    }
+}
+```
+
+## 6. 矩阵相关题目
+
+### 48.旋转图像（new hot100）（9.10）
+
+给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
+
+你必须在 **原地** 旋转图像，这意味着你需要直接修改输入的二维矩阵。**请不要** 使用另一个矩阵来旋转图像。
+
+
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg)
+
+```
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[[7,4,1],[8,5,2],[9,6,3]]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg)
+
+```
+输入：matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+输出：[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+```
+
+
+
+```java
+class Solution {
+    /**
+     * 将二维矩阵顺时针旋转90度
+     * 通过先转置矩阵，然后沿垂直中线翻转来实现
+     *
+     * @param matrix 二维整数数组，表示需要旋转的矩阵
+     */
+    public void rotate(int[][] matrix) {
+        // 获取矩阵的行数（也是列数，因为矩阵是方阵）
+        int n = matrix.length;
+
+        // 遍历矩阵的上半部分，进行转置
+        // 只需遍历上三角，转置后会得到一个对称矩阵
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                // 交换矩阵对角线上的元素，完成转置
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+
+        // 遍历矩阵的每一行，沿垂直中线翻转
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n / 2; j++) {
+                // 交换每行中对称位置的元素
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[i][n - 1 - j];
+                matrix[i][n - 1 - j] = temp;
+            }
+        }
+    }
+}
+```
+
+
+
+### 240.搜索二维矩阵II（new hot100）
+
+编写一个高效的算法来搜索 `*m* x *n*` 矩阵 `matrix` 中的一个目标值 `target` 。该矩阵具有以下特性：
+
+- 每行的元素从左到右升序排列。
+- 每列的元素从上到下升序排列。
+
+**示例 1：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid2.jpg)
+
+```
+输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+输出：true
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid.jpg)
+
+```
+输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
+输出：false
+```
+
+
+
+```java
+/**
+ * 在二维矩阵中搜索目标值
+ * 这个函数采用从右上角开始搜索的策略，充分利用矩阵的有序特性，从而实现高效搜索
+ * 
+ * @param matrix 一个二维整数数组，表示待搜索的矩阵该矩阵每行从左到右递增，每列从上到下递增
+ * @param target 要搜索的目标值
+ * @return 如果目标值存在于矩阵中，则返回true；否则返回false
+ */
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        // 首先检查矩阵是否为空，或者行或列是否为空
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+
+        // 初始化搜索的起始位置为矩阵的右上角
+        int row = 0;
+        int col = matrix[0].length - 1;
+
+        // 开始在矩阵中搜索，只要搜索指针不超出矩阵的边界
+        while (row < matrix.length && col >= 0) {
+            // 如果当前位置的值等于目标值，说明找到了目标，返回true
+            if (matrix[row][col] == target) {
+                return true;
+            } 
+            // 如果当前值大于目标值，向下一行移动
+            else if (matrix[row][col] > target) {
+                col--;
+            } 
+            // 如果当前值小于目标值，向左一列移动
+            else {
+                row++;
+            }
+        }
+
+        // 如果搜索结束都没有找到目标值，返回false
+        return false;
+    }
+}
+```
+
+
+### 54.螺旋矩阵（new hot100）
+给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
+
+**示例 1：**
+![[Pasted image 20250904124608.png]]
+
+```
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]  
+输出：[1,2,3,6,9,8,7,4,5]
+```
+
+**示例 2：**
+
+```
+输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]  
+输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+```
+
+![](https://assets.leetcode.com/uploads/2020/11/13/spiral.jpg)
+
+```java
+class Solution {
+    /**
+     * 按螺旋顺序返回矩阵中的元素
+     * 
+     * @param matrix 二维整数数组，表示输入的矩阵
+     * @return List<Integer>，包含按螺旋顺序遍历矩阵的元素
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        // 初始化结果列表
+        List<Integer> resultList = new ArrayList<>();
+        // 初始化上下左右边界
+        int top = 0, bottom = matrix.length - 1, left = 0, right = matrix[0].length - 1;
+
+        // 当上边界小于等于下边界且左边界小于等于右边界时，进行螺旋遍历
+        while (top <= bottom && left <= right) {
+            // 从左到右遍历顶部元素
+            for (int i = left; i <= right; i++) {
+                resultList.add(matrix[top][i]);
+            }
+            // 上边界下移
+            top++;
+            // 从上到下遍历右侧元素
+            for (int i = top; i <= bottom; i++) {
+                resultList.add(matrix[i][right]);
+            }
+            // 右边界左移
+            right--;
+            // 如果上边界小于等于下边界，则从右到左遍历底部元素
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    resultList.add(matrix[bottom][i]);
+                }
+                // 下边界上移
+                bottom--;
+            }
+            // 如果左边界小于等于右边界，则从下到上遍历左侧元素
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    resultList.add(matrix[i][left]);
+                }
+                // 左边界右移
+                left++;
+            }
+        }
+        // 返回螺旋遍历的结果
+        return resultList;
+    }
+}
+
+```
+
+在螺旋顺序遍历中，后两个循环（从右到左、从下到上）需要进行条件判断，主要原因是为了避免重复遍历或越界操作。
+
+具体来说：
+
+1. **第一个判断 (top <= bottom)**：
+   - 在从右到左遍历底部时，这个判断确保在矩阵的行数足够时才进行遍历。经过前两个遍历（从左到右、从上到下）后，`top` 已经递增了，而 `bottom` 已经递减了，可能在某一时刻 `top` 超过了 `bottom`，说明已经处理完所有行。此时无需再执行从右到左的遍历，避免重复添加元素。
+2. **第二个判断 (left <= right)**：
+   - 同理，在从下到上遍历左侧列时，这个判断确保列数足够时才进行遍历。前面的遍历可能已经处理掉了所有列，因此需要判断 `left` 和 `right` 的关系，避免重复访问已经处理过的列。
+
+这些判断确保每一次只处理剩下未访问的行和列，避免不必要的重复处理或越界错误，尤其是在矩阵非常小的情况下（比如 1xN 或 Nx1 的矩阵）。
+
+### 59.螺旋矩阵II
+给你一个正整数 `n` ，生成一个包含 `1` 到 `n2` 所有元素，且元素按顺时针顺序螺旋排列的 `n x n` 正方形矩阵 `matrix` 。
+
+**示例 1：**
+
+![](https://assets.leetcode.com/uploads/2020/11/13/spiraln.jpg)
+
+```
+输入：n = 3  
+输出：[[1,2,3],[8,9,4],[7,6,5]]
+```
+**示例 2：**
+
+```
+输入：n = 1  
+输出：[[1]]
+```
+
+
+```java
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] matrix = new int[n][n];
+        int num = 0;
+        for (int k = 0, i = 0, j = 0, starx = 0, stary = 0; k < n / 2; k++) {
+
+            for (j = stary; j < n - k - 1; j++) {
+                matrix[starx][j] = ++num;
+            }
+            for (i = starx; i < n - k - 1; i++) {
+                matrix[i][n - k - 1] = ++num;
+            }
+            for (j = n - k - 1; j > k; j--) {
+                matrix[n - k - 1][j] = ++num;
+            }
+            for (i = n - k - 1; i > k; i--) {
+                matrix[i][stary] = ++num;
+            }
+            starx++;
+            stary++;
+
+        }
+        if (n % 2 != 0) {
+            matrix[n / 2][n / 2] = ++num;
+        }
+
+        return matrix;
+    }
+}
+```
+
+### 73.矩阵置0（new hot100）*
+
+给定一个 `*m* x *n*` 的矩阵，如果一个元素为 **0** ，则将其所在行和列的所有元素都设为 **0** 。请使用 **原地** 算法。
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/08/17/mat1.jpg)
+
+
+
+```
+输入：matrix = [[1,1,1],[1,0,1],[1,1,1]]
+输出：[[1,0,1],[0,0,0],[1,0,1]]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/08/17/mat2.jpg)
+
+```
+输入：matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+输出：[[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+```
+
+
+
+```java
+class Solution {
+    /**
+     * 将矩阵中指定元素设为0
+     * 如果一个矩阵中的元素为0，则将其所在行和列的所有元素都设为0
+     *
+     * @param matrix 二维整数数组，表示需要处理的矩阵
+     */
+    public void setZeroes(int[][] matrix) {
+        // 创建布尔数组记录矩阵中每行每列是否有元素为0
+        boolean[] row = new boolean[matrix.length];
+        boolean[] col = new boolean[matrix[0].length];
+
+        // 遍历矩阵，标记含有0的行和列
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    row[i] = true;
+                    col[j] = true;
+                }
+            }
+        }
+
+        // 根据标记的行和列，将对应位置的元素设为0
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (row[i] || col[j]) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
+}
+```
+
+空间复杂度是O(1)，防止面试刁难。
+
+```java
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        boolean col0 = false;  // 只需要记录第一列
+        
+        // 标记阶段
+        for (int i = 0; i < m; i++) {
+            if (matrix[i][0] == 0) col0 = true;
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = matrix[0][j] = 0;
+                }
+            }
+        }
+        
+        // 处理阶段（从后往前）
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 1; j--) {  // 也可以从后往前
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+            if (col0) matrix[i][0] = 0;
+        }
+    }
+}
+```
+
+## 7. 其他数组题目
+### 977.有序数组的平方
+给你一个按 **非递减顺序** 排序的整数数组 `nums`，返回 **每个数字的平方** 组成的新数组，要求也按 **非递减顺序** 排序。
+
+**示例 1：**
+
+```
+输入：nums = [-4,-1,0,3,10]  
+输出：[0,1,9,16,100]  
+解释：平方后，数组变为 [16,1,0,9,100]  
+排序后，数组变为 [0,1,9,16,100]
+```
+
+**示例 2：**
+
+```
+输入：nums = [-7,-3,2,3,11]  
+输出：[4,9,9,49,121]
+```
+
+双指针方法
+
+```java
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int[] result = new int[nums.length];
+        int i = nums.length - 1,j = nums.length - 1, k = 0;
+        while (k <= j) {
+            if ((nums[k] * nums[k]) >= (nums[j] * nums[j])) {
+                result[i] = nums[k] * nums[k];
+                k++;
+                i--;
+            } else {
+                result[i] = nums[j] * nums[j];
+                j--;
+                i--;
+            }
+        }
+        return result;
+    }
+}
+```
+
+更简单的
+
+```java
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = nums[i] * nums[i];
+        }
+
+        Arrays.sort(nums);
+        return nums;
+    }
+}
+```
+
+### 238.除自身以外数组的乘积（hot100）（4.18）
+
+给你一个整数数组 `nums`，返回 数组 `answer` ，其中 `answer[i]` 等于 `nums` 中除 `nums[i]` 之外其余各元素的乘积 。
+
+题目数据 **保证** 数组 `nums`之中任意元素的全部前缀元素和后缀的乘积都在 **32 位** 整数范围内。
+
+请 **不要使用除法，且在 `O(n)` 时间复杂度内完成此题**。
+
+**示例 1:**
+
+```
+输入: nums = [1,2,3,4]
+输出: [24,12,8,6]
+```
+
+**示例 2:**
+
+```
+输入: nums = [-1,1,0,-3,3]
+输出: [0,0,9,0,0]
+```
+
+**提示：**
+
+- `2 <= nums.length <= 105`
+- `-30 <= nums[i] <= 30`
+- **保证** 数组 `nums`之中任意元素的全部前缀元素和后缀的乘积都在 **32 位** 整数范围内
+
+```java
+/**
+ * Solution类提供了一个方法来计算一个整数数组中除了自身之外所有元素的乘积
+ */
+class Solution {
+    /**
+     * 计算数组中除了自身之外所有元素的乘积
+     * 
+     * @param nums 输入的整数数组
+     * @return 返回一个数组，其中每个元素是原数组中除了当前位置元素之外所有元素的乘积
+     */
+    public int[] productExceptSelf(int[] nums) {
+        // 初始化结果数组，长度与输入数组相同
+        int[] resultArray = new int[nums.length];
+        // 设置第一个元素为1，因为左边没有元素
+        resultArray[0] = 1;
+        // 计算每个位置左边所有元素的乘积
+        for (int i = 1; i < nums.length; i++) {
+            resultArray[i] = resultArray[i - 1] * nums[i - 1];
+        }
+
+        // 初始化右边乘积变量为1，用于计算右边元素的乘积
+        int auxiliaryRightNum = 1;
+        // 从后向前遍历数组，计算每个位置右边元素的乘积
+        for (int i = nums.length - 1; i >= 0; i--) {
+            resultArray[i] *= auxiliaryRightNum;
+            auxiliaryRightNum *= nums[i];
+        }
+
+        // 返回结果数组
+        return resultArray;
+    }
+}
+```
+
+
+### 189.轮转数组（new hot100）
+
+给定一个整数数组 `nums`，将数组中的元素向右轮转 `k` 个位置，其中 `k` 是非负数。
+
+**示例 1:**
+
+```
+输入: nums = [1,2,3,4,5,6,7], k = 3
+输出: [5,6,7,1,2,3,4]
+解释:
+向右轮转 1 步: [7,1,2,3,4,5,6]
+向右轮转 2 步: [6,7,1,2,3,4,5]
+向右轮转 3 步: [5,6,7,1,2,3,4]
+```
+
+**示例 2:**
+
+```
+输入：nums = [-1,-100,3,99], k = 2
+输出：[3,99,-1,-100]
+解释: 
+向右轮转 1 步: [99,-1,-100,3]
+向右轮转 2 步: [3,99,-1,-100]
+```
+
+**提示：**
+
+- `1 <= nums.length <= 105`
+- `-231 <= nums[i] <= 231 - 1`
+- `0 <= k <= 105`
+
+
+O（1）的处理空间，思路类似右旋字符串。
+```java
+class Solution {
+    /**
+     * 将数组 nums 中的元素向右旋转 k 个位置
+     * 通过反转数组的方式来实现旋转操作
+     * 
+     * @param nums 原始数组
+     * @param k 旋转的步数
+     */
+    public void rotate(int[] nums, int k) {
+        // 计算实际需要移动的步数，防止 k 大于数组长度的情况
+        int NumberOfStepsMoved = k % (nums.length);
+        // 反转整个数组
+        reverse(nums, 0, nums.length - 1);
+        // 反转前 NumberOfStepsMoved 个元素
+        reverse(nums, 0, NumberOfStepsMoved - 1);
+        // 反转剩余的元素
+        reverse(nums, NumberOfStepsMoved, nums.length - 1);
+    }
+
+    /**
+     * 反转数组中指定范围的元素
+     * 
+     * @param nums 原始数组
+     * @param left 反转范围的左边界
+     * @param right 反转范围的右边界
+     */
+    void reverse(int[] nums, int left, int right) {
+        int tempNum;
+        while (left < right) {
+            // 交换当前元素
+            tempNum = nums[right];
+            nums[right] = nums[left];
+            nums[left] = tempNum;
+            // 移动指针，进行下一轮交换
+            right--;
+            left++;
+        }
+    }
+}
+```
+
+
+### 75.颜色分类（hot 100）*（复习一下冒泡排序和选择排序）
 
 给定一个包含红色、白色和蓝色、共 `n` 个元素的数组 `nums` ，**[原地](https://baike.baidu.com/item/原地算法)**对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
 
@@ -241,1422 +1852,6 @@ class Solution {
         nums[i] = nums[j];
         // 将第二个元素的值替换为临时变量中的值，完成交换
         nums[j] = temp;
-    }
-}
-```
-
-### 704.二分查找
-
-给定一个 `n` 个元素有序的（升序）整型数组 `nums` 和一个目标值 `target` ，写一个函数搜索 `nums` 中的 `target`，如果目标值存在返回下标，否则返回 `-1`。
-
-
-**示例 1:**
-
-```
-输入: nums = [-1,0,3,5,9,12], target = 9
-输出: 4
-解释: 9 出现在 nums 中并且下标为 4
-```
-
-**示例 2:**
-
-```
-输入: nums = [-1,0,3,5,9,12], target = 2
-输出: -1
-解释: 2 不存在 nums 中因此返回 -1
-```
-
-```java
-class Solution {
-    // 二分查找算法
-    public int search(int[] nums, int target) {
-        // 定义左指针初始位置为数组第一个元素的索引
-        int left = 0;
-        // 定义右指针初始位置为数组最后一个元素的索引
-        int right = nums.length - 1;
-        // 当左指针小于等于右指针时，进行循环查找
-        while(left <= right){
-            // 计算中间元素的索引
-            int mid = (left + right) / 2;
-            // 如果中间元素等于目标值，则返回中间元素的索引
-            if (nums[mid] == target)
-                return mid;
-            // 如果中间元素大于目标值，则将右指针移动到中间元素的左侧
-            else if (nums[mid] > target)
-                right = mid - 1;
-            // 如果中间元素小于目标值，则将左指针移动到中间元素的右侧
-            else
-                left = mid + 1;
-        }
-        // 若未找到目标值，则返回-1
-        return -1;
-    }
-}
-```
-
-### 35.搜索插入位置（new hot100）
-
-给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
-
-请必须使用时间复杂度为 `O(log n)` 的算法。
-
-
-
-**示例 1:**
-
-```
-输入: nums = [1,3,5,6], target = 5
-输出: 2
-```
-
-**示例 2:**
-
-```
-输入: nums = [1,3,5,6], target = 2
-输出: 1
-```
-
-**示例 3:**
-
-```
-输入: nums = [1,3,5,6], target = 7
-输出: 4
-```
-
-```java
-/**
- * Solution类提供了一个方法来解决二分查找问题
- * 这个类的主要作用是通过二分查找算法在有序数组中找到目标值的位置，或者找到目标值应该被插入的位置
- */
-class Solution {
-    /**
-     * 使用二分查找在有序数组中查找目标值或者找到目标值应该插入的位置
-     *
-     * @param nums 一个已排序的整数数组
-     * @param target 目标整数，需要在数组中查找
-     * @return 目标整数在数组中的索引位置如果目标整数不存在于数组中，则返回它应该被插入的位置
-     */
-    public int searchInsert(int[] nums, int target) {
-        // 初始化搜索范围的左边界
-        int left = 0;
-        // 初始化搜索范围的右边界
-        int right = nums.length - 1;
-        // 用于存储中间值的索引
-        int mid;
-        // 当左边界小于等于右边界时，进行二分查找
-        while (left <= right) {
-            // 计算中间值的索引
-            mid = (left + right) / 2;
-            // 如果中间值等于目标值，直接返回中间值的索引
-            if (nums[mid] == target) {
-                return mid;
-            } else if (nums[mid] > target) {
-                // 如果中间值大于目标值，调整右边界为中间值索引的前一个
-                right = mid - 1;
-            } else {
-                // 如果中间值小于目标值，调整左边界为中间值索引的后一个
-                left = mid + 1;
-            }
-        }
-        // 如果没有找到目标值，返回左边界，即目标值应该被插入的位置
-        return left;
-    }
-}
-```
-
-### 74.搜索二维矩阵（new hot100）
-
-给你一个满足下述两条属性的 `m x n` 整数矩阵：
-
-- 每行中的整数从左到右按非严格递增顺序排列。
-- 每行的第一个整数大于前一行的最后一个整数。
-
-给你一个整数 `target` ，如果 `target` 在矩阵中，返回 `true` ；否则，返回 `false` 。
-
-
-
-**示例 1：**
-
-![img](https://assets.leetcode.com/uploads/2020/10/05/mat.jpg)
-
-
-
-```
-输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
-输出：true
-```
-
-**示例 2：**
-
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/mat2.jpg)
-
-
-
-```
-输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
-输出：false
-```
-
-```java
-/**
- * Solution类提供了一个方法来在一个二维矩阵中搜索一个目标值
- * 这个矩阵是一个按行和列都升序排序的二维数组
- */
-class Solution {
-    /**
-     * 在二维矩阵中搜索目标值
-     *
-     * @param matrix 一个按行和列都升序排序的二维数组
-     * @param target 要搜索的目标值
-     * @return 如果目标值在矩阵中，则返回true；否则返回false
-     */
-    public boolean searchMatrix(int[][] matrix, int target) {
-        // 初始化左指针和右指针
-        int left = 0, right = matrix.length * matrix[0].length - 1;
-        int mid;
-        // 使用二分查找在二维矩阵中搜索目标值
-        while (left <= right) {
-            mid = (left + right) / 2;
-            // 通过计算行列索引来获取当前mid指向的元素值
-            int row = mid / matrix[0].length;
-            int col = mid % matrix[0].length;
-            if (matrix[row][col] == target) {
-                // 如果找到目标值，返回true
-                return true;
-            } else if (matrix[row][col] > target) {
-                // 如果当前元素值大于目标值，则目标值在左半部分
-                right = mid - 1;
-            } else {
-                // 如果当前元素值小于目标值，则目标值在右半部分
-                left = mid + 1;
-            }
-        }
-        // 如果没有找到目标值，返回false
-        return false;
-    }
-}
-```
-
-### 34.在排序数组中查找元素的第一个和最后一个位置（new hot100）
-
-给你一个按照非递减顺序排列的整数数组 `nums`，和一个目标值 `target`。请你找出给定目标值在数组中的开始位置和结束位置。
-
-如果数组中不存在目标值 `target`，返回 `[-1, -1]`。
-
-你必须设计并实现时间复杂度为 `O(log n)` 的算法解决此问题。
-
-
-
-**示例 1：**
-
-```
-输入：nums = [5,7,7,8,8,10], target = 8
-输出：[3,4]
-```
-
-**示例 2：**
-
-```
-输入：nums = [5,7,7,8,8,10], target = 6
-输出：[-1,-1]
-```
-
-**示例 3：**
-
-```
-输入：nums = [], target = 0
-输出：[-1,-1]
-```
-
-
-
-```java
-/**
- * Solution类提供了一种在排序数组中查找元素的起始和结束位置的方法
- */
-class Solution {
-
-    /**
-     * 在排序数组中查找给定目标值的起始和结束位置
-     * 
-     * @param nums 排序的整数数组
-     * @param target 要查找的目标值
-     * @return 包含目标值的起始和结束位置的数组，如果不存在则返回[-1, -1]
-     */
-    public int[] searchRange(int[] nums, int target) {
-        return new int[]{findFirstIndex(nums, target), findLastIndex(nums, target)};
-    }
-
-    /**
-     * 查找目标值在排序数组中的第一个出现的索引
-     * 
-     * @param nums 排序的整数数组
-     * @param target 目标值
-     * @return 目标值第一次出现的索引，如果不存在则返回-1
-     */
-    int findFirstIndex(int[] nums, int target) {
-        int left = 0, right = nums.length - 1, index = -1; // 初始化左边界、右边界和索引
-        while (left <= right) { // 当左边界不大于右边界时继续循环
-            int mid = (left + right) / 2; // 计算中间索引
-            if (nums[mid] >= target) { // 如果中间元素大于等于目标值，则调整右边界
-                right = mid - 1;
-            } else { // 否则调整左边界
-                left = mid + 1;
-            }
-            if (nums[mid] == target) { // 如果中间元素等于目标值，则记录索引
-                index = mid;
-            }
-        }
-        return index; // 返回目标值的第一个出现位置
-    }
-
-    /**
-     * 查找目标值在排序数组中的最后一个出现的索引
-     * 
-     * @param nums 排序的整数数组
-     * @param target 目标值
-     * @return 目标值最后一次出现的索引，如果不存在则返回-1
-     */
-    int findLastIndex(int[] nums, int target) {
-        int left = 0, right = nums.length - 1, index = -1; // 初始化左边界、右边界和索引
-        while (left <= right) { // 当左边界不大于右边界时继续循环
-            int mid = (left + right) / 2; // 计算中间索引
-            if (nums[mid] <= target) { // 如果中间元素小于等于目标值，则调整左边界
-                left = mid + 1;
-            } else { // 否则调整右边界
-                right = mid - 1;
-            }
-            if (nums[mid] == target) { // 如果中间元素等于目标值，则记录索引
-                index = mid;
-            }
-        }
-        return index; // 返回目标值的最后一个出现位置
-    }
-}
-
-```
-
-### 33.搜索旋转排序数组（new hot100）（3.29）
-
-整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
-
-在传递给函数之前，`nums` 在预先未知的某个下标 `k`（`0 <= k < nums.length`）上进行了 **旋转**，使数组变为 `[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]`（下标 **从 0 开始** 计数）。例如， `[0,1,2,4,5,6,7]` 在下标 `3` 处经旋转后可能变为 `[4,5,6,7,0,1,2]` 。
-
-给你 **旋转后** 的数组 `nums` 和一个整数 `target` ，如果 `nums` 中存在这个目标值 `target` ，则返回它的下标，否则返回 `-1` 。
-
-你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
-
-
-
-**示例 1：**
-
-```
-输入：nums = [4,5,6,7,0,1,2], target = 0
-输出：4
-```
-
-**示例 2：**
-
-```
-输入：nums = [4,5,6,7,0,1,2], target = 3
-输出：-1
-```
-
-**示例 3：**
-
-```
-输入：nums = [1], target = 0
-输出：-1
-```
-
-```java
-/**
- * 解决方案类，提供数组查找功能
- */
-class Solution {
-    /**
-     * 使用二分查找算法在旋转排序数组中查找目标值
-     * 旋转排序数组是将原始递增排序的数组在某个点上进行旋转后得到的数组
-     * 例如：[0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2]
-     *
-     * @param nums 旋转排序数组
-     * @param target 需要查找的目标值
-     * @return 目标值在数组中的索引，如果不存在则返回 -1
-     */
-    public int search(int[] nums, int target) {
-        // 初始化左右指针
-        int left = 0, right = nums.length - 1;
-        // 中间指针
-        int mid;
-        // 使用while循环进行二分查找
-        while (left <= right) {
-            // 计算中间位置
-            mid = (left + right) / 2;
-            // 如果中间位置的值等于目标值，直接返回索引
-            if (nums[mid] == target) {
-                return mid;
-            }
-
-            // 判断左半部分是否是有序的
-            if (nums[left] <= nums[mid]) {
-                // 如果目标值在左半部分的范围内，则调整右指针
-                if (nums[left] <= target && target < nums[mid]) {
-                    right = mid - 1;
-                } else {
-                    // 否则调整左指针
-                    left = mid + 1;
-                }
-            } else {
-                // 判断右半部分是否是有序的
-                // 如果目标值在右半部分的范围内，则调整左指针
-                if (nums[mid] < target && target <= nums[right]) {
-                    left = mid + 1;
-                } else {
-                    // 否则调整右指针
-                    right = mid - 1;
-                }
-            }
-        }
-        // 如果没有找到目标值，返回 -1
-        return -1;
-    }
-}
-```
-
-### 153.寻找旋转排序数组中的最小值（new hot100）（3.28）
-
-已知一个长度为 `n` 的数组，预先按照升序排列，经由 `1` 到 `n` 次 **旋转** 后，得到输入数组。例如，原数组 `nums = [0,1,2,4,5,6,7]` 在变化后可能得到：
-
-- 若旋转 `4` 次，则可以得到 `[4,5,6,7,0,1,2]`
-- 若旋转 `7` 次，则可以得到 `[0,1,2,4,5,6,7]`
-
-注意，数组 `[a[0], a[1], a[2], ..., a[n-1]]` **旋转一次** 的结果为数组 `[a[n-1], a[0], a[1], a[2], ..., a[n-2]]` 。
-
-给你一个元素值 **互不相同** 的数组 `nums` ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 **最小元素** 。
-
-你必须设计一个时间复杂度为 `O(log n)` 的算法解决此问题。
-
-
-
-**示例 1：**
-
-```
-输入：nums = [3,4,5,1,2]
-输出：1
-解释：原数组为 [1,2,3,4,5] ，旋转 3 次得到输入数组。
-```
-
-**示例 2：**
-
-```
-输入：nums = [4,5,6,7,0,1,2]
-输出：0
-解释：原数组为 [0,1,2,4,5,6,7] ，旋转 3 次得到输入数组。
-```
-
-**示例 3：**
-
-```
-输入：nums = [11,13,15,17]
-输出：11
-解释：原数组为 [11,13,15,17] ，旋转 4 次得到输入数组。
-```
-
-左闭右开区间的典例
-
-```java
-/**
- * Solution类用于解决寻找旋转排序数组中的最小值的问题
- */
-class Solution {
-    /**
-     * 使用二分查找算法寻找旋转排序数组中的最小值
-     *
-     * @param nums 一个旋转排序数组，其中每个元素都是唯一的
-     * @return 数组中的最小值
-     */
-    public int findMin(int[] nums) {
-        // 初始化左指针和右指针
-        int left = 0, right = nums.length - 1;
-        // 当左指针小于右指针时，进行二分查找
-        while (left < right) {
-            // 计算中间位置
-            int mid = (left + right) / 2;
-            // 判断中间元素是否大于右侧元素，以确定最小值所在的区间
-            if (nums[mid] > nums[right]) {
-                // nums[mid] > nums[right] 说明数组的右半部分是无序的（旋转数组的特点），所以最小值一定在右半部分。因此，更新 left = mid + 1。
-                left = mid + 1;
-            } else {
-                // nums[mid] <= nums[right] 说明数组的右半部分是有序的，最小值有可能是 mid 或者更小的元素，因此更新 right = mid。
-                right = mid;
-            }
-        }
-        // 此时左指针和右指针重合，指向最小值
-        return nums[right];
-    }
-}
-```
-
-### 4.寻找两个正序数组的中位数（new hot100）（4.11）
-
-给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。
-
-算法的时间复杂度应该为 `O(log (m+n))` 。
-
-
-
-**示例 1：**
-
-```
-输入：nums1 = [1,3], nums2 = [2]
-输出：2.00000
-解释：合并数组 = [1,2,3] ，中位数 2
-```
-
-**示例 2：**
-
-```
-输入：nums1 = [1,2], nums2 = [3,4]
-输出：2.50000
-解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
-```
-
-```java
-/**
- * Solution类用于解决两个已排序数组的中位数查找问题
- */
-class Solution {
-    /**
-     * 寻找两个已排序数组的中位数
-     * 
-     * @param nums1 第一个已排序数组
-     * @param nums2 第二个已排序数组
-     * @return 两个数组合并后的中位数
-     */
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int totalLength = nums1.length + nums2.length;
-        // 根据数组总长度的奇偶性决定中位数的计算方式
-        return totalLength % 2 != 0 ? findTheKThLargestNumber(nums1, nums2, totalLength / 2 + 1)
-                : (findTheKThLargestNumber(nums1, nums2, totalLength / 2 + 1) + findTheKThLargestNumber(nums1, nums2, totalLength / 2)) / 2.0;
-    }
-
-    /**
-     * 寻找两个已排序数组中的第k小的数
-     * 
-     * @param nums1 第一个已排序数组
-     * @param nums2 第二个已排序数组
-     * @param k 想要找到的第k小的数的索引
-     * @return 两个数组中的第k小的数
-     */
-    int findTheKThLargestNumber(int[] nums1, int[] nums2, int k) {
-        int length1 = nums1.length, length2 = nums2.length;
-        int index1 = 0, index2 = 0;
-        while (true) {
-            // 如果遍历完nums1数组，直接从nums2数组中找第k小的数
-            if (index1 == length1) {
-                while (k != 1) {
-                    index2++;
-                    k--;
-                }
-                return nums2[index2];
-            }
-            // 如果遍历完nums2数组，直接从nums1数组中找第k小的数
-            if (index2 == length2) {
-                while (k != 1) {
-                    index1++;
-                    k--;
-                }
-                return nums1[index1];
-            }
-            // 如果k为1，返回两个数组当前最小的数
-            if (k == 1) {
-                return Math.min(nums1[index1], nums2[index2]);
-            }
-            // 比较两个数组当前的数，较小的那个数的索引向前移动，并将k值减1
-            if (nums1[index1] <= nums2[index2]) {
-                index1++;
-            } else {
-                index2++;
-            }
-            k--;
-        }
-    }
-}
-```
-
-### 27.移除元素
-
-```java
-// 定义一个名为Solution的类
-class Solution {
-    // 定义一个名为removeElement的方法，接收一个整型数组nums和一个整数val作为参数，返回一个整数
-    public int removeElement(int[] nums, int val) {
-        // 初始化一个变量k，用于记录不等于val的元素个数
-        int k = 0;
-        // 遍历整型数组nums
-        for (int i = 0; i < nums.length; i++){
-            // 如果当前元素不等于val
-            if (nums[i] != val){
-                // 将当前元素移动到数组的前面，并更新k
-                nums[k++] = nums[i];
-            }
-        }
-        // 返回不等于val的元素个数
-        return k;
-    }
-}
-```
-
-### 977.有序数组的平方
-
-双指针方法
-
-```java
-class Solution {
-    public int[] sortedSquares(int[] nums) {
-        int[] result = new int[nums.length];
-        int i = nums.length - 1,j = nums.length - 1, k = 0;
-        while (k <= j) {
-            if ((nums[k] * nums[k]) >= (nums[j] * nums[j])) {
-                result[i] = nums[k] * nums[k];
-                k++;
-                i--;
-            } else {
-                result[i] = nums[j] * nums[j];
-                j--;
-                i--;
-            }
-        }
-        return result;
-    }
-}
-```
-
-更简单的
-
-```java
-class Solution {
-    public int[] sortedSquares(int[] nums) {
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = nums[i] * nums[i];
-        }
-
-        Arrays.sort(nums);
-        return nums;
-    }
-}
-```
-
-### 209.长度最小的子数组（3.25）
-
-给定一个含有 `n` 个正整数的数组和一个正整数 `target` **。**
-
-找出该数组中满足其总和大于等于 `target` 的长度最小的 **子数组** `[numsl, numsl+1, ..., numsr-1, numsr]` ，并返回其长度**。**如果不存在符合条件的子数组，返回 `0` 。
-
-
-
-**示例 1：**
-
-```
-输入：target = 7, nums = [2,3,1,2,4,3]
-输出：2
-解释：子数组 [4,3] 是该条件下的长度最小的子数组。
-```
-
-**示例 2：**
-
-```
-输入：target = 4, nums = [1,4,4]
-输出：1
-```
-
-**示例 3：**
-
-```
-输入：target = 11, nums = [1,1,1,1,1,1,1,1]
-输出：0
-```
-
-```java
-/**
- * 解决方案类，提供数组相关的问题解决方法
- */
-class Solution {
-    /**
-     * 计算满足条件的最短子数组的长度
-     * 
-     * 该方法用于找到一个子数组，使得子数组的所有元素和至少为目标值，
-     * 并返回满足条件的最短子数组的长度如果不存在这样的子数组，则返回0
-     * 
-     * @param target 目标值，子数组的和至少要达到这个值
-     * @param nums 输入的整数数组
-     * @return 返回满足条件的最短子数组的长度，如果不存在则返回0
-     */
-    public int minSubArrayLen(int target, int[] nums) {
-        // 累加和，用于记录当前子数组的和
-        int sum = 0;
-        // 子数组的最小长度，初始值设为最大整数，以便后续比较
-        int count = Integer.MAX_VALUE;
-        // 使用双指针技术遍历数组，i为慢指针，j为快指针
-        for (int i = 0, j = 0; i < nums.length; i++) {
-            // 将当前元素加到子数组的和中
-            sum += nums[i];
-            // 当当前子数组的和大于等于目标值时，尝试缩小子数组的范围
-            while (sum >= target) {
-                // 更新子数组的最小长度
-                count = Math.min(count, i - j + 1);
-                // 移动快指针，减小子数组的范围
-                sum -= nums[j];
-                j++;
-            }
-        }
-
-        // 如果最小长度仍然是初始值，则说明没有找到满足条件的子数组，返回0
-        // 否则返回计算出的最小长度
-        return count == Integer.MAX_VALUE ? 0 : count;
-    }
-}
-```
-
-### 560.和为k的子数组(hot100)(3.29)
-
-给你一个整数数组 `nums` 和一个整数 `k` ，请你统计并返回 *该数组中和为 `k` 的子数组的个数* 。
-
-子数组是数组中元素的连续非空序列。
-
-**示例 1：**
-
-```
-输入：nums = [1,1,1], k = 2
-输出：2
-```
-
-**示例 2：**
-
-```
-输入：nums = [1,2,3], k = 3
-输出：2
-```
-
-暴力解，复杂度 O(n^2)，推荐这种，简单好记。
-
-```java
-auxiliaryMap.getOrDefault(sum - k, 0)
-```
-
-**为什么这种遍历能解决问题：**
-
-- **子数组的定义**：子数组是数组中一段连续的非空元素序列。通过双重循环，内层循环遍历从某个起始位置 `i` 开始的所有子数组，从而可以检查所有可能的子数组。
-- **计算和的方式**：内层循环每次计算当前子数组的和，逐步累加数组元素，直到找到和为 `k` 的子数组。
-
-
-
-**优化后的O(N)，用前缀和的思想。不如上面好记**
-
-```java
-class Solution {
-    // 定义一个方法，用于计算数组中连续子数组的和等于k的个数
-    public int subarraySum(int[] nums, int k) {
-        // 定义结果变量，用于存储连续子数组的和等于k的个数
-        int result = 0, sum = 0;
-        // 定义一个HashMap，用于存储前缀和及其出现的次数
-        HashMap<Integer, Integer> map = new HashMap<>();
-        // 将前缀和为0的情况放入HashMap中，表示从数组开头到当前位置的和为0
-        map.put(0, 1);
-        // 遍历数组
-        for (int i = 0; i < nums.length; i++) {
-            // 计算当前位置的前缀和
-            sum += nums[i];
-            // 如果HashMap中存在前缀和为sum-k的情况，则说明存在连续子数组的和为k
-            if (map.containsKey(sum - k)) {
-                // 将前缀和为sum-k的次数加到结果中
-                result += map.get(sum - k);
-            }
-            // 将当前前缀和放入HashMap中，并更新其出现的次数
-            map.put(sum, map.getOrDefault(sum, 0) + 1);
-        }
-        // 返回结果
-        return result;
-    }
-}
-```
-
-### 238.除自身以外数组的乘积（hot100）（4.18）
-
-给你一个整数数组 `nums`，返回 数组 `answer` ，其中 `answer[i]` 等于 `nums` 中除 `nums[i]` 之外其余各元素的乘积 。
-
-题目数据 **保证** 数组 `nums`之中任意元素的全部前缀元素和后缀的乘积都在 **32 位** 整数范围内。
-
-请 **不要使用除法，**且在 `O(n)` 时间复杂度内完成此题。
-
-**示例 1:**
-
-```
-输入: nums = [1,2,3,4]
-输出: [24,12,8,6]
-```
-
-**示例 2:**
-
-```
-输入: nums = [-1,1,0,-3,3]
-输出: [0,0,9,0,0]
-```
-
-**提示：**
-
-- `2 <= nums.length <= 105`
-- `-30 <= nums[i] <= 30`
-- **保证** 数组 `nums`之中任意元素的全部前缀元素和后缀的乘积都在 **32 位** 整数范围内
-
-```java
-/**
- * Solution类提供了一个方法来计算一个整数数组中除了自身之外所有元素的乘积
- */
-class Solution {
-    /**
-     * 计算数组中除了自身之外所有元素的乘积
-     * 
-     * @param nums 输入的整数数组
-     * @return 返回一个数组，其中每个元素是原数组中除了当前位置元素之外所有元素的乘积
-     */
-    public int[] productExceptSelf(int[] nums) {
-        // 初始化结果数组，长度与输入数组相同
-        int[] resultArray = new int[nums.length];
-        // 设置第一个元素为1，因为左边没有元素
-        resultArray[0] = 1;
-        // 计算每个位置左边所有元素的乘积
-        for (int i = 1; i < nums.length; i++) {
-            resultArray[i] = resultArray[i - 1] * nums[i - 1];
-        }
-
-        // 初始化右边乘积变量为1，用于计算右边元素的乘积
-        int auxiliaryRightNum = 1;
-        // 从后向前遍历数组，计算每个位置右边元素的乘积
-        for (int i = nums.length - 1; i >= 0; i--) {
-            resultArray[i] *= auxiliaryRightNum;
-            auxiliaryRightNum *= nums[i];
-        }
-
-        // 返回结果数组
-        return resultArray;
-    }
-}
-```
-
-
-
-### 283.移动零（hot100）（27.移除元素的进阶）
-
-给定一个数组 `nums`，编写一个函数将所有 `0` 移动到数组的末尾，同时保持非零元素的相对顺序。
-
-**请注意** ，必须在不复制数组的情况下原地对数组进行操作。
-
-**示例 1:**
-
-```
-输入: nums = [0,1,0,3,12]
-输出: [1,3,12,0,0]
-```
-
-```java
-class Solution {
-    // 定义一个方法，用于将数组中的0移动到数组的末尾
-    public void moveZeroes(int[] nums) {
-        // 定义一个变量k，用于记录非0元素的个数
-        int k = 0;
-        // 遍历数组
-        for (int i = 0; i < nums.length; i++) {
-            // 如果当前元素不为0
-            if (nums[i] != 0) {
-                // 将当前元素赋值给nums[k]，并将k加1
-                nums[k++] = nums[i];
-            }
-        }
-        // 将数组中剩余的位置全部赋值为0
-        while (k < nums.length) {
-            nums[k++] = 0;
-        }
-    }
-}
-```
-
-### 189.轮转数组（new hot100）
-
-给定一个整数数组 `nums`，将数组中的元素向右轮转 `k` 个位置，其中 `k` 是非负数。
-
-**示例 1:**
-
-```
-输入: nums = [1,2,3,4,5,6,7], k = 3
-输出: [5,6,7,1,2,3,4]
-解释:
-向右轮转 1 步: [7,1,2,3,4,5,6]
-向右轮转 2 步: [6,7,1,2,3,4,5]
-向右轮转 3 步: [5,6,7,1,2,3,4]
-```
-
-**示例 2:**
-
-```
-输入：nums = [-1,-100,3,99], k = 2
-输出：[3,99,-1,-100]
-解释: 
-向右轮转 1 步: [99,-1,-100,3]
-向右轮转 2 步: [3,99,-1,-100]
-```
-
-**提示：**
-
-- `1 <= nums.length <= 105`
-- `-231 <= nums[i] <= 231 - 1`
-- `0 <= k <= 105`
-
-暴力解法
-
-```java
-class Solution {
-    /**
-     * 将给定的整数数组 nums 中的元素向右旋转 k 个位置
-     * 
-     * @param nums 要旋转的整数数组
-     * @param k 旋转的位置数，不能为0
-     */
-    public void rotate(int[] nums, int k) {
-        // 如果k为0，则不需要旋转，直接返回
-        if (k != 0) {
-            // 初始化辅助数组，用于存放旋转后的元素
-            int[] auxiliaryArray = new int[nums.length];
-            // 遍历原始数组，将元素根据旋转规则放入辅助数组
-            for (int i = 0; i < nums.length; i++) {
-                auxiliaryArray[(i + k) % nums.length] = nums[i];
-            }
-            // 将辅助数组中的元素复制回原始数组，完成旋转
-            for (int i = 0; i < nums.length; i++) {
-                nums[i]=auxiliaryArray[i];
-            }
-        }
-    }
-}
-
-```
-
-O（1）的处理空间，思路类似右旋字符串。
-
-```java
-class Solution {
-    /**
-     * 将数组 nums 中的元素向右旋转 k 个位置
-     * 通过反转数组的方式来实现旋转操作
-     * 
-     * @param nums 原始数组
-     * @param k 旋转的步数
-     */
-    public void rotate(int[] nums, int k) {
-        // 计算实际需要移动的步数，防止 k 大于数组长度的情况
-        int NumberOfStepsMoved = k % (nums.length);
-        // 反转整个数组
-        reverse(nums, 0, nums.length - 1);
-        // 反转前 NumberOfStepsMoved 个元素
-        reverse(nums, 0, NumberOfStepsMoved - 1);
-        // 反转剩余的元素
-        reverse(nums, NumberOfStepsMoved, nums.length - 1);
-    }
-
-    /**
-     * 反转数组中指定范围的元素
-     * 
-     * @param nums 原始数组
-     * @param left 反转范围的左边界
-     * @param right 反转范围的右边界
-     */
-    void reverse(int[] nums, int left, int right) {
-        int tempNum;
-        while (left < right) {
-            // 交换当前元素
-            tempNum = nums[right];
-            nums[right] = nums[left];
-            nums[left] = tempNum;
-            // 移动指针，进行下一轮交换
-            right--;
-            left++;
-        }
-    }
-}
-
-```
-
-### 41.缺失的第一个正数（new hot100）（3.22）
-
-给你一个未排序的整数数组 `nums` ，请你找出其中没有出现的最小的正整数。
-
-请你实现时间复杂度为 
-
-```
-O(n)
-```
-
- 并且只使用常数级别额外空间的解决方案。
-
-**示例 1：**
-
-```
-输入：nums = [1,2,0]
-输出：3
-解释：范围 [1,2] 中的数字都在数组中。
-```
-
-**示例 2：**
-
-```
-输入：nums = [3,4,-1,1]
-输出：2
-解释：1 在数组中，但 2 没有。
-```
-
-**示例 3：**
-
-```
-输入：nums = [7,8,9,11,12]
-输出：1
-解释：最小的正数 1 没有出现。
-```
-
-**提示：**
-
-- `1 <= nums.length <= 105`
-- `-231 <= nums[i] <= 231 - 1`
-
-```java
-class Solution {
-    /**
-     * 找到数组中缺失的最小正整数
-     * 
-     * @param nums 输入的整数数组
-     * @return 返回缺失的最小正整数
-     */
-    public int firstMissingPositive(int[] nums) {
-        // 第一遍遍历数组，将每个数字放到它应该在的位置上
-        for (int i = 0; i < nums.length; i++) {
-            // 使用 while 循环而不是 if 是因为一个元素经过一次交换后，可能还需要继续交换
-            // 直到这个元素到达它应该在的位置。
-            // 比如，假设 nums[i] 的值是 5，它应该放在 nums[4] 的位置上。
-            // 如果我们交换后 nums[i] 变成了另一个不在正确位置的数字，比如 3，
-            // 那么 nums[i] 还需要继续交换到正确的位置 nums[2]。
-            //nums[i] 是当前我们正在检查的数字
-			//nums[i] - 1 是这个数字应该在的索引位置
-			//nums[nums[i] - 1] 是现在占据这个位置的数字
-            while (nums[i] > 0 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]) {
-                // 当条件满足时交换元素：
-                // 1. nums[i] > 0：数字应该是正数才需要处理（负数和 0 无需移动）
-                // 2. nums[i] <= nums.length：只处理范围在 1 到 n 之间的数字（忽略大于 n 的数字，因为它们无法成为答案）
-                // 3. nums[nums[i] - 1] != nums[i]：只在元素未处于正确位置时才交换，避免重复交换和死循环
-                swap(nums, nums[i] - 1, i);
-            }
-        }
-
-        // 第二次遍历数组，查找第一个位置 i 使得 nums[i] != i + 1
-        for (int i = 0; i < nums.length; i++) {
-            // 如果发现某个位置的数字与 i+1 不符，那么 i+1 就是缺失的最小正整数
-            if (nums[i] != i + 1) {
-                return i + 1; // 返回第一个缺失的最小正整数
-            }
-        }
-
-        // 如果数组中所有数字都符合 nums[i] == i + 1 的情况，那么缺失的最小正整数就是 nums.length + 1
-        return nums.length + 1;
-    }
-
-    /**
-     * 交换数组中两个位置的值
-     * 
-     * @param nums 输入的整数数组
-     * @param i 第一个位置的索引
-     * @param j 第二个位置的索引
-     */
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];  // 保存 nums[i] 的值
-        nums[i] = nums[j];   // 将 nums[j] 赋给 nums[i]
-        nums[j] = temp;      // 将 temp 中保存的值赋给 nums[j]
-    }
-}
-
-```
-
-### 59.螺旋矩阵II
-
-```java
-class Solution {
-    public int[][] generateMatrix(int n) {
-        int[][] matrix = new int[n][n];
-        int num = 0;
-        for (int k = 0, i = 0, j = 0, starx = 0, stary = 0; k < n / 2; k++) {
-
-            for (j = stary; j < n - k - 1; j++) {
-                matrix[starx][j] = ++num;
-            }
-            for (i = starx; i < n - k - 1; i++) {
-                matrix[i][n - k - 1] = ++num;
-            }
-            for (j = n - k - 1; j > k; j--) {
-                matrix[n - k - 1][j] = ++num;
-            }
-            for (i = n - k - 1; i > k; i--) {
-                matrix[i][stary] = ++num;
-            }
-            starx++;
-            stary++;
-
-        }
-        if (n % 2 != 0) {
-            matrix[n / 2][n / 2] = ++num;
-        }
-
-        return matrix;
-    }
-}
-```
-
-
-
-### 54.螺旋矩阵（new hot100）（4.19）
-
-```java
-class Solution {
-    /**
-     * 按螺旋顺序返回矩阵中的元素
-     * 
-     * @param matrix 二维整数数组，表示输入的矩阵
-     * @return List<Integer>，包含按螺旋顺序遍历矩阵的元素
-     */
-    public List<Integer> spiralOrder(int[][] matrix) {
-        // 初始化结果列表
-        List<Integer> resultList = new ArrayList<>();
-        // 初始化上下左右边界
-        int top = 0, bottom = matrix.length - 1, left = 0, right = matrix[0].length - 1;
-
-        // 当上边界小于等于下边界且左边界小于等于右边界时，进行螺旋遍历
-        while (top <= bottom && left <= right) {
-            // 从左到右遍历顶部元素
-            for (int i = left; i <= right; i++) {
-                resultList.add(matrix[top][i]);
-            }
-            // 上边界下移
-            top++;
-            // 从上到下遍历右侧元素
-            for (int i = top; i <= bottom; i++) {
-                resultList.add(matrix[i][right]);
-            }
-            // 右边界左移
-            right--;
-            // 如果上边界小于等于下边界，则从右到左遍历底部元素
-            if (top <= bottom) {
-                for (int i = right; i >= left; i--) {
-                    resultList.add(matrix[bottom][i]);
-                }
-                // 下边界上移
-                bottom--;
-            }
-            // 如果左边界小于等于右边界，则从下到上遍历左侧元素
-            if (left <= right) {
-                for (int i = bottom; i >= top; i--) {
-                    resultList.add(matrix[i][left]);
-                }
-                // 左边界右移
-                left++;
-            }
-        }
-        // 返回螺旋遍历的结果
-        return resultList;
-    }
-}
-
-```
-
-在螺旋顺序遍历中，后两个循环（从右到左、从下到上）需要进行条件判断，主要原因是为了避免重复遍历或越界操作。
-
-具体来说：
-
-1. **第一个判断 (top <= bottom)**：
-   - 在从右到左遍历底部时，这个判断确保在矩阵的行数足够时才进行遍历。经过前两个遍历（从左到右、从上到下）后，`top` 已经递增了，而 `bottom` 已经递减了，可能在某一时刻 `top` 超过了 `bottom`，说明已经处理完所有行。此时无需再执行从右到左的遍历，避免重复添加元素。
-2. **第二个判断 (left <= right)**：
-   - 同理，在从下到上遍历左侧列时，这个判断确保列数足够时才进行遍历。前面的遍历可能已经处理掉了所有列，因此需要判断 `left` 和 `right` 的关系，避免重复访问已经处理过的列。
-
-这些判断确保每一次只处理剩下未访问的行和列，避免不必要的重复处理或越界错误，尤其是在矩阵非常小的情况下（比如 1xN 或 Nx1 的矩阵）。
-
-
-
-### 73.矩阵置0（new hot100）
-
-给定一个 `*m* x *n*` 的矩阵，如果一个元素为 **0** ，则将其所在行和列的所有元素都设为 **0** 。请使用 **原地** 算法**。**
-
-**示例 1：**
-
-![img](https://assets.leetcode.com/uploads/2020/08/17/mat1.jpg)
-
-
-
-```
-输入：matrix = [[1,1,1],[1,0,1],[1,1,1]]
-输出：[[1,0,1],[0,0,0],[1,0,1]]
-```
-
-**示例 2：**
-
-![img](https://assets.leetcode.com/uploads/2020/08/17/mat2.jpg)
-
-```
-输入：matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
-输出：[[0,0,0,0],[0,4,5,0],[0,3,1,0]]
-```
-
-
-
-```java
-class Solution {
-    /**
-     * 将矩阵中指定元素设为0
-     * 如果一个矩阵中的元素为0，则将其所在行和列的所有元素都设为0
-     *
-     * @param matrix 二维整数数组，表示需要处理的矩阵
-     */
-    public void setZeroes(int[][] matrix) {
-        // 创建布尔数组记录矩阵中每行每列是否有元素为0
-        boolean[] row = new boolean[matrix.length];
-        boolean[] col = new boolean[matrix[0].length];
-
-        // 遍历矩阵，标记含有0的行和列
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (matrix[i][j] == 0) {
-                    row[i] = true;
-                    col[j] = true;
-                }
-            }
-        }
-
-        // 根据标记的行和列，将对应位置的元素设为0
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (row[i] || col[j]) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-    }
-}
-```
-
-空间复杂度是O(1)，防止面试刁难。
-
-```java
-/**
- * Solution类提供了一个方法setZeroes，用于将包含0的元素所在的行和列置零
- */
-class Solution {
-    /**
-     * 将矩阵中包含0的元素所在的行和列置零
-     * 
-     * @param matrix 一个整数矩阵
-     */
-    public void setZeroes(int[][] matrix) {
-        // 矩阵的行数
-        int m = matrix.length;
-        // 矩阵的列数
-        int n = matrix[0].length;
-        // 标记首行是否包含0
-        boolean firstRowZero = false;
-        // 标记首列是否包含0
-        boolean firstColumnZero = false;
-        
-        // 检查首行是否包含0
-        for (int j = 0; j < n; j++) {
-            if (matrix[0][j] == 0) {
-                firstRowZero = true;
-                break;
-            }
-        }
-        
-        // 检查首列是否包含0
-        for (int i = 0; i < m; i++) {
-            if (matrix[i][0] == 0) {
-                firstColumnZero = true;
-                break;
-            }
-        }
-        
-        // 遍历矩阵，将包含0的元素所在的行和列的对应标志位置零
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][j] == 0) {
-                    matrix[i][0] = 0;
-                    matrix[0][j] = 0;
-                }
-            }
-        }
-        
-        // 根据标志位，将对应的行和列置零
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-        
-        // 如果首行包含0，将首行置零
-        if (firstRowZero) {
-            for (int j = 0; j < n; j++) {
-                matrix[0][j] = 0;
-            }
-        }
-        
-        // 如果首列包含0，将首列置零
-        if (firstColumnZero) {
-            for (int i = 0; i < m; i++) {
-                matrix[i][0] = 0;
-            }
-        }
-    }
-}
-
-```
-
-
-
-### 48.旋转图像（new hot100）（4.15）
-
-给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
-
-你必须在 **原地** 旋转图像，这意味着你需要直接修改输入的二维矩阵。**请不要** 使用另一个矩阵来旋转图像。
-
-
-
-**示例 1：**
-
-![img](https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg)
-
-```
-输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
-输出：[[7,4,1],[8,5,2],[9,6,3]]
-```
-
-**示例 2：**
-
-![img](https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg)
-
-```
-输入：matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
-输出：[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
-```
-
-
-
-```java
-class Solution {
-    /**
-     * 将二维矩阵顺时针旋转90度
-     * 通过先转置矩阵，然后沿垂直中线翻转来实现
-     *
-     * @param matrix 二维整数数组，表示需要旋转的矩阵
-     */
-    public void rotate(int[][] matrix) {
-        // 获取矩阵的行数（也是列数，因为矩阵是方阵）
-        int n = matrix.length;
-
-        // 遍历矩阵的上半部分，进行转置
-        // 只需遍历上三角，转置后会得到一个对称矩阵
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                // 交换矩阵对角线上的元素，完成转置
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = temp;
-            }
-        }
-
-        // 遍历矩阵的每一行，沿垂直中线翻转
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n / 2; j++) {
-                // 交换每行中对称位置的元素
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[i][n - 1 - j];
-                matrix[i][n - 1 - j] = temp;
-            }
-        }
-    }
-}
-```
-
-
-
-### 240.搜索二维矩阵II（new hot100）
-
-编写一个高效的算法来搜索 `*m* x *n*` 矩阵 `matrix` 中的一个目标值 `target` 。该矩阵具有以下特性：
-
-- 每行的元素从左到右升序排列。
-- 每列的元素从上到下升序排列。
-
-
-
-**示例 1：**
-
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid2.jpg)
-
-```
-输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
-输出：true
-```
-
-**示例 2：**
-
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/searchgrid.jpg)
-
-```
-输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
-输出：false
-```
-
-
-
-```java
-/**
- * 在二维矩阵中搜索目标值
- * 这个函数采用从右上角开始搜索的策略，充分利用矩阵的有序特性，从而实现高效搜索
- * 
- * @param matrix 一个二维整数数组，表示待搜索的矩阵该矩阵每行从左到右递增，每列从上到下递增
- * @param target 要搜索的目标值
- * @return 如果目标值存在于矩阵中，则返回true；否则返回false
- */
-class Solution {
-    public boolean searchMatrix(int[][] matrix, int target) {
-        // 首先检查矩阵是否为空，或者行或列是否为空
-        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-            return false;
-        }
-
-        // 初始化搜索的起始位置为矩阵的右上角
-        int row = 0;
-        int col = matrix[0].length - 1;
-
-        // 开始在矩阵中搜索，只要搜索指针不超出矩阵的边界
-        while (row < matrix.length && col >= 0) {
-            // 如果当前位置的值等于目标值，说明找到了目标，返回true
-            if (matrix[row][col] == target) {
-                return true;
-            } 
-            // 如果当前值大于目标值，向下一行移动
-            else if (matrix[row][col] > target) {
-                col--;
-            } 
-            // 如果当前值小于目标值，向左一列移动
-            else {
-                row++;
-            }
-        }
-
-        // 如果搜索结束都没有找到目标值，返回false
-        return false;
     }
 }
 ```
@@ -1872,71 +2067,101 @@ class Solution {
 }
 ```
 
-### 581.最短连续无序子数组（hot100）(3.27)
+### 41.缺失的第一个正数（new hot100）（3.22）
 
-给你一个整数数组 `nums` ，你需要找出一个 **连续子数组** ，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
+给你一个未排序的整数数组 `nums` ，请你找出其中没有出现的最小的正整数。
 
-请你找出符合题意的 **最短** 子数组，并输出它的长度。
+请你实现时间复杂度为 
+
+```
+O(n)
+```
+
+ 并且只使用常数级别额外空间的解决方案。
 
 **示例 1：**
 
 ```
-输入：nums = [2,6,4,8,10,9,15]
-输出：5
-解释：你只需要对 [6, 4, 8, 10, 9] 进行升序排序，那么整个表都会变为升序排序。
+输入：nums = [1,2,0]
+输出：3
+解释：范围 [1,2] 中的数字都在数组中。
 ```
 
 **示例 2：**
 
 ```
-输入：nums = [1,2,3,4]
-输出：0
+输入：nums = [3,4,-1,1]
+输出：2
+解释：1 在数组中，但 2 没有。
 ```
 
 **示例 3：**
 
 ```
-输入：nums = [1]
-输出：0
+输入：nums = [7,8,9,11,12]
+输出：1
+解释：最小的正数 1 没有出现。
 ```
 
-这个问题的核心是需要找到一个子数组，使得排序这个子数组后，整个数组变为有序。
+**提示：**
 
-这个子数组的起点和终点需要满足：
-
-- 起点是第一个不满足升序的位置。
-- 终点是最后一个不满足升序的位置。
-
-整个思路其实用的贪心，而且用了双指针的方式。
+- `1 <= nums.length <= 105`
+- `-231 <= nums[i] <= 231 - 1`
 
 ```java
-public class Solution {
-    // 寻找最短无序连续子数组的方法
-    public int findUnsortedSubarray(int[] nums) {
-        // 复制原始数组
-        int[] temp = Arrays.copyOf(nums, nums.length);
-        // 对复制的数组进行排序
-        Arrays.sort(temp);
-        // 初始化左右指针
-        int leftPos = 0;
-        int rightPos = nums.length - 1;
-
-        // 循环直到找到需要调整的子数组
-        while (leftPos <= rightPos && (temp[leftPos] == nums[leftPos] || temp[rightPos] == nums[rightPos])) {
-            // 移动左指针直到找到需要调整的位置
-            if (temp[leftPos] == nums[leftPos]) {
-                leftPos++;
-            }
-            // 移动右指针直到找到需要调整的位置
-            if (temp[rightPos] == nums[rightPos]) {
-                rightPos--;
+class Solution {
+    /**
+     * 找到数组中缺失的最小正整数
+     * 
+     * @param nums 输入的整数数组
+     * @return 返回缺失的最小正整数
+     */
+    public int firstMissingPositive(int[] nums) {
+        // 第一遍遍历数组，将每个数字放到它应该在的位置上
+        for (int i = 0; i < nums.length; i++) {
+            // 使用 while 循环而不是 if 是因为一个元素经过一次交换后，可能还需要继续交换
+            // 直到这个元素到达它应该在的位置。
+            // 比如，假设 nums[i] 的值是 5，它应该放在 nums[4] 的位置上。
+            // 如果我们交换后 nums[i] 变成了另一个不在正确位置的数字，比如 3，
+            // 那么 nums[i] 还需要继续交换到正确的位置 nums[2]。
+            //nums[i] 是当前我们正在检查的数字
+			//nums[i] - 1 是这个数字应该在的索引位置
+			//nums[nums[i] - 1] 是现在占据这个位置的数字
+            while (nums[i] > 0 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]) {
+                // 当条件满足时交换元素：
+                // 1. nums[i] > 0：数字应该是正数才需要处理（负数和 0 无需移动）
+                // 2. nums[i] <= nums.length：只处理范围在 1 到 n 之间的数字（忽略大于 n 的数字，因为它们无法成为答案）
+                // 3. nums[nums[i] - 1] != nums[i]：只在元素未处于正确位置时才交换，避免重复交换和死循环
+                swap(nums, nums[i] - 1, i);
             }
         }
 
-        // 返回需要调整的子数组的长度
-        return rightPos - leftPos + 1 >= 0 ? rightPos - leftPos + 1 : 0;
+        // 第二次遍历数组，查找第一个位置 i 使得 nums[i] != i + 1
+        for (int i = 0; i < nums.length; i++) {
+            // 如果发现某个位置的数字与 i+1 不符，那么 i+1 就是缺失的最小正整数
+            if (nums[i] != i + 1) {
+                return i + 1; // 返回第一个缺失的最小正整数
+            }
+        }
+
+        // 如果数组中所有数字都符合 nums[i] == i + 1 的情况，那么缺失的最小正整数就是 nums.length + 1
+        return nums.length + 1;
+    }
+
+    /**
+     * 交换数组中两个位置的值
+     * 
+     * @param nums 输入的整数数组
+     * @param i 第一个位置的索引
+     * @param j 第二个位置的索引
+     */
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];  // 保存 nums[i] 的值
+        nums[i] = nums[j];   // 将 nums[j] 赋给 nums[i]
+        nums[j] = temp;      // 将 temp 中保存的值赋给 nums[j]
     }
 }
+
 ```
 
 
