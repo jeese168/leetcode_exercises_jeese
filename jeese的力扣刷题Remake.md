@@ -772,7 +772,7 @@ class Solution {
 ```
 
 
-### 4.寻找两个正序数组的中位数（new hot100）（9.6）
+### 4.寻找两个正序数组的中位数（new hot100）*
 
 给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。
 
@@ -937,7 +937,7 @@ class Solution {
 }
 ```
 
-### 560.和为k的子数组(hot100)(9.6)
+### 560.和为k的子数组(hot100)(9.13)
 
 给你一个整数数组 `nums` 和一个整数 `k` ，请你统计并返回 *该数组中和为 `k` 的子数组的个数* 。
 
@@ -1004,7 +1004,7 @@ class Solution {
 所以说，在便利的时候每次记录`sum_i`的数量到map里面就行了，`map.put(sum, map.getOrDefault(sum, 0) + 1);`之所以这么复杂的原因是可能考虑到速度中有负数，所以前缀和可能会多次出现。如果是正数的话，基本上每个前缀只会出现一次。
 
 
-### 581.最短连续无序子数组（hot100）(9.6)
+### 581.最短连续无序子数组（hot100）(9.11)
 
 给你一个整数数组 `nums` ，你需要找出一个 **连续子数组** ，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
 
@@ -1039,7 +1039,7 @@ class Solution {
 - 起点是第一个不满足升序的位置。
 - 终点是最后一个不满足升序的位置。
 
-整个思路其实用的贪心，而且用了双指针的方式。
+整个思路其实用排序比较法O(nlogn)，而且用了双指针的方式。
 
 ```java
 public class Solution {
@@ -1316,7 +1316,7 @@ class Solution {
 ```
 
 
-### 54.螺旋矩阵（new hot100）
+### 54.螺旋矩阵（new hot100）（10.1）
 给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
 
 **示例 1：**
@@ -1450,7 +1450,7 @@ class Solution {
 }
 ```
 
-### 73.矩阵置0（new hot100）*
+### 73.矩阵置0（new hot100）（9.8）
 
 给定一个 `*m* x *n*` 的矩阵，如果一个元素为 **0** ，则将其所在行和列的所有元素都设为 **0** 。请使用 **原地** 算法。
 
@@ -1511,7 +1511,14 @@ class Solution {
 }
 ```
 
-空间复杂度是O(1)，防止面试刁难。
+**空间复杂度是O(1)，防止面试刁难。**
+其实这种优化方法的思路就是相比于第一种方法用额外的东西来标记这一行，这一列是否要被清除而言。
+这种方法的思路是把这个矩阵最左边以及最上面的元素提前标记为零，然后后面扫描的时候如果发现它对应这个矩阵，最左边和最上面如果为0的话，那就把这个元素也标记为0。
+但最左边和最上面有一个重叠的元素也就是左上角的`matrix[0][0]`，当进行扫描的时候，无法判断到底是在清除第一行还是清除第一列。
+所以一个比较稳妥的做法就是利用一个布尔值单独来进行判断判断第一列是否存在零元素，如果存在就设置为`true`，后续标记清零过程中也是按照这个布尔来进行判断清零。
+
+然后关于标记清零的扫描顺序之所以从后往前的原因是，因为从前往后扫描初始条件为`i = 0，j = 1`也就是从左到右开始扫描第1行的元素，根据上述的规则会去判断`matrix[0][0]`和`matrix[0][1]`的值是不是0。如果任意一个为零的话，那么就要把这个元素标记为0。
+而当`matrix[0][0]`为零的时候那么显然按照这种扫描规则，第1行就全部为0了。但是我们的规则最上面也就是那一行的元素也是标记，提前把它标记为0，后面进行判断的时候，根据第1行的各列的值来判断这一列需不需要进行清零，这样的话逻辑就混乱了。
 
 ```java
 class Solution {
@@ -1532,7 +1539,7 @@ class Solution {
         // 处理阶段（从后往前）
         for (int i = m - 1; i >= 0; i--) {
             for (int j = n - 1; j >= 1; j--) {  // 也可以从后往前
-                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) { //是或的原因是边界条件第1行的特殊性，判断matrix[0][0]和他自身。如果是且只有它自身为0的时候才能去除，不符合语义。
                     matrix[i][j] = 0;
                 }
             }
@@ -1545,6 +1552,7 @@ class Solution {
 ## 7. 其他数组题目
 ### 977.有序数组的平方
 给你一个按 **非递减顺序** 排序的整数数组 `nums`，返回 **每个数字的平方** 组成的新数组，要求也按 **非递减顺序** 排序。
+要求：时间复杂度O(N)
 
 **示例 1：**
 
@@ -1585,28 +1593,14 @@ class Solution {
 }
 ```
 
-更简单的
 
-```java
-class Solution {
-    public int[] sortedSquares(int[] nums) {
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = nums[i] * nums[i];
-        }
-
-        Arrays.sort(nums);
-        return nums;
-    }
-}
-```
-
-### 238.除自身以外数组的乘积（hot100）（4.18）
+### 238.除自身以外数组的乘积（hot100）*
 
 给你一个整数数组 `nums`，返回 数组 `answer` ，其中 `answer[i]` 等于 `nums` 中除 `nums[i]` 之外其余各元素的乘积 。
 
 题目数据 **保证** 数组 `nums`之中任意元素的全部前缀元素和后缀的乘积都在 **32 位** 整数范围内。
 
-请 **不要使用除法，且在 `O(n)` 时间复杂度内完成此题**。
+要求 **不要使用除法，且在 `O(n)` 时间复杂度内完成此题**。
 
 **示例 1:**
 
@@ -1762,7 +1756,7 @@ class Solution {
 输出：[0,1,2]
 ```
 
-初见，可以用冒泡排序解决
+初见，可以用冒泡排序或选择排序解决
 
 ```java
 /**
@@ -1780,9 +1774,9 @@ class Solution {
      */
     public void sortColors(int[] nums) {
         for (int i = 0; i < nums.length; i++) {
-            for (int j = 0; j < nums.length; j++) {
-                if (nums[j] > nums[i]) {
-                    swap(nums, i, j);
+            for (int j = 0; j < nums.length - 1 -i; j++) {
+                if (nums[j] > nums[j + 1]) {
+                    swap(nums, j, j + 1);
                 }
             }
         }
@@ -1799,6 +1793,28 @@ class Solution {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+}
+
+//或者选择排序
+class Solution {
+    public void sortColors(int[] nums) {
+       int min;
+        for(int i = 0;i<nums.length;i++){
+            min = i;
+            for(int j = i+1;j<nums.length;j++){
+                if(nums[j] < nums[min]){
+                    min = j;
+                }
+            }
+            swap(nums,min,i);
+        }
+    }
+    static void swap(int[] nums,int left, int right){
+        int temp = 0;
+        temp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
     }
 }
 ```
@@ -1856,7 +1872,7 @@ class Solution {
 }
 ```
 
-### 31.下一个排列（hot 100）（3.21）
+### 31.下一个排列（hot 100）*
 
 整数数组的一个 **排列** 就是将其所有成员以序列或线性顺序排列。
 
@@ -1936,7 +1952,7 @@ class Solution {
 }
 ```
 
-### 287.寻找重复数（hot 100）（3.29）
+### 287.寻找重复数（hot 100）（9.9）
 
 给定一个包含 `n + 1` 个整数的数组 `nums` ，其数字都在 `[1, n]` 范围内（包括 `1` 和 `n`），可知至少存在一个重复的整数。
 
@@ -2067,7 +2083,7 @@ class Solution {
 }
 ```
 
-### 41.缺失的第一个正数（new hot100）（3.22）
+### 41.缺失的第一个正数（new hot100）（9.22）
 
 给你一个未排序的整数数组 `nums` ，请你找出其中没有出现的最小的正整数。
 
@@ -2169,6 +2185,30 @@ class Solution {
 # 链表
 
 ### 203.移除链表元素
+给你一个链表的头节点 `head` 和一个整数 `val` ，请你删除链表中所有满足 `Node.val == val` 的节点，并返回 **新的头节点** 。
+
+**示例 1：**
+
+![](https://assets.leetcode.com/uploads/2021/03/06/removelinked-list.jpg)
+
+```
+输入：head = [1,2,6,3,4,5,6], val = 6
+输出：[1,2,3,4,5]
+```
+
+**示例 2：**
+
+```
+输入：head = [], val = 1
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：head = [7,7,7,7], val = 7
+输出：[]
+```
 
 ```java
 // 定义一个Solution类
@@ -2198,6 +2238,45 @@ class Solution {
 ```
 
 ### 707.设计链表
+你可以选择使用单链表或者双链表，设计并实现自己的链表。
+
+单链表中的节点应该具备两个属性：`val` 和 `next` 。`val` 是当前节点的值，`next` 是指向下一个节点的指针/引用。
+
+如果是双向链表，则还需要属性 `prev` 以指示链表中的上一个节点。假设链表中的所有节点下标从 **0** 开始。
+
+实现 `MyLinkedList` 类：
+
+- `MyLinkedList()` 初始化 `MyLinkedList` 对象。
+    
+- `int get(int index)` 获取链表中下标为 `index` 的节点的值。如果下标无效，则返回 `-1` 。
+    
+- `void addAtHead(int val)` 将一个值为 `val` 的节点插入到链表中第一个元素之前。在插入完成后，新节点会成为链表的第一个节点。
+    
+- `void addAtTail(int val)` 将一个值为 `val` 的节点追加到链表中作为链表的最后一个元素。
+    
+- `void addAtIndex(int index, int val)` 将一个值为 `val` 的节点插入到链表中下标为 `index` 的节点之前。如果 `index` 等于链表的长度，那么该节点会被追加到链表的末尾。如果 `index` 比长度更大，该节点将 **不会插入** 到链表中。
+    
+- `void deleteAtIndex(int index)` 如果下标有效，则删除链表中下标为 `index` 的节点。
+    
+
+**示例：**
+
+```
+输入  
+["MyLinkedList", "addAtHead", "addAtTail", "addAtIndex", "get", "deleteAtIndex", "get"]  
+[[], [1], [3], [1, 2], [1], [1], [1]]  
+输出  
+[null, null, null, null, 2, null, 3]  
+​  
+解释  
+MyLinkedList myLinkedList = new MyLinkedList();  
+myLinkedList.addAtHead(1);  
+myLinkedList.addAtTail(3);  
+myLinkedList.addAtIndex(1, 2);    // 链表变为 1->2->3  
+myLinkedList.get(1);              // 返回 2  
+myLinkedList.deleteAtIndex(1);    // 现在，链表变为 1->3  
+myLinkedList.get(1);              // 返回 3
+```
 
 ```java
 class MyLinkedList {
@@ -2279,6 +2358,28 @@ class LinkNode {
 ```
 
 ### 206.反转链表（hot100）（3.21）
+给你单链表的头节点 `head`，请你反转链表，并返回反转后的链表。
+
+**示例 1：**
+![](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
+```
+输入：head = [1,2,3,4,5]  
+输出：[5,4,3,2,1]
+```
+
+**示例 2：**
+![](https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg)
+```
+输入：head = [1,2]  
+输出：[2,1]
+```
+
+**示例 3：**
+
+```
+输入：head = []  
+输出：[]
+```
 
 ```java
 class Solution {
