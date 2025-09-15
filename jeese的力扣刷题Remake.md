@@ -19,7 +19,7 @@
 # 数组
 
 ## 1. 位运算问题
-### 338.比特位计数（hot 100）（9.10）
+### 338.比特位计数（hot 100）（9.31）
 
 给你一个整数 `n` ，对于 `0 <= i <= n` 中的每个 `i` ，计算其二进制表示中 **`1` 的个数** ，返回一个长度为 `n + 1` 的数组 `ans` 作为答案。
 
@@ -114,7 +114,7 @@ dp[i] = dp[i >> 1] + (i & 1)
 - `i & 1` 就是获取 i 的最低位（0或1）
 - 因为我们已经算过 `dp[i >> 1]`，所以直接复用 + 当前最低位 = 答案
 
-### 461.汉明距离（hot 100）（9.10）
+### 461.汉明距离（hot 100）（9.25）
 两个整数之间的 [汉明距离](https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB) 指的是这两个数字对应二进制位不同的位置的数目。
 给你两个整数 `x` 和 `y`，计算并返回它们之间的汉明距离。
 
@@ -258,7 +258,7 @@ class Solution {
 }
 ```
 
-### 74.搜索二维矩阵（new hot100）（9.7）
+### 74.搜索二维矩阵（new hot100）（9.17）
 
 给你一个满足下述两条属性的 `m x n` 整数矩阵：
 
@@ -410,7 +410,7 @@ class Solution {
 ```
 
 
-### 34.在排序数组中查找元素的第一个和最后一个位置（new hot100）（9.7）
+### 34.在排序数组中查找元素的第一个和最后一个位置（new hot100）*
 
 给你一个按照非递减顺序排列的整数数组 `nums`，和一个目标值 `target`。请你找出给定目标值在数组中的开始位置和结束位置。
 
@@ -683,7 +683,7 @@ return left; // 通常返回left
 - **"排除型"搜索**：用于找最大值、最后一个满足条件的位置，或利用确定性质的搜索
 
 
-### 33.搜索旋转排序数组（new hot100）（9.7）
+### 33.搜索旋转排序数组（new hot100）（10.5）
 
 整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
 
@@ -772,7 +772,7 @@ class Solution {
 ```
 
 
-### 4.寻找两个正序数组的中位数（new hot100）*
+### 4.寻找两个正序数组的中位数（new hot100）(10.2)
 
 给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。
 
@@ -863,7 +863,7 @@ class Solution {
 
 ## 4. 常规的子数组类型(一定要记清楚题目，仔细区分)
 
-### 209.长度最小的子数组(9.7)
+### 209.长度最小的子数组(9.17)
 
 给定一个含有 `n` 个正整数的数组和一个正整数 `target` **。**
 
@@ -937,7 +937,7 @@ class Solution {
 }
 ```
 
-### 560.和为k的子数组(hot100)(9.13)
+### 560.和为k的子数组(hot100)
 
 给你一个整数数组 `nums` 和一个整数 `k` ，请你统计并返回 *该数组中和为 `k` 的子数组的个数* 。
 
@@ -1004,7 +1004,7 @@ class Solution {
 所以说，在便利的时候每次记录`sum_i`的数量到map里面就行了，`map.put(sum, map.getOrDefault(sum, 0) + 1);`之所以这么复杂的原因是可能考虑到速度中有负数，所以前缀和可能会多次出现。如果是正数的话，基本上每个前缀只会出现一次。
 
 
-### 581.最短连续无序子数组（hot100）(9.11)
+### 581.最短连续无序子数组（hot100）
 
 给你一个整数数组 `nums` ，你需要找出一个 **连续子数组** ，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
 
@@ -1143,7 +1143,7 @@ class Solution {
 }
 ```
 
-### 283.移动零（hot100）（9.9）
+### 283.移动零（hot100）
 
 给定一个数组 `nums`，编写一个函数将所有 `0` 移动到数组的末尾，同时保持非零元素的相对顺序。
 
@@ -1180,7 +1180,7 @@ class Solution {
 
 ## 6. 矩阵相关题目
 
-### 48.旋转图像（new hot100）（9.10）
+### 48.旋转图像（new hot100）（10.1）
 
 给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
 
@@ -1450,7 +1450,7 @@ class Solution {
 }
 ```
 
-### 73.矩阵置0（new hot100）（9.8）
+### 73.矩阵置0（new hot100）
 
 给定一个 `*m* x *n*` 的矩阵，如果一个元素为 **0** ，则将其所在行和列的所有元素都设为 **0** 。请使用 **原地** 算法。
 
@@ -1594,7 +1594,7 @@ class Solution {
 ```
 
 
-### 238.除自身以外数组的乘积（hot100）*
+### 238.除自身以外数组的乘积（hot100）(9.23)
 
 给你一个整数数组 `nums`，返回 数组 `answer` ，其中 `answer[i]` 等于 `nums` 中除 `nums[i]` 之外其余各元素的乘积 。
 
@@ -1734,7 +1734,7 @@ class Solution {
 ```
 
 
-### 75.颜色分类（hot 100）*（复习一下冒泡排序和选择排序）
+### 75.颜色分类（hot 100）（复习一下冒泡排序和选择排序）
 
 给定一个包含红色、白色和蓝色、共 `n` 个元素的数组 `nums` ，**[原地](https://baike.baidu.com/item/原地算法)**对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
 
@@ -1872,7 +1872,7 @@ class Solution {
 }
 ```
 
-### 31.下一个排列（hot 100）*
+### 31.下一个排列（hot 100）
 
 整数数组的一个 **排列** 就是将其所有成员以序列或线性顺序排列。
 
@@ -1952,7 +1952,7 @@ class Solution {
 }
 ```
 
-### 287.寻找重复数（hot 100）（9.9）
+### 287.寻找重复数（hot 100）
 
 给定一个包含 `n + 1` 个整数的数组 `nums` ，其数字都在 `[1, n]` 范围内（包括 `1` 和 `n`），可知至少存在一个重复的整数。
 
@@ -2357,7 +2357,7 @@ class LinkNode {
 }
 ```
 
-### 206.反转链表（hot100）（3.21）
+### 206.反转链表（hot100）
 给你单链表的头节点 `head`，请你反转链表，并返回反转后的链表。
 
 **示例 1：**
@@ -2401,7 +2401,7 @@ class Solution {
 }
 ```
 
-### 24.两两交换链表中的节点
+### 24.两两交换链表中的节点（9.15如果还会做的话可以去掉）
 
 给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
 
@@ -2435,39 +2435,63 @@ class Solution {
 ```java
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        // 创建辅助头节点，简化头节点处理逻辑
-        ListNode auxiliaryHead = new ListNode();
-        // 初始化指针：left用于反转节点对的前一个节点，right为当前节点，current用于构建结果链表，temp用于暂存节点
-        ListNode left = null, right = head, current = auxiliaryHead, temp = head;
-        int count = 0;
-        // 计算链表长度以确定需要交换的节点对数
-        while (temp != null) {
-            count++;
-            temp = temp.next;
+        // 创建虚拟头节点，避免处理头节点的特殊情况
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        
+        // left: 当前要交换的一对节点的前驱节点
+        // cur: 当前对中的第一个节点
+        // right: 当前对中的第二个节点
+        // aux: 下一对节点的起始节点（辅助保存）
+        ListNode left = dummy, right, cur = head, aux;
+        
+        // 当存在成对的节点时继续交换
+        while (cur != null && cur.next != null) {
+            // Step 1: 定位节点
+            right = cur.next;        // 第二个节点
+            aux = cur.next.next;     // 保存下一对的起始位置
+            
+            // Step 2: 执行交换
+            cur.next = aux;          // 第一个节点指向下一对
+            right.next = cur;        // 第二个节点指向第一个节点
+            left.next = right;       // 前驱节点指向交换后的第一个节点（原第二个）
+            
+            // Step 3: 移动指针到下一对
+            left = cur;              // 更新前驱节点为当前对的最后一个节点
+            cur = aux;               // 移动到下一对的起始位置
         }
-        // 每对节点进行交换，共交换 count/2 对
-        for (int i = 0; i < count / 2; i++) {
-            // 反转当前两个节点的指向
-            for (int j = 0; j < 2; j++) {
-                temp = right.next; // 暂存下一个节点，防止断链
-                right.next = left; // 反转当前节点的指针
-                left = right;      // left指针前移
-                right = temp;      // right指针后移
-            }
-            // 将反转后的节点对连接到结果链表
-            current.next = left;
-            // 移动current指针到结果链表的末尾，准备连接下一对节点
-            current = current.next.next;
-        }
-        // 处理剩余节点（当链表长度为奇数时，最后一个节点不处理）
-        current.next = right;
-        // 根据链表长度返回结果：长度不足2直接返回原链表，否则返回辅助头节点的下一个节点
-        return count < 2 ? head : auxiliaryHead.next;
+        
+        return dummy.next;
     }
 }
 ```
 
 ### 19.删除链表倒数第N个节点（hot100）
+
+给你一个链表，删除链表的倒数第 `n` 个结点，并且返回链表的头结点。
+
+**示例 1：**
+
+![](https://assets.leetcode.com/uploads/2020/10/03/remove_ex1.jpg)
+
+```
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+```
+
+**示例 2：**
+
+```
+输入：head = [1], n = 1
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：head = [1,2], n = 1
+输出：[1]
+```
 
 ```java
 /**
@@ -2510,7 +2534,68 @@ class Solution {
 
 ```
 
-### 160.相交链表（hot100）
+### 160.相交链表（hot100）(9.21)
+给你两个单链表的头节点 `headA` 和 `headB` ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 `null` 。
+
+图示两个链表在节点 `c1` 开始相交**：**
+
+题目数据 **保证** 整个链式结构中不存在环。
+
+**注意**，函数返回结果后，链表必须 **保持其原始结构** 。
+
+**自定义评测：**
+
+**评测系统** 的输入如下（你设计的程序 **不适用** 此输入）：
+
+- `intersectVal` - 相交的起始节点的值。如果不存在相交节点，这一值为 `0`
+    
+- `listA` - 第一个链表
+    
+- `listB` - 第二个链表
+    
+- `skipA` - 在 `listA` 中（从头节点开始）跳到交叉节点的节点数
+    
+- `skipB` - 在 `listB` 中（从头节点开始）跳到交叉节点的节点数
+    
+
+评测系统将根据这些输入创建链式数据结构，并将两个头节点 `headA` 和 `headB` 传递给你的程序。如果程序能够正确返回相交节点，那么你的解决方案将被 **视作正确答案** 。
+
+**示例 1：**
+
+[![](https://assets.leetcode.com/uploads/2021/03/05/160_example_1_1.png)](https://assets.leetcode.com/uploads/2018/12/13/160_example_1.png)
+
+```
+输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3  
+输出：Intersected at '8'  
+解释：相交节点的值为 8 （注意，如果两个链表相交则不能为 0）。  
+从各自的表头开始算起，链表 A 为 [4,1,8,4,5]，链表 B 为 [5,6,1,8,4,5]。  
+在 A 中，相交节点前有 2 个节点；在 B 中，相交节点前有 3 个节点。  
+— 请注意相交节点的值不为 1，因为在链表 A 和链表 B 之中值为 1 的节点 (A 中第二个节点和 B 中第三个节点) 是不同的节点。换句话说，它们在内存中指向两个不同的位置，而链表 A 和链表 B 中值为 8 的节点 (A 中第三个节点，B 中第四个节点) 在内存中指向相同的位置。
+```
+
+**示例 2：**
+
+[![](https://assets.leetcode.com/uploads/2021/03/05/160_example_2.png)](https://assets.leetcode.com/uploads/2018/12/13/160_example_2.png)
+
+```
+输入：intersectVal = 2, listA = [1,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1  
+输出：Intersected at '2'  
+解释：相交节点的值为 2 （注意，如果两个链表相交则不能为 0）。  
+从各自的表头开始算起，链表 A 为 [1,9,1,2,4]，链表 B 为 [3,2,4]。  
+在 A 中，相交节点前有 3 个节点；在 B 中，相交节点前有 1 个节点。
+```
+
+**示例 3：**
+
+[![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_example_3.png)](https://assets.leetcode.com/uploads/2018/12/13/160_example_3.png)
+
+```
+输入：intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2  
+输出：No intersection  
+解释：从各自的表头开始算起，链表 A 为 [2,6,4]，链表 B 为 [1,5]。  
+由于这两个链表不相交，所以 intersectVal 必须为 0，而 skipA 和 skipB 可以是任意值。  
+这两个链表不相交，因此返回 null 。
+```
 
 ```java
 /**
@@ -2578,6 +2663,41 @@ public class Solution {
 ```
 
 ### 141.环形链表（hot100）
+给你一个链表的头节点 `head` ，判断链表中是否有环。
+
+如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 `pos` 来表示链表尾连接到链表中的位置（索引从 0 开始）。**注意：`pos` 不作为参数进行传递** 。仅仅是为了标识链表的实际情况。
+
+_如果链表中存在环_ ，则返回 `true` 。 否则，返回 `false` 。
+
+**示例 1：**
+
+![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png)
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+**示例 2：**
+
+![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test2.png)
+
+```
+输入：head = [1,2], pos = 0
+输出：true
+解释：链表中有一个环，其尾部连接到第一个节点。
+```
+
+**示例 3：**
+
+![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test3.png)
+
+```
+输入：head = [1], pos = -1
+输出：false
+解释：链表中没有环。
+```
 
 ```java
 /**
@@ -2619,6 +2739,42 @@ public class Solution {
 ```
 
 ### 142.环形链表II（hot100）
+
+给定一个链表的头节点  `head` ，返回链表开始入环的第一个节点。 _如果链表无环，则返回 `null`。_
+
+如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 `pos` 来表示链表尾连接到链表中的位置（**索引从 0 开始**）。如果 `pos` 是 `-1`，则在该链表中没有环。**注意：`pos` 不作为参数进行传递**，仅仅是为了标识链表的实际情况。
+
+**不允许修改** 链表。
+
+**示例 1：**
+
+![](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：返回索引为 1 的链表节点
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+**示例 2：**
+
+![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test2.png)
+
+```
+输入：head = [1,2], pos = 0
+输出：返回索引为 0 的链表节点
+解释：链表中有一个环，其尾部连接到第一个节点。
+```
+
+**示例 3：**
+
+![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test3.png)
+
+```
+输入：head = [1], pos = -1
+输出：返回 null
+解释：链表中没有环。
+```
 
 ```java
 /**
@@ -2663,34 +2819,93 @@ public class Solution {
 ```
 
 ### 234.回文链表（hot100）
+给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
+
+**示例 1：**
+
+![](https://assets.leetcode.com/uploads/2021/03/03/pal1linked-list.jpg)
+
+```
+输入：head = [1,2,2,1]
+输出：true
+
+```
+**示例 2：**
+
+![](https://assets.leetcode.com/uploads/2021/03/03/pal2linked-list.jpg)
+
+```
+输入：head = [1,2]
+输出：false
+```
+
 
 ```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
-    // 判断给定的链表是否为回文链表
     public boolean isPalindrome(ListNode head) {
-        // 使用栈来存储链表前半部分的节点值
-        Deque<Integer> stack = new LinkedList<>();
-        // 使用快慢指针找到链表中点
-        ListNode fast = head, slow = head;
-        while (fast != null && fast.next != null) {
-            stack.push(slow.val);
-            slow = slow.next;
-            fast = fast.next.next;
+        // 边界情况：只有一个节点，必然是回文
+        if(head.next == null){
+            return true;
         }
-        // 链表节点个数为奇数时，跳过中间节点
-        if (fast != null) {
-            slow = slow.next;
+        
+        // 初始化三个指针用于链表反转
+        // left: 反转后的链表头部
+        // mid: 当前处理的节点
+        // right: mid的下一个节点（临时保存）
+        ListNode left = null, mid = head, right = head;
+        int count = 0;
+        
+        // 第一步：计算链表总长度
+        while(right != null){
+            count++;
+            right = right.next;
         }
-        // 从中点开始，与栈中的值逐个比较，判断链表是否为回文
-        while (slow != null) {
-            if (slow.val != stack.pop()) {
-                return false;
+        
+        // 第二步：反转链表的前半部分
+        // 循环 count/2 次，将前半部分链表反转
+        // 例如：1->2->3->4->5 变成 2->1  3->4->5
+        //      left指向2, mid指向3
+        for(int i = 0; i < count/2; i++){
+            right = mid.next;    // 保存下一个节点
+            mid.next = left;     // 反转当前节点的指向
+            left = mid;          // left前移
+            mid = right;         // mid前移
+        }
+        
+        // 第三步：处理奇数长度的情况
+        // 如果链表长度为奇数，需要跳过中间节点
+        // 例如：1->2->3->2->1 (长度5)，跳过中间的3
+        if(count % 2 != 0){
+            right = right.next;  // right指向后半部分的起始位置
+        } else {
+            right = mid;         // 偶数长度，right就是mid
+        }
+        
+        // 第四步：比较反转后的前半部分和后半部分
+        // left指向反转后的前半部分头部
+        // right指向后半部分头部
+        while(left != null && right != null){
+            if(left.val != right.val){
+                return false;    // 发现不匹配，不是回文
             }
-            slow = slow.next;
+            left = left.next;
+            right = right.next;
         }
-        return true;
+        
+        return true;  // 所有对应位置都匹配，是回文
     }
 }
+
 ```
 
 ### 21.合并两个有序链表（hot100）
@@ -2743,7 +2958,7 @@ class Solution {
 }
 ```
 
-### 2.两数相加（hot100）(3.26)
+### 2.两数相加（hot100）（9.18）
 
 给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
 
@@ -2764,55 +2979,52 @@ class Solution {
 **初见，第一反应比较笨的方法，不推荐**
 
 ```java
-/**
- * Solution类用于解决两个链表表示的数字相加的问题
- */
 class Solution {
-    /**
-     * 将两个表示数字的链表相加
-     *
-     * @param l1 第一个链表的头节点
-     * @param l2 第二个链表的头节点
-     * @return 返回相加后链表的头节点
-     */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        // 进位和当前位之和
-        int carry = 0, sum = 0;
-        // 辅助头节点，方便处理结果链表
-        ListNode auxilairyHead = new ListNode();
-        // 当前操作节点
-        ListNode current = auxilairyHead;
-        // l1和l2的游标节点
-        ListNode temp1 = l1, temp2 = l2;
-
-        // 无限循环，直到满足终止条件
-        while (true) {
-            // 计算当前位的和及进位
-            sum = (temp1 == null ? 0 : temp1.val) + (temp2 == null ? 0 : temp2.val) + carry;
+        // 保存原始链表头部（实际上这里可以直接使用l1, l2，不需要额外变量）
+        ListNode head1 = l1, head2 = l2;
+        
+        // 使用哑节点简化边界条件处理
+        ListNode dummy = new ListNode();
+        
+        // cur1, cur2: 遍历两个输入链表的指针
+        // cur: 构建结果链表的指针
+        ListNode cur1 = head1, cur2 = head2, cur = dummy;
+        
+        int carry = 0;  // 进位
+        int sum;        // 当前位的和
+        
+        // 继续循环的条件：还有节点未处理 或 还有进位未处理
+        while(cur1 != null || cur2 != null || carry != 0){
+            // 计算当前位的和：两个链表对应位的值 + 进位
+            // 使用三元运算符处理节点为null的情况
+            sum = (cur1 == null ? 0 : cur1.val) + 
+                  (cur2 == null ? 0 : cur2.val) + carry;
+            
+            // 计算新的进位（向上取整除法）
             carry = sum / 10;
+            
+            // 当前位的实际值（取余运算）
             sum = sum % 10;
-            // 如果两个链表都遍历完且没有进位，终止循环
-            if (temp1 == null && temp2 == null && sum == 0 && carry == 0) {
-                break;
-            }
-            // 创建新节点并链接到结果链表
-            current.next = new ListNode(sum);
-            current = current.next;
-            // 移动链表指针，如果链表已经遍历完，则保持为null
-            temp1 = (temp1 == null ? null : temp1.next);
-            temp2 = (temp2 == null ? null : temp2.next);
+            
+            // 创建新节点并连接到结果链表
+            cur.next = new ListNode(sum);
+            cur = cur.next;
+            
+            // 移动指针到下一位，处理null情况
+            cur1 = cur1 == null ? null : cur1.next;
+            cur2 = cur2 == null ? null : cur2.next;
         }
-        // 返回结果链表的头节点
-        return auxilairyHead.next;
+        
+        // 返回结果链表（跳过哑节点）
+        return dummy.next;
     }
 }
-
-
 ```
 
 
 
-### 138.随机链表的复制（hot100）（4.2）
+### 138.随机链表的复制
 
 给你一个长度为 `n` 的链表，每个节点包含一个额外增加的随机指针 `random` ，该指针可以指向链表中的任何节点或空节点。
 
@@ -2903,7 +3115,7 @@ class Solution {
 
 ```
 
-### 148.排序链表(hot100)（4.15）
+### 148.排序链表(hot100)（9.15，最好还是学习一下分治，也就是归并排序的思想来解决）
 
 给你链表的头结点 `head` ，请将其按 **升序** 排列并返回 **排序后的链表** 。
 
@@ -2932,48 +3144,164 @@ class Solution {
 输出：[]
 ```
 
+标准答案：
 ```java
 class Solution {
-    /**
-     * 使用优先队列（最小堆）对链表进行排序
-     * 
-     * @param head 需要排序的链表头节点
-     * @return 排序后的链表头节点
-     */
     public ListNode sortList(ListNode head) {
-        // 如果链表为空，则直接返回
-        if (head == null) {
+        // 基础情况：空链表或只有一个节点
+        if (head == null || head.next == null) {
             return head;
         }
-        // 创建一个虚拟头节点，用于构建排序后的链表
-        ListNode dummyHead = new ListNode();
-        // 辅助节点用于遍历并连接排序后的节点
-        ListNode auxiliaryNode = dummyHead;
-
-        // 使用最小堆来实现堆排序，这里使用PriorityQueue来实现最小堆
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-        // 遍历链表，将所有节点的值添加到最小堆中
-        while (head != null) {
-            minHeap.add(head.val);
-            head = head.next;
+        
+        // 第一步：找到链表中点，将链表分成两部分
+        ListNode mid = getMidAndSplit(head);
+        
+        // 第二步：递归排序两部分
+        ListNode left = sortList(head);    // 排序前半部分
+        ListNode right = sortList(mid);    // 排序后半部分
+        
+        // 第三步：合并两个已排序的链表
+        return merge(left, right);
+    }
+    
+    /**
+     * 使用快慢指针找到中点，并将链表从中点断开
+     * 返回后半部分的头节点
+     */
+    private ListNode getMidAndSplit(ListNode head) {
+        ListNode prev = null;      // 记录slow的前一个节点
+        ListNode slow = head;      // 慢指针
+        ListNode fast = head;      // 快指针
+        
+        // 快慢指针找中点：fast走2步，slow走1步
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
         }
-
-        // 从最小堆中不断取出最小值，构建排序后的链表
-        while (!minHeap.isEmpty()) {
-            // 从最小堆中取出最小值，创建新的节点
-            auxiliaryNode.next = new ListNode(minHeap.poll());
-            // 移动辅助节点，用于连接下一个排序后的节点
-            auxiliaryNode = auxiliaryNode.next;
+        
+        // 断开链表：将前半部分的末尾指向null
+        prev.next = null;
+        
+        // 返回后半部分的头节点
+        return slow;
+    }
+    
+    /**
+     * 合并两个已排序的链表
+     * 类似于经典的"合并两个有序链表"问题
+     */
+    private ListNode merge(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);  // 哑节点
+        ListNode cur = dummy;              // 当前节点指针
+        
+        // 比较两个链表的节点，选择较小的加入结果
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                cur.next = l1;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                l2 = l2.next;
+            }
+            cur = cur.next;
         }
-
-        // 返回排序后链表的头节点
-        return dummyHead.next;
+        
+        // 处理剩余节点
+        if (l1 != null) {
+            cur.next = l1;
+        } else {
+            cur.next = l2;
+        }
+        
+        return dummy.next;
     }
 }
 
+/*
+=== 算法分析 ===
+✅ 时间复杂度：O(n log n)
+- 递归深度：log n（每次将问题规模减半）
+- 每层递归：O(n)（分割 + 合并）
+- 总计：O(n log n)
+
+✅ 空间复杂度：O(log n)
+- 递归调用栈：O(log n)
+- 没有使用额外的数据结构（如堆、数组等）
+
+✅ 算法优势：
+1. 稳定排序：相等元素的相对顺序不变
+2. 原地操作：只重新连接节点指针，不创建新节点
+3. 最优时间复杂度：无论最好、最坏、平均情况都是O(n log n)
+
+=== 运行示例 ===
+输入：[4,2,1,3]
+
+第1轮分割：[4,2] 和 [1,3]
+├── 第2轮分割：[4] [2] 和 [1] [3]  
+├── 第2轮合并：[2,4] 和 [1,3]
+第1轮合并：[1,2,3,4]
+
+=== 为什么比堆排序更适合 ===
+1. 堆排序需要随机访问，链表做不到O(1)访问第i个元素
+2. 归并排序天然适合链表的顺序访问特性
+3. 归并排序的"分治"思想完美契合链表结构
+
+这就是为什么面试中链表排序几乎总是用归并排序的原因！
+*/
+
+
 ```
 
-### 146. LRU缓存（hot100）（3.20）
+**投机取巧法：先询问允不允许**
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        // 边界情况处理
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        // 使用哑节点简化结果链表构建
+        ListNode dummy = new ListNode();
+        ListNode cur1 = head, temp, cur = dummy;
+        
+        // 创建最小堆（优先队列），按节点值升序排列
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(
+            (a, b) -> a.val - b.val
+        );
+        
+        // 第一步：将所有节点加入堆中
+        // 需要先断开每个节点的next指针，避免后续处理时出现环
+        while (cur1 != null) {
+            temp = cur1.next;    // 保存下一个节点
+            cur1.next = null;    // 断开当前节点的连接
+            minHeap.offer(cur1); // 将当前节点加入堆
+            cur1 = temp;         // 移动到下一个节点
+        }
+        
+        // 第二步：从堆中依次取出最小元素，重新构建链表
+        while (!minHeap.isEmpty()) {
+            cur.next = minHeap.poll(); // 取出堆顶（最小元素）
+            cur = cur.next;            // 移动结果链表指针
+        }
+        
+        return dummy.next;
+    }
+}
+```
+
+### 146. LRU缓存（hot100）（9.21）
 
 请你设计并实现一个满足 [LRU (最近最少使用) 缓存](https://baike.baidu.com/item/LRU) 约束的数据结构。
 
@@ -3007,80 +3335,150 @@ lRUCache.get(3);    // 返回 3
 lRUCache.get(4);    // 返回 4
 ```
 
+
+
+
 ```java
+import java.util.*;
+
 /**
- * 实现一个最近最少使用（LRU）缓存
+ * LRU缓存实现 - 你的风格版本（已添加详细注释）
  */
 class LRUCache {
-    // 缓存容量
-    int capacity;
-    // 存储键值对的哈希映射，用于快速查找
-    HashMap<Integer, Integer> Lru;
-    // 存储键的链表，用于快速移动最近使用的键到末尾
-    LinkedHashSet<Integer> LruOrder;
-
     /**
-     * 初始化LRU缓存
-     * 
-     * @param capacity 缓存的最大容量
+     * 双向链表节点 - 静态内部类
+     * 为什么用static？因为不需要访问外部类的实例变量，节省内存
      */
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        Lru = new HashMap<>();
-        LruOrder = new LinkedHashSet<>();
-    }
-
-    /**
-     * 获取缓存中的值
-     * 
-     * @param key 键
-     * @return 对应键的值，如果键不存在返回-1
-     */
-    public int get(int key) {
-        // 如果键存在，更新键的顺序，并返回对应的值
-        if (Lru.containsKey(key)) {
-            LruOrder.remove(key);
-            LruOrder.add(key);
-            return Lru.get(key);
+    static class DlinkNode {
+        int key;          // 缓存键
+        int value;        // 缓存值
+        DlinkNode pre;    // 前驱节点指针
+        DlinkNode next;   // 后继节点指针
+        
+        // 默认构造函数 - 用于创建虚拟头尾节点
+        DlinkNode() {
+            pre = null;
+            next = null;
         }
-        // 如果键不存在，返回-1
-        return -1;
+        
+        // 带参构造函数 - 用于创建实际数据节点
+        DlinkNode(int key, int value) {
+            this.value = value;
+            this.key = key;
+            pre = null;
+            next = null;
+        }
     }
-
+    
+    int capcity;                              // 缓存容量（注意：这里应该是capacity，有个小拼写错误）
+    int size;                                 // 当前缓存中元素个数
+    DlinkNode head;                          // 虚拟头节点（最近使用的在头部附近）
+    DlinkNode tail;                          // 虚拟尾节点（最久未使用的在尾部附近）
+    HashMap<Integer, DlinkNode> cache;       // 哈希表：key -> 双向链表节点
+    
     /**
-     * 将键值对放入缓存中
-     * 
-     * @param key   键
-     * @param value 值
+     * 构造函数 - 初始化LRU缓存
      */
-    public void put(int key, int value) {
-        // 如果缓存未满且键不存在，直接添加键值对
-        if (Lru.size() < capacity && !Lru.containsKey(key)) {
-            LruOrder.add(key);
-            Lru.put(key, value);
-        // 如果缓存未满且键已存在，更新键值对和顺序
-        } else if (Lru.size() < capacity && Lru.containsKey(key)) {
-            LruOrder.remove(key);
-            LruOrder.add(key);
-            Lru.put(key, value);
-        // 如果缓存已满且键已存在，更新键值对和顺序
-        } else if (capacity == Lru.size() && Lru.containsKey(key)) {
-            LruOrder.remove(key);
-            LruOrder.add(key);
-            Lru.put(key, value);
-        // 如果缓存已满且键不存在，移除最近最少使用的元素，并添加新的键值对
+    LRUCache(int capacity) {
+        this.capcity = capacity;
+        size = 0;
+        
+        // 创建虚拟头尾节点，简化边界条件处理
+        head = new DlinkNode();
+        tail = new DlinkNode();
+        cache = new HashMap<>();
+        
+        // 初始化空的双向链表：head <-> tail
+        head.next = tail;
+        tail.pre = head;
+    }
+    
+    /**
+     * 获取缓存值
+     * 时间复杂度：O(1)
+     */
+    int get(int key) {
+        DlinkNode cur = cache.get(key);     // 从哈希表中查找节点
+        if (cur == null) {
+            return -1;                       // 未找到，返回-1
+        }
+        // 找到了，需要将该节点移到头部（标记为最近使用）
+        moveToHead(cur);
+        return cur.value;
+    }
+    
+    /**
+     * 插入或更新缓存
+     * 时间复杂度：O(1)
+     */
+    void put(int key, int val) {
+        DlinkNode cur = cache.get(key);     // 检查key是否已存在
+        
+        if (cur == null) {
+            // 情况1：key不存在，需要插入新节点
+            DlinkNode temp = new DlinkNode(key, val);  // 创建新节点
+            addToHead(temp);                            // 添加到链表头部
+            cache.put(key, temp);                       // 加入哈希表
+            size++;                                     // 增加size计数
+            
+            // 检查是否超出容量限制
+            if (size > capcity) {
+                cur = removeTail();           // 删除尾部节点（最久未使用）
+                cache.remove(cur.key);        // 从哈希表中删除
+                size--;                       // 减少size计数
+            }
         } else {
-            int LRUElements = LruOrder.iterator().next();
-            LruOrder.remove(LRUElements);
-            Lru.remove(LRUElements);
-            Lru.put(key, value);
-            LruOrder.add(key);
+            // 情况2：key已存在，更新值并移到头部
+            cur.value = val;                  // 更新值
+            moveToHead(cur);                  // 移动到头部（标记为最近使用）
         }
+    }
+    
+    /**
+     * 在链表头部添加节点
+     * 操作：head -> newNode -> 原第一个节点 -> ... -> tail
+     */
+    private void addToHead(DlinkNode node) {
+        node.next = head.next;        // 新节点的next指向原来的第一个节点
+        node.pre = head;              // 新节点的pre指向虚拟头节点
+        head.next.pre = node;         // 原来第一个节点的pre指向新节点
+        head.next = node;             // 虚拟头节点的next指向新节点
+    }
+    
+    /**
+     * 从链表中删除指定节点
+     * 时间复杂度：O(1) - 这就是双向链表的优势
+     */
+    private void removeNode(DlinkNode node) {
+        node.next.pre = node.pre;     // 后继节点的pre指向前驱节点
+        node.pre.next = node.next;    // 前驱节点的next指向后继节点
+        // 将节点从链表中分离
+        node.next = null;
+        node.pre = null;
+    }
+    
+    /**
+     * 将节点移动到链表头部
+     * 这是LRU算法的核心操作：访问后移到最前面
+     */
+    private void moveToHead(DlinkNode node) {
+        removeNode(node);             // 先从当前位置删除
+        addToHead(node);              // 再添加到头部
+    }
+    
+    /**
+     * 删除链表尾部节点（最久未使用的节点）
+     * 返回被删除的节点，以便从哈希表中也删除对应的key
+     */
+    private DlinkNode removeTail() {
+        DlinkNode temp = tail.pre;    // 获取尾部的真实节点
+        removeNode(temp);             // 删除该节点
+        return temp;                  // 返回被删除的节点
     }
 }
 ```
 
-### 460.LFU（了解即可，这个比LRU难多了）
+### 460.LFU（了解即可，这个比LRU难多了）*
 
 请你为 [最不经常使用（LFU）](https://baike.baidu.com/item/%E7%BC%93%E5%AD%98%E7%AE%97%E6%B3%95)缓存算法设计并实现数据结构。
 
@@ -3137,86 +3535,182 @@ lfu.get(4);      // 返回 4
 缺点是没有O（1），但面试应该能过。
 
 ```java
+/**
+ * LFU缓存实现 - 你的风格版本
+ * 使用相同的命名和结构风格
+ */
 class LFUCache {
-    LinkedHashMap<Integer, NodeOfVal> auxiliaryMap;
-    int length;
-
-    public LFUCache(int capacity) {
-        auxiliaryMap = new LinkedHashMap<>();
-        length = capacity;
-    }
-    
-    public int get(int key) {
-        NodeOfVal tempNode;
-        if (auxiliaryMap.containsKey(key)) {
-            tempNode = auxiliaryMap.get(key);
-            tempNode.count++;
-            auxiliaryMap.remove(key);
-            auxiliaryMap.put(key, tempNode);
-            return tempNode.val;
-        } else {
-            return -1;
+    /**
+     * 双向链表节点 - 比LRU多了freq字段
+     */
+    static class DlinkNode {
+        int key;              // 缓存键
+        int value;            // 缓存值
+        int freq;             // 访问频率
+        DlinkNode pre;        // 前驱节点指针
+        DlinkNode next;       // 后继节点指针
+        
+        // 默认构造函数
+        DlinkNode() {
+            pre = null;
+            next = null;
+        }
+        
+        // 带参构造函数
+        DlinkNode(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.freq = 1;        // 新节点初始频率为1
+            pre = null;
+            next = null;
         }
     }
     
-    public void put(int key, int value) {
-        NodeOfVal tempNode;
-        if (length == 0 && auxiliaryMap.containsKey(key)) {
-            tempNode = auxiliaryMap.get(key);
-            tempNode.count++;
-            tempNode.val = value;
-            auxiliaryMap.remove(key);
-            auxiliaryMap.put(key, tempNode);
-        } else if (length == 0 && !auxiliaryMap.containsKey(key)) {
-            tempNode = new NodeOfVal(value);
-            int deleteKey = getdelKey(auxiliaryMap);
-            auxiliaryMap.remove(deleteKey);
-            auxiliaryMap.put(key, tempNode);
-        } else if (length != 0 && auxiliaryMap.containsKey(key)) {
-            tempNode = auxiliaryMap.get(key);
-            tempNode.count++;
-            tempNode.val = value;
-            auxiliaryMap.remove(key);
-            auxiliaryMap.put(key, tempNode);
-        } else {
-            tempNode = new NodeOfVal(value);
-            auxiliaryMap.put(key, tempNode);
-            length--;
+    /**
+     * 双向链表类 - 管理相同频率的节点
+     * 每个频率对应一个这样的链表
+     */
+    static class DoublyLinkedList {
+        DlinkNode head;       // 虚拟头节点
+        DlinkNode tail;       // 虚拟尾节点
+        int size;             // 链表中节点数量
+        
+        DoublyLinkedList() {
+            head = new DlinkNode();
+            tail = new DlinkNode();
+            head.next = tail;
+            tail.pre = head;
+            size = 0;
         }
-    }
-
-    int getdelKey(LinkedHashMap<Integer, NodeOfVal> auxiliaryMap) {
-        int count = Integer.MAX_VALUE;
-        int pre = 0;
-        int result = auxiliaryMap.entrySet().iterator().next().getKey();
-        for (Map.Entry<Integer, NodeOfVal> entry : auxiliaryMap.entrySet()) {
-            if (entry.getValue().count < count) {
-                count = entry.getValue().count;
-                if (count != pre) {
-                    result = entry.getKey();
-
-                }
-
+        
+        // 在链表头部添加节点（最近使用的放前面）
+        void addToHead(DlinkNode node) {
+            node.next = head.next;
+            node.pre = head;
+            head.next.pre = node;
+            head.next = node;
+            size++;
+        }
+        
+        // 删除指定节点
+        void removeNode(DlinkNode node) {
+            node.pre.next = node.next;
+            node.next.pre = node.pre;
+            node.next = null;
+            node.pre = null;
+            size--;
+        }
+        
+        // 删除尾部节点（最久未使用的）
+        DlinkNode removeTail() {
+            if (size > 0) {
+                DlinkNode last = tail.pre;
+                removeNode(last);
+                return last;
             }
-            pre = entry.getValue().count;
+            return null;
         }
-        return result;
+        
+        // 将节点移动到头部
+        void moveToHead(DlinkNode node) {
+            removeNode(node);
+            addToHead(node);
+        }
+        
+        // 判断链表是否为空
+        boolean isEmpty() {
+            return size == 0;
+        }
     }
-}
-
-
-class NodeOfVal {
-    int val;
-    int count;
-
-    public NodeOfVal(int val) {
-        this.val = val;
-        count = 1;
+    
+    int capacity;                                           // 缓存容量
+    int minFreq;                                            // 当前最小频率
+    HashMap<Integer, DlinkNode> cache;                      // key -> 节点
+    HashMap<Integer, DoublyLinkedList> freqToList;         // 频率 -> 链表
+    
+    /**
+     * 构造函数
+     */
+    public LFUCache(int capacity) {
+        this.capacity = capacity;
+        this.minFreq = 1;
+        this.cache = new HashMap<>();
+        this.freqToList = new HashMap<>();
+    }
+    
+    /**
+     * 获取缓存值
+     */
+    public int get(int key) {
+        DlinkNode cur = cache.get(key);         // 从哈希表查找
+        if (cur == null) {
+            return -1;                           // 未找到
+        }
+        // 访问了节点，需要增加频率
+        increaseFreq(cur);
+        return cur.value;
+    }
+    
+    /**
+     * 插入或更新缓存
+     */
+    public void put(int key, int value) {
+        if (capacity == 0) return;
+        
+        DlinkNode cur = cache.get(key);
+        if (cur != null) {
+            // key已存在，更新值并增加频率
+            cur.value = value;
+            increaseFreq(cur);
+        } else {
+            // key不存在，需要插入新节点
+            if (cache.size() >= capacity) {
+                // 容量已满，需要删除最少使用的节点
+                removeMinFreqKey();
+            }
+            
+            // 创建新节点
+            DlinkNode newNode = new DlinkNode(key, value);
+            cache.put(key, newNode);
+            
+            // 加入频率为1的链表
+            freqToList.computeIfAbsent(1, k -> new DoublyLinkedList()).addToHead(newNode);
+            minFreq = 1;
+        }
+    }
+    
+    /**
+     * 增加节点的访问频率 - LFU的核心逻辑
+     */
+    private void increaseFreq(DlinkNode node) {
+        int oldFreq = node.freq;
+        int newFreq = oldFreq + 1;
+        
+        // 从旧频率链表中删除
+        freqToList.get(oldFreq).removeNode(node);
+        
+        // 检查是否需要更新最小频率
+        if (freqToList.get(oldFreq).isEmpty() && oldFreq == minFreq) {
+            minFreq++;
+        }
+        
+        // 更新频率并加入新频率链表
+        node.freq = newFreq;
+        freqToList.computeIfAbsent(newFreq, k -> new DoublyLinkedList()).addToHead(node);
+    }
+    
+    /**
+     * 删除最小频率且最久未使用的节点
+     */
+    private void removeMinFreqKey() {
+        DoublyLinkedList minList = freqToList.get(minFreq);
+        DlinkNode nodeToRemove = minList.removeTail();
+        cache.remove(nodeToRemove.key);
     }
 }
 ```
 
-### 25.K 个一组翻转链表（new hot100）（3.20）
+### 25.K 个一组翻转链表（new hot100）（10.5）
 
 给你链表的头节点 `head` ，每 `k` 个节点一组进行翻转，请你返回修改后的链表。
 
@@ -3300,72 +3794,8 @@ class Solution {
 
 
 
-标准答案，性能稍微更好
 
-```java
-class Solution {
-    /**
-     * 反转链表的每个 k 组节点
-     * 
-     * @param head 链表的头节点
-     * @param k    每组节点的个数
-     * @return 反转后的链表头节点
-     */
-    public ListNode reverseKGroup(ListNode head, int k) {
-        // 基本情况：如果链表为空或 k 为 1（意味着不需要反转），则直接返回原链表
-        if (head == null || k == 1) return head;
-
-        // 创建一个哑节点（dummy node），用来指向头节点，便于处理链表头节点的特殊情况
-        ListNode dummyHead = new ListNode();
-        dummyHead.next = head;
-
-        // 几个辅助指针的定义：
-        ListNode auxiliaryNode = head; // 用于计算链表的长度
-        ListNode curheadNode = head;   // 当前段反转的第一个节点
-        ListNode curtailNode = dummyHead; // 当前段反转前的最后一个节点（用来连接反转后的部分）
-        ListNode nextHeadNode = head;  // 当前段反转后的下一个节点的头部
-        ListNode tempNode = null;      // 临时指针，用于在反转过程中临时存储
-
-        // 计算链表的总长度 count
-        int count = 0;
-        while (auxiliaryNode != null) {
-            auxiliaryNode = auxiliaryNode.next;
-            count++;
-        }
-
-        // 当剩余的节点数大于等于 k 时，继续进行反转操作
-        while (count >= k) {
-            // 当前段的头节点是 curtailNode 的下一个节点
-            curheadNode = curtailNode.next;
-            // nextHeadNode 是当前段反转时的下一个节点
-            nextHeadNode = curheadNode.next;
-
-            // 对当前 k 个节点进行反转
-            // 例如当 k = 3 时：1 -> 2 -> 3 变成 3 -> 2 -> 1
-            for (int i = 1; i < k; i++) {
-                tempNode = nextHeadNode.next;   // 暂存下一个节点
-                nextHeadNode.next = curheadNode; // 将 nextHeadNode 插到 curheadNode 前面，实现反转
-                curheadNode = nextHeadNode;      // 更新 curheadNode，继续反转下一个节点
-                nextHeadNode = tempNode;         // 更新 nextHeadNode，指向下一轮反转的节点
-            }
-
-            // 完成反转后，curtailNode 的下一个节点指向反转后的当前段头节点
-            tempNode = curtailNode.next;  // 暂存反转前的头节点
-            curtailNode.next.next = nextHeadNode; // 将反转后的尾节点连接到下一段链表
-            curtailNode.next = curheadNode;       // 将 curtailNode 的下一个指向反转后的头节点
-            curtailNode = tempNode;               // 更新 curtailNode 为当前段反转前的尾节点
-
-            // 减少剩余未处理节点的计数
-            count -= k;
-        }
-
-        // 返回新的链表头节点，即 dummyHead 的下一个节点
-        return dummyHead.next;
-    }
-}
-```
-
-### 23.合并 K 个升序链表（new hot100）（4.4）
+### 23.合并 K 个升序链表（new hot100）（10.5）
 
 给你一个链表数组，每个链表都已经按升序排列。
 
@@ -3447,7 +3877,7 @@ class Solution {
 
 # 哈希表
 
-### 169.多数元素（hot 100）
+### 169.多数元素（hot 100）*
 
 给定一个大小为 `n` 的数组 `nums` ，返回其中的多数元素。多数元素是指在数组中出现次数 **大于** `⌊ n/2 ⌋` 的元素。
 
@@ -3465,6 +3895,56 @@ class Solution {
 ```
 输入：nums = [2,2,1,1,1,2,2]
 输出：2
+```
+
+最佳
+```java
+class Solution {
+    /**
+     * 使用摩尔投票算法寻找多数元素
+     * 时间复杂度：O(n)，空间复杂度：O(1)
+     * 
+     * @param nums 输入的整数数组
+     * @return 多数元素，如果不存在则返回-1
+     */
+    public int majorityElement(int[] nums) {
+        // 初始化候选元素为数组第一个元素，计数器为0
+        int candi = nums[0], cout = 0;
+        
+        // 第一阶段：摩尔投票算法寻找候选元素
+        for (int num : nums) {
+            if (candi == num) {
+                // 遇到与候选元素相同的数，计数器+1
+                cout++;
+            } else {
+                // 遇到与候选元素不同的数，计数器-1
+                cout--;
+            }
+
+            // 如果计数器为0，说明当前候选元素被"抵消"完了
+            // 更换候选元素为当前数字，计数器重置为1
+            if (cout == 0) {
+                candi = num;
+                cout = 1;
+            }
+        }
+        
+        // 第二阶段：验证候选元素是否真的是多数元素
+        // 重置计数器，用于统计候选元素在数组中的实际出现次数
+        cout = 0;
+
+        for (int num : nums) {
+            if (candi == num) {
+                // 统计候选元素的实际出现次数
+                cout++;
+            }
+        }
+        
+        // 判断候选元素的出现次数是否大于数组长度的一半
+        // 如果是，则返回该候选元素；否则返回-1表示不存在多数元素
+        return cout > nums.length / 2 ? candi : -1;
+    }
+}
 ```
 
 ```java
@@ -3505,50 +3985,68 @@ class Solution {
 
 
 ### 242.有效的字母异位词
+给定两个字符串 `s` 和 `t` ，编写一个函数来判断 `t` 是否是 `s` 的 字母异位词。
+
+**示例 1:**
+
+```
+输入: s = "anagram", t = "nagaram"
+输出: true
+```
+
+**示例 2:**
+
+```
+输入: s = "rat", t = "car"
+输出: false
+```
+
+**进阶:** 如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？
 
 ```java
 class Solution {
+    
     /**
-     * 判断两个字符串是否为字母异位词
-     * 字母异位词是指两个字符串含有相同的字符，但字符的顺序不同
-     * 通过使用一个辅助数组来统计两个字符串中每个字符出现的次数，并比较这些次数是否相等
+     * 方法1：HashMap解法 - 适用于Unicode字符（进阶情况的最优解）
+     * 时间复杂度：O(n)，空间复杂度：O(k)，k为字符种类数
      * 
      * @param s 第一个字符串
      * @param t 第二个字符串
-     * @return 如果两个字符串是字母异位词，则返回true；否则返回false
+     * @return 是否为字母异位词
      */
     public boolean isAnagram(String s, String t) {
-        // 如果两个字符串长度不同，则它们不可能是字母异位词
+        // 长度不同直接返回false，优化性能
         if (s.length() != t.length()) {
             return false;
         }
-        // 使用一个大小为26的整型数组来存储每个字母出现的次数
-        // 因为字符串只包含小写字母，所以数组的索引由字母的ascii码减去'a'的ascii码得到
-        int[] auxiliaryArray = new int[26];
-        // 遍历字符串s和t，统计每个字符出现的次数
-        // s中的字符次数加1，t中的字符次数减1
+        
+        // 使用HashMap统计字符出现次数
+        HashMap<Character, Integer> auxiliaryMap = new HashMap<>();
+        
+        // 遍历字符串s，统计每个字符出现次数
         for (int i = 0; i < s.length(); i++) {
-            auxiliaryArray[s.charAt(i) - 'a']++;
-            auxiliaryArray[t.charAt(i) - 'a']--;
+            auxiliaryMap.put(s.charAt(i), auxiliaryMap.getOrDefault(s.charAt(i), 0) + 1);
         }
-        // 遍历辅助数组，如果任意一个值不为0，则说明两个字符串不是字母异位词
-        // 因为如果是字母异位词，辅助数组中的值应该全部为0
-        for (int i = 0; i < auxiliaryArray.length; i++) {
-            if (auxiliaryArray[i] != 0) {
+        
+        // 遍历字符串t，减少对应字符的计数
+        for (int i = 0; i < t.length(); i++) {
+            auxiliaryMap.put(t.charAt(i), auxiliaryMap.getOrDefault(t.charAt(i), 0) - 1);
+        }
+        
+        // 检查所有字符的计数是否都为0
+        for (int count : auxiliaryMap.values()) {
+            if (count != 0) {
                 return false;
             }
         }
-        // 如果辅助数组中的所有值都为0，则两个字符串是字母异位词
+        
         return true;
     }
-}
 ```
 
 ### 448.找出数组中消失的数字（hot100）
 
 给你一个含 `n` 个整数的数组 `nums` ，其中 `nums[i]` 在区间 `[1, n]` 内。请你找出所有在 `[1, n]` 范围内但没有出现在 `nums` 中的数字，并以数组的形式返回结果。
-
-
 
 **示例 1：**
 
@@ -3603,17 +4101,24 @@ class Solution {
 
 
 
-### 349.两个数组的交集
+### 349.两个数组的交集*
 
-**Java 中的 `ArrayList`**
+给定两个数组 `nums1` 和 `nums2` ，返回 _它们的 交集_ 。输出结果中的每个元素一定是 **唯一** 的。我们可以 **不考虑输出结果的顺序** 。
 
-`ArrayList` 是 Java 中 `List` 接口的一个具体实现，它提供了一个可动态调整大小的数组。以下是 `ArrayList` 的一些主要特点和用法：
+**示例 1：**
 
-1. **动态数组**: `ArrayList` 可以自动调整其容量以适应新增元素。
-2. **快速随机访问**: 提供 `O(1)` 时间复杂度的随机访问，因为它是基于数组实现的。
-3. **允许重复元素**: `ArrayList` 可以包含重复的元素。
-4. **允许null值**: 可以存储 `null` 元素。
-5. **非同步**: `ArrayList` 不是线程安全的。如果多个线程同时访问 `ArrayList`，并且至少有一个线程从结构上修改了列表，那么它必须保持外部同步。
+```
+输入：nums1 = [1,2,2,1], nums2 = [2,2]
+输出：[2]
+
+```
+**示例 2：**
+
+```
+输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出：[9,4]
+解释：[4,9] 也是可通过的
+```
 
 有冗余操作，直觉版
 
@@ -3700,12 +4205,12 @@ class Solution {
         }
         
         // 将结果列表转换为整数数组并返回
-        return resultList.stream().mapToInt(Integer::intValue).toArray();
+        return resultList.stream().mapToInt(i -> i).toArray();
     }
 }
 ```
 
-### 202.快乐数（2.XX，很有意思）
+### 202.快乐数（9.27，很有意思）
 
 编写一个算法来判断一个数 `n` 是不是快乐数。
 
@@ -3723,10 +4228,10 @@ class Solution {
 输入：n = 19
 输出：true
 解释：
-12 + 92 = 82
-82 + 22 = 68
-62 + 82 = 100
-12 + 02 + 02 = 1
+1 + 9 = 82
+8 + 2 = 68
+6 + 8 = 100
+1 + 0 + 0 = 1
 ```
 
 **示例 2：**
@@ -5147,7 +5652,7 @@ return minLength == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minL
 
 
 
-### **415. 字符串相加** 
+### 415. 字符串相加 
 
 给定两个字符串形式的非负整数 `num1` 和`num2` ，计算它们的和并同样以字符串形式返回。
 
