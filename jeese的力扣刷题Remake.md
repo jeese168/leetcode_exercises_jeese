@@ -258,7 +258,7 @@ class Solution {
 }
 ```
 
-### 74.搜索二维矩阵（new hot100）（9.17）
+### 74.搜索二维矩阵（new hot100）
 
 给你一个满足下述两条属性的 `m x n` 整数矩阵：
 
@@ -410,7 +410,7 @@ class Solution {
 ```
 
 
-### 34.在排序数组中查找元素的第一个和最后一个位置（new hot100）*
+### 34.在排序数组中查找元素的第一个和最后一个位置（new hot100）
 
 给你一个按照非递减顺序排列的整数数组 `nums`，和一个目标值 `target`。请你找出给定目标值在数组中的开始位置和结束位置。
 
@@ -863,7 +863,7 @@ class Solution {
 
 ## 4. 常规的子数组类型(一定要记清楚题目，仔细区分)
 
-### 209.长度最小的子数组(9.17)
+### 209.长度最小的子数组
 
 给定一个含有 `n` 个正整数的数组和一个正整数 `target` **。**
 
@@ -1270,7 +1270,6 @@ class Solution {
 输入：matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
 输出：false
 ```
-
 
 
 ```java
@@ -2401,7 +2400,7 @@ class Solution {
 }
 ```
 
-### 24.两两交换链表中的节点（9.15如果还会做的话可以去掉）
+### 24.两两交换链表中的节点(9.30)
 
 给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
 
@@ -2534,7 +2533,7 @@ class Solution {
 
 ```
 
-### 160.相交链表（hot100）(9.21)
+### 160.相交链表（hot100）
 给你两个单链表的头节点 `headA` 和 `headB` ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 `null` 。
 
 图示两个链表在节点 `c1` 开始相交**：**
@@ -2958,7 +2957,7 @@ class Solution {
 }
 ```
 
-### 2.两数相加（hot100）（9.18）
+### 2.两数相加（hot100）（9.25）
 
 给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
 
@@ -3115,7 +3114,7 @@ class Solution {
 
 ```
 
-### 148.排序链表(hot100)（9.15，最好还是学习一下分治，也就是归并排序的思想来解决）
+### 148.排序链表(hot100)（9.22）
 
 给你链表的头结点 `head` ，请将其按 **升序** 排列并返回 **排序后的链表** 。
 
@@ -3253,6 +3252,12 @@ class Solution {
 
 ```
 
+错误记录：
+250917-2：**归并排序 - 递归终止条件返回null** 
+- 触发：单节点时习惯性返回null
+- 本质：单节点是有效结果，不是无效状态
+
+
 **投机取巧法：先询问允不允许**
 ```java
 /**
@@ -3301,7 +3306,7 @@ class Solution {
 }
 ```
 
-### 146. LRU缓存（hot100）（9.21）
+### 146. LRU缓存（hot100）（10.10）
 
 请你设计并实现一个满足 [LRU (最近最少使用) 缓存](https://baike.baidu.com/item/LRU) 约束的数据结构。
 
@@ -3478,7 +3483,7 @@ class LRUCache {
 }
 ```
 
-### 460.LFU（了解即可，这个比LRU难多了）*
+### 460.LFU（10.11）
 
 请你为 [最不经常使用（LFU）](https://baike.baidu.com/item/%E7%BC%93%E5%AD%98%E7%AE%97%E6%B3%95)缓存算法设计并实现数据结构。
 
@@ -3532,7 +3537,6 @@ lfu.get(4);      // 返回 4
 - `0 <= value <= 109`
 - 最多调用 `2 * 105` 次 `get` 和 `put` 方法
 
-缺点是没有O（1），但面试应该能过。
 
 ```java
 /**
@@ -3710,6 +3714,12 @@ class LFUCache {
 }
 ```
 
+错误记录：
+250917-1：**LFU缓存 - 把capacity当成需要维护的量**
+- 触发：看到size、minFreq等都在动态维护，以为capacity也要维护
+- 本质：混淆了"配置参数"vs"状态变量"
+
+
 ### 25.K 个一组翻转链表（new hot100）（10.5）
 
 给你链表的头节点 `head` ，每 `k` 个节点一组进行翻转，请你返回修改后的链表。
@@ -3877,7 +3887,7 @@ class Solution {
 
 # 哈希表
 
-### 169.多数元素（hot 100）*
+### 169.多数元素（hot 100）
 
 给定一个大小为 `n` 的数组 `nums` ，返回其中的多数元素。多数元素是指在数组中出现次数 **大于** `⌊ n/2 ⌋` 的元素。
 
@@ -4101,7 +4111,7 @@ class Solution {
 
 
 
-### 349.两个数组的交集*
+### 349.两个数组的交集（10.4）
 
 给定两个数组 `nums1` 和 `nums2` ，返回 _它们的 交集_ 。输出结果中的每个元素一定是 **唯一** 的。我们可以 **不考虑输出结果的顺序** 。
 
@@ -4119,56 +4129,6 @@ class Solution {
 输出：[9,4]
 解释：[4,9] 也是可通过的
 ```
-
-有冗余操作，直觉版
-
-```java
-class Solution {
-    // 定义一个方法，用于找出两个数组的交集
-    public int[] intersection(int[] nums1, int[] nums2) {
-        // 对nums2数组进行排序
-        Arrays.sort(nums2);
-        // 定义一个HashSet，用于存储nums1数组中的元素
-        HashSet<Integer> auxiliarySet = new HashSet<>();
-        // 定义一个ArrayList，用于存储交集元素
-        ArrayList<Integer> resultList = new ArrayList<>();
-        // 遍历nums1数组，将元素添加到auxiliarySet中
-        for (int i = 0; i < nums1.length; i++) {
-            auxiliarySet.add(nums1[i]);
-        }
-
-        // 遍历nums2数组
-        for (int i = 0; i < nums2.length; i++) {
-            // 如果当前元素与前一个元素相同，则跳过
-            if (i > 0 && nums2[i] == nums2[i - 1]) {
-                continue;
-            }
-            // 如果auxiliarySet中包含当前元素，则将其添加到resultList中
-            if (auxiliarySet.contains(nums2[i])) {
-                resultList.add(nums2[i]);
-            }
-        }
-        // 将resultList转换为int数组并返回
-        return resultList.stream().mapToInt(Integer::intValue).toArray();
-    }
-}
-```
-
-**int**:
-
-- **原始数据类型（Primitive Type）**: `int` 是一种原始数据类型，用于表示整数。
-- **内存占用**: 占用 4 个字节（32 位）。
-- **性能**: 原始数据类型的操作速度快，因为它们直接存储在栈内存中。
-- **默认值**: `int` 的默认值为 `0`。
-
-**Integer**:
-
-- **包装类（Wrapper Class）**: `Integer` 是一个类，用于将 `int` 原始数据类型包装为一个对象。
-- **内存占用**: 相比于原始数据类型，`Integer` 对象占用更多内存，因为它们存储在堆内存中，并且包含额外的元数据。
-- **功能**: 提供了许多有用的方法，例如将 `int` 转换为字符串、解析字符串为 `int` 等。
-- **默认值**: `Integer` 的默认值为 `null`。
-
-优化版本，推荐记忆这个
 
 ```java
 /**
@@ -4292,7 +4252,7 @@ class Solution {
 
 ```
 
-### 1.两数之和（hot100）（3.20）
+### 1.两数之和（hot100）
 
 给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
 
@@ -4461,7 +4421,7 @@ class Solution {
 }
 ```
 
-### 15.三数之和（hot100）（4.1）
+### 15.三数之和（hot100）（9.22）
 
 给你一个整数数组 `nums` ，判断是否存在三元组 `[nums[i], nums[j], nums[k]]` 满足 `i != j`、`i != k` 且 `j != k` ，同时还满足 `nums[i] + nums[j] + nums[k] == 0` 。请
 
@@ -4699,7 +4659,7 @@ class Solution {
 }
 ```
 
-### 128.最长连续序列（hot100）（3.21）
+### 128.最长连续序列（hot100）
 
 给定一个未排序的整数数组 `nums` ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
 
@@ -4719,43 +4679,6 @@ class Solution {
 输入：nums = [0,3,7,2,5,8,4,6,0,1]
 输出：9
 ```
-
-**较为慢，时间复杂度但仍然是O(n)**
-
-```java
-class Solution {
-    // 定义一个方法，用于计算数组中连续数字的最大长度
-    public int longestConsecutive(int[] nums) {
-        // 创建一个HashSet，用于存储数组中的数字
-        HashSet<Integer> auxiliarySet = new HashSet<>();
-        // 遍历数组，将数组中的数字添加到HashSet中
-        for (int num : nums) {
-            auxiliarySet.add(num);
-        }
-
-        // 定义一个变量，用于存储连续数字的最大长度
-        int maxContinuousCount =0;
-        // 再次遍历数组
-        for (int num : nums) {
-            // 定义一个变量，用于存储当前连续数字的长度
-            int count = 1;
-            // 如果当前数字的前一个数字不在HashSet中，说明当前数字是连续数字的起始数字
-            if (!auxiliarySet.contains(num - 1)) {
-                // 循环遍历HashSet，找到当前数字的后一个数字，并增加连续数字的长度
-                while (auxiliarySet.contains(++num)) {
-                    count++;
-                }
-                // 更新连续数字的最大长度
-                maxContinuousCount = Math.max(maxContinuousCount, count);
-            }
-        }
-        // 返回连续数字的最大长度
-        return maxContinuousCount;
-    }
-}
-```
-
-优化，将第二次遍历转化为对Set的遍历，改一行代码，快10倍不止（set去除了大量重复元素）。
 
 ```java
 class Solution {
@@ -4793,7 +4716,7 @@ class Solution {
 
 
 
-### 621.任务调度器（hot100）(3.27)
+### 621.任务调度器（hot100）*
 
 给你一个用字符数组 `tasks` 表示的 CPU 需要执行的任务列表，用字母 A 到 Z 表示，以及一个冷却时间 `n`。每个周期或时间间隔允许完成一项任务。任务可以按任何顺序完成，但有一个限制：两个 **相同种类** 的任务之间必须有长度为 `n` 的冷却时间。
 
@@ -17867,4 +17790,6 @@ class Trie {
 ```
 
 
-
+### 其他题目
+- 用 PriorityQueue 实现 TopK 问题
+- 用 ArrayDeque 实现滑动窗口最大值
