@@ -114,7 +114,7 @@ dp[i] = dp[i >> 1] + (i & 1)
 - `i & 1` 就是获取 i 的最低位（0或1）
 - 因为我们已经算过 `dp[i >> 1]`，所以直接复用 + 当前最低位 = 答案
 
-### 461.汉明距离（hot 100）（9.25）
+### 461.汉明距离（hot 100）（10.1）
 两个整数之间的 [汉明距离](https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB) 指的是这两个数字对应二进制位不同的位置的数目。
 给你两个整数 `x` 和 `y`，计算并返回它们之间的汉明距离。
 
@@ -1593,7 +1593,7 @@ class Solution {
 ```
 
 
-### 238.除自身以外数组的乘积（hot100）(9.23)
+### 238.除自身以外数组的乘积（hot100）(10.23)
 
 给你一个整数数组 `nums`，返回 数组 `answer` ，其中 `answer[i]` 等于 `nums` 中除 `nums[i]` 之外其余各元素的乘积 。
 
@@ -2957,7 +2957,7 @@ class Solution {
 }
 ```
 
-### 2.两数相加（hot100）（9.25）
+### 2.两数相加（hot100）（10.25）
 
 给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
 
@@ -2975,7 +2975,6 @@ class Solution {
 解释：342 + 465 = 807.
 ```
 
-**初见，第一反应比较笨的方法，不推荐**
 
 ```java
 class Solution {
@@ -4605,7 +4604,7 @@ class Solution {
 
 ```
 
-### 49.字母异位词分组（hot100）（3.21）
+### 49.字母异位词分组（hot100）
 
 给你一个字符串数组，请你将 **字母异位词** 组合在一起。可以按任意顺序返回结果列表。
 
@@ -4811,7 +4810,7 @@ class Solution {
 }
 ```
 
-### 541.反转字符串II
+### 541.反转字符串II（9.30）
 
 给定一个字符串 `s` 和一个整数 `k`，从字符串开头算起，每计数至 `2k` 个字符，就反转这 `2k` 字符中的前 `k` 个字符。
 
@@ -4893,9 +4892,13 @@ class Solution {
 
 输出：打印一个新的字符串，其中每个数字字符都被替换为了number
 
+**示例 1：**
+
+```text
 样例输入：a1b2c3
 
 样例输出：anumberbnumbercnumber
+```
 
 数据范围：1 <= s.length < 10000。
 
@@ -5038,7 +5041,7 @@ class Solution {
 }
 ```
 
-### 151.翻转字符串里的单词
+### 151.翻转字符串里的单词(9.29)
 
 给你一个字符串 `s` ，请你反转字符串中 **单词** 的顺序。
 
@@ -5119,7 +5122,7 @@ class Solution {
 
 ```
 
-### 28.找出字符串中第一个匹配项的下标(KMP)(3.25)
+### 28.找出字符串中第一个匹配项的下标(KMP)  (9.29)
 
 给你两个字符串 `haystack` 和 `needle` ，请你在 `haystack` 字符串中找出 `needle` 字符串的第一个匹配项的下标（下标从 0 开始）。如果 `needle` 不是 `haystack` 的一部分，则返回 `-1` 。
 
@@ -5193,7 +5196,7 @@ class Solution {
 
 ```
 
-### 459.重复的子字符串
+### 459.重复的子字符串(9.30)
 
 给定一个非空的字符串 `s` ，检查是否可以通过由它的一个子串重复多次构成。
 
@@ -5212,28 +5215,48 @@ class Solution {
 输出: false
 ```
 
+**利用KMP来做**
+
 ```java
 class Solution {
-    /**
-     * 判断字符串s是否由重复的子字符串构成
-     * 通过将字符串s拼接自身，然后去除首尾字符，检查剩余字符串是否包含原字符串s来实现判断
-     * 这种方法利用了字符串的性质和包含关系来检测重复模式
-     * 
-     * @param s 输入的字符串，用于检查是否由重复子字符串构成
-     * @return 如果字符串s由重复的子字符串构成，则返回true；否则返回false
-     */
     public boolean repeatedSubstringPattern(String s) {
-        // 将字符串s拼接自身，得到一个新的字符串str
-        String str = s + s;
-        // 判断去掉首尾字符后的str是否包含原始字符串s，若包含则返回true，否则返回false
-        str = str.substring(1, str.length() - 1);
-        return str.contains(s);
+        String b = s + s;
+        b = b.substring(1, b.length() - 1);
+        return fun(b, s) != -1;
+    }
+    
+    static int fun(String haystack, String needle) {
+        int[] next = new int[needle.length()];
+        
+        for (int i = 1, j = 0; i < needle.length(); i++) {
+            while (j > 0 && needle.charAt(i) != needle.charAt(j)) {
+                j = next[j - 1];
+            }
+            if (needle.charAt(i) == needle.charAt(j)) {
+                j++;
+            }
+            next[i] = j;
+        }
+        
+        for (int i = 0, j = 0; i < haystack.length(); i++) {
+            while (j > 0 && haystack.charAt(i) != needle.charAt(j)) {
+                j = next[j - 1];
+            }
+            if (haystack.charAt(i) == needle.charAt(j)) {
+                j++;
+            }
+            if (j == needle.length()) {
+                return i - j + 1;
+            }
+        }
+        
+        return -1;
     }
 }
 
 ```
 
-### 438.找到字符串中所有的字母异位词（hot100）(4.1)
+### 438.找到字符串中所有的字母异位词（hot100）(10.3)
 
 给定两个字符串 `s` 和 `p`，找到 `s` 中所有 `p` 的 **异位词** 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
 
@@ -5291,49 +5314,8 @@ class Solution {
 }
 ```
 
-暴力代码的时间复杂度是 **O(n \* m log m)**，但和 49.字母异位词分组（hot100）思路一样
 
-```java
-class Solution {
-    /**
-     * 查找字符串s中的所有排列，这些排列在字符串p中是字母异位词
-     * 
-     * @param s 主字符串，在这个字符串中查找字母异位词
-     * @param p 目标字符串，查找s中与p相同的字母异位词
-     * @return 包含所有字母异位词起始索引的列表
-     */
-    public List<Integer> findAnagrams(String s, String p) {
-        // 辅助哈希表，用于存储排序后的字符序列和对应的索引列表
-        HashMap<String, List<Integer>> auxiliaryMap = new HashMap<>();
-        
-        // 将字符串p转换为字符数组并进行排序，以便生成基准键值
-        char[] tempCharArray = p.toCharArray();
-        Arrays.sort(tempCharArray);
-        String key = String.valueOf(tempCharArray);
-        
-        // 遍历主字符串s，寻找所有可能的字母异位词
-        for (int i = 0; i < s.length() - p.length() + 1; i++) {
-            // 从s中提取与p相同长度的子字符串，转换为字符数组并排序
-            tempCharArray = s.substring(i, i + p.length()).toCharArray();
-            Arrays.sort(tempCharArray);
-            String tempKey = String.valueOf(tempCharArray);
-            
-            // 从辅助哈希表中获取当前排序后字符序列对应的索引列表，如果不存在则初始化
-            List<Integer> tempList = auxiliaryMap.getOrDefault(tempKey, new ArrayList<>());
-            // 将当前索引添加到列表中
-            tempList.add(i);
-            // 更新辅助哈希表
-            auxiliaryMap.put(tempKey, tempList);
-        }
-        
-        // 根据基准键值从辅助哈希表中获取对应的索引列表，如果不存在则返回空列表
-        return auxiliaryMap.get(key) == null ? new ArrayList<>() : auxiliaryMap.get(key);
-    }
-}
-
-```
-
-### 3.无重复字符的最长子串（hot100）(4.1)
+### 3.无重复字符的最长子串（hot100）(9.11)
 
 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
 
@@ -17790,6 +17772,6 @@ class Trie {
 ```
 
 
-### 其他题目
+# 其他题目
 - 用 PriorityQueue 实现 TopK 问题
 - 用 ArrayDeque 实现滑动窗口最大值
