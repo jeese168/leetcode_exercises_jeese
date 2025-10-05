@@ -19,7 +19,7 @@
 # 数组
 
 ## 1. 位运算问题
-### 338.比特位计数（hot 100）（9.31）
+### 338.比特位计数（hot 100）（10.31）
 
 给你一个整数 `n` ，对于 `0 <= i <= n` 中的每个 `i` ，计算其二进制表示中 **`1` 的个数** ，返回一个长度为 `n + 1` 的数组 `ans` 作为答案。
 
@@ -114,7 +114,7 @@ dp[i] = dp[i >> 1] + (i & 1)
 - `i & 1` 就是获取 i 的最低位（0或1）
 - 因为我们已经算过 `dp[i >> 1]`，所以直接复用 + 当前最低位 = 答案
 
-### 461.汉明距离（hot 100）（10.1）
+### 461.汉明距离（hot 100）（10.31）
 两个整数之间的 [汉明距离](https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB) 指的是这两个数字对应二进制位不同的位置的数目。
 给你两个整数 `x` 和 `y`，计算并返回它们之间的汉明距离。
 
@@ -683,7 +683,7 @@ return left; // 通常返回left
 - **"排除型"搜索**：用于找最大值、最后一个满足条件的位置，或利用确定性质的搜索
 
 
-### 33.搜索旋转排序数组（new hot100）（10.5）
+### 33.搜索旋转排序数组（new hot100）（10.17）
 
 整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
 
@@ -772,7 +772,7 @@ class Solution {
 ```
 
 
-### 4.寻找两个正序数组的中位数（new hot100）(10.2)
+### 4.寻找两个正序数组的中位数（new hot100）(10.6)
 
 给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。
 
@@ -1180,7 +1180,7 @@ class Solution {
 
 ## 6. 矩阵相关题目
 
-### 48.旋转图像（new hot100）（10.1）
+### 48.旋转图像（new hot100）（10.30）
 
 给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
 
@@ -1315,7 +1315,7 @@ class Solution {
 ```
 
 
-### 54.螺旋矩阵（new hot100）（10.1）
+### 54.螺旋矩阵（new hot100）（10.15）
 给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
 
 **示例 1：**
@@ -2400,7 +2400,7 @@ class Solution {
 }
 ```
 
-### 24.两两交换链表中的节点(9.30)
+### 24.两两交换链表中的节点(10.15)
 
 给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
 
@@ -2907,7 +2907,7 @@ class Solution {
 
 ```
 
-### 21.合并两个有序链表（hot100）
+### 21.合并两个有序链表
 
 将两个升序链表合并为一个新的 **升序** 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
 
@@ -3113,7 +3113,7 @@ class Solution {
 
 ```
 
-### 148.排序链表(hot100)
+### 148.排序链表(hot100) （10.24）
 
 给你链表的头结点 `head` ，请将其按 **升序** 排列并返回 **排序后的链表** 。
 
@@ -3719,7 +3719,7 @@ class LFUCache {
 - 本质：混淆了"配置参数"vs"状态变量"
 
 
-### 25.K 个一组翻转链表（new hot100）（10.5）
+### 25.K 个一组翻转链表（new hot100）（10.25）
 
 给你链表的头节点 `head` ，每 `k` 个节点一组进行翻转，请你返回修改后的链表。
 
@@ -3804,7 +3804,7 @@ class Solution {
 
 
 
-### 23.合并 K 个升序链表（new hot100）（10.5）
+### 23.合并 K 个升序链表（new hot100）（10.20）
 
 给你一个链表数组，每个链表都已经按升序排列。
 
@@ -4110,7 +4110,7 @@ class Solution {
 
 
 
-### 349.两个数组的交集（10.4）
+### 349.两个数组的交集（10.31）
 
 给定两个数组 `nums1` 和 `nums2` ，返回 _它们的 交集_ 。输出结果中的每个元素一定是 **唯一** 的。我们可以 **不考虑输出结果的顺序** 。
 
@@ -4715,7 +4715,7 @@ class Solution {
 
 
 
-### 621.任务调度器（hot100）(10.4)
+### 621.任务调度器（hot100）(10.26)
 
 给你一个用字符数组 `tasks` 表示的 CPU 需要执行的任务列表，用字母 A 到 Z 表示，以及一个冷却时间 `n`。每个周期或时间间隔允许完成一项任务。任务可以按任何顺序完成，但有一个限制：两个 **相同种类** 的任务之间必须有长度为 `n` 的冷却时间。
 
@@ -4810,7 +4810,7 @@ class Solution {
 }
 ```
 
-### 541.反转字符串II（9.30）
+### 541.反转字符串II（10.7）
 
 给定一个字符串 `s` 和一个整数 `k`，从字符串开头算起，每计数至 `2k` 个字符，就反转这 `2k` 字符中的前 `k` 个字符。
 
@@ -5041,7 +5041,7 @@ class Solution {
 }
 ```
 
-### 151.翻转字符串里的单词(9.29)
+### 151.翻转字符串里的单词(10.11)
 
 给你一个字符串 `s` ，请你反转字符串中 **单词** 的顺序。
 
@@ -5122,7 +5122,7 @@ class Solution {
 
 ```
 
-### 28.找出字符串中第一个匹配项的下标(KMP)  (9.29)
+### 28.找出字符串中第一个匹配项的下标(KMP)  (10.7)
 
 给你两个字符串 `haystack` 和 `needle` ，请你在 `haystack` 字符串中找出 `needle` 字符串的第一个匹配项的下标（下标从 0 开始）。如果 `needle` 不是 `haystack` 的一部分，则返回 `-1` 。
 
@@ -5196,7 +5196,7 @@ class Solution {
 
 ```
 
-### 459.重复的子字符串(9.30)
+### 459.重复的子字符串(10.16)
 
 给定一个非空的字符串 `s` ，检查是否可以通过由它的一个子串重复多次构成。
 
@@ -5256,7 +5256,7 @@ class Solution {
 
 ```
 
-### 438.找到字符串中所有的字母异位词（hot100）(10.3)
+### 438.找到字符串中所有的字母异位词（hot100）(10.19)
 
 给定两个字符串 `s` 和 `p`，找到 `s` 中所有 `p` 的 **异位词** 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
 
@@ -5315,7 +5315,7 @@ class Solution {
 ```
 
 
-### 3.无重复字符的最长子串（hot100）(9.11)
+### 3.无重复字符的最长子串（hot100）(10.8)
 
 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
 
@@ -5378,7 +5378,7 @@ class Solution {
 }
 ```
 
-### 76.最小覆盖子串（hot100）(4.4)
+### 76.最小覆盖子串（hot100）(10.7)
 
 给你一个字符串 `s` 、一个字符串 `t` 。返回 `s` 中涵盖 `t` 所有字符的最小子串。如果 `s` 中不存在涵盖 `t` 所有字符的子串，则返回空字符串 `""` 。
 
@@ -5557,7 +5557,7 @@ return minLength == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minL
 
 
 
-### 415. 字符串相加 
+### 415. 字符串相加 (10.24)
 
 给定两个字符串形式的非负整数 `num1` 和`num2` ，计算它们的和并同样以字符串形式返回。
 
@@ -5594,23 +5594,40 @@ return minLength == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minL
 
 ```java
 class Solution {
+    /**
+     * 字符串相加 - 模拟竖式加法
+     * 
+     * @param num1 第一个非负整数字符串
+     * @param num2 第二个非负整数字符串
+     * @return 两数之和的字符串表示
+     */
     public String addStrings(String num1, String num2) {
-        StringBuilder Sb = new StringBuilder();
-        int caray = 0, sum = 0;
-        int index1 = num1.length() - 1, index2 = num2.length() - 1;
-        while (true) {
-            sum = (index1 >= 0 ? num1.charAt(index1)-'0' : 0) + (index2 >= 0 ? num2.charAt(index2)-'0' : 0) + caray;
-            caray = sum >= 10 ? 1 : 0;
-            sum = sum % 10;
-
-            if (sum == 0 && caray == 0 && index1 < 0 && index2 < 0) {
-                break;
-            }
-            Sb.append(sum);
-            index1--;
-            index2--;
+        StringBuilder sb = new StringBuilder();  // 存储结果(逆序)
+        
+        int carry = 0;   // 进位值
+        int sum = 0;     // 当前位的和
+        int i = num1.length() - 1;  // num1 的指针,从最低位(个位)开始
+        int j = num2.length() - 1;  // num2 的指针,从最低位(个位)开始
+        
+        // 循环条件: 还有进位 或 num1还有数字 或 num2还有数字
+        while (carry != 0 || i >= 0 || j >= 0) {
+            // 计算当前位的和 = num1当前位 + num2当前位 + 进位
+            // 如果某个数字已经遍历完,用0代替
+            sum = (i >= 0 ? (num1.charAt(i) - '0') : 0)   // num1当前位
+                + (j >= 0 ? (num2.charAt(j) - '0') : 0)   // num2当前位
+                + carry;                                   // 上一位的进位
+            
+            carry = sum / 10;  // 计算新的进位(十位数)
+            sum = sum % 10;    // 当前位的结果(个位数)
+            
+            sb.append(sum);    // 将当前位添加到结果(此时是逆序)
+            
+            i--;  // 移动到num1的下一位(更高位)
+            j--;  // 移动到num2的下一位(更高位)
         }
-        return Sb.reverse().toString();
+        
+        // 反转结果(因为是从低位到高位添加的)
+        return sb.reverse().toString();
     }
 }
 ```
@@ -5649,105 +5666,133 @@ class Solution {
 
 ```java
 class Solution {
+    /**
+     * 大数相乘 - 模拟竖式乘法
+     * 时间复杂度：O(m·n)
+     * 空间复杂度：O(m+n)
+     */
     public String multiply(String num1, String num2) {
-        // 处理特殊情况：如果任一数字为"0"，直接返回"0"
+        // 边界处理：任一为0则结果为0
         if (num1.equals("0") || num2.equals("0")) {
             return "0";
         }
-
-        String result = "0";
-
-        // 从右向左遍历第二个数的每一位
-        for (int i = num2.length() - 1; i >= 0; i--) {
-            // 取出当前位的数字
-            int digit = num2.charAt(i) - '0';
-
-            // 计算num1与当前位相乘的结果
-            StringBuilder temp = new StringBuilder();
-
-            // 添加相应数量的0（根据位置）
-            for (int j = 0; j < num2.length() - 1 - i; j++) {
-                temp.append('0');
+        
+        int m = num1.length();
+        int n = num2.length();
+        
+        // 结果最多为 m+n 位（例如：99 × 99 = 9801，2位×2位=4位）
+        int[] result = new int[m + n];
+        
+        // 从右向左遍历num1的每一位
+        for (int i = m - 1; i >= 0; i--) {
+            int digit1 = num1.charAt(i) - '0';
+            
+            // 从右向左遍历num2的每一位
+            for (int j = n - 1; j >= 0; j--) {
+                int digit2 = num2.charAt(j) - '0';
+                
+                // 当前位置的乘积
+                int mul = digit1 * digit2;
+                
+                // 确定乘积应该放在结果数组的哪个位置
+                // i+j+1 是低位，i+j 是高位（进位位）
+                int pos1 = i + j;      // 高位（进位）
+                int pos2 = i + j + 1;  // 低位（当前位）
+                
+                // 加上当前位置已有的值（之前的进位）
+                int sum = mul + result[pos2];
+                
+                // 更新当前位
+                result[pos2] = sum % 10;
+                
+                // 处理进位
+                result[pos1] += sum / 10;
             }
-
-            int carry = 0;
-            // 从右向左遍历第一个数的每一位
-            for (int j = num1.length() - 1; j >= 0; j--) {
-                int product = (num1.charAt(j) - '0') * digit + carry;
-                carry = product / 10;
-                temp.append(product % 10);
-            }
-
-            // 处理最后的进位
-            if (carry > 0) {
-                temp.append(carry);
-            }
-
-            // 将temp反转后与result相加
-            result = get(result, temp.reverse().toString());
         }
-
-        return result;
-    }
-
-    String get(String num1, String num2) {
-        StringBuilder Sb = new StringBuilder();
-        int caray = 0, sum = 0;
-        int index1 = num1.length() - 1, index2 = num2.length() - 1;
-        while (true) {
-            sum = (index1 >= 0 ? num1.charAt(index1)-'0' : 0) + (index2 >= 0 ? num2.charAt(index2)-'0' : 0) + caray;
-            caray = sum >= 10 ? 1 : 0;
-            sum = sum % 10;
-
-            if (sum == 0 && caray == 0 && index1 < 0 && index2 < 0) {
-                break;
+        
+        // 将结果数组转换为字符串
+        StringBuilder sb = new StringBuilder();
+        for (int num : result) {
+            // 跳过前导零
+            if (sb.length() == 0 && num == 0) {
+                continue;
             }
-            Sb.append(sum);
-            index1--;
-            index2--;
+            sb.append(num);
         }
-        return Sb.reverse().toString();
+        
+        return sb.toString();
     }
 }
 ```
 
 
 
-### 字符串相减(拓展)
+### 字符串相减(拓展)*
 
 ```java
-class Solution {
-    public String subtractStrings(String num1, String num2) {
-        // 假设 num1 >= num2
-        StringBuilder sb = new StringBuilder();
-        int borrow = 0;
-        int index1 = num1.length() - 1, index2 = num2.length() - 1;
+/**
+ * 大数相减 - 模拟竖式减法
+ * 
+ * @param s 被减数(字符串表示的非负整数)
+ * @param t 减数(字符串表示的非负整数)
+ * @return 差值的字符串表示(可能为负数)
+ * 
+ * 算法思路:
+ * 1. 从低位到高位逐位相减,遇到不够减就借位
+ * 2. 如果最后还有借位(borrow!=0),说明 s < t,结果为负数
+ * 3. 此时递归调用 fun(t, s) 计算 t - s,并在结果前加负号
+ * 4. 最后去除前导零
+ */
+static String fun(String s, String t) {
+    StringBuilder sb = new StringBuilder();  // 存储结果(逆序)
+    
+    int borrow = 0;      // 借位标记 (borrow: 从高位借来的值,0或1)
+    int difference = 0;  // 当前位的差值 (difference: 两数相减的差)
+    int i = s.length() - 1;  // s 的指针,从最低位(个位)开始
+    int j = t.length() - 1;  // t 的指针,从最低位(个位)开始
+    
+    // 循环条件: s还有数字 或 t还有数字 或 还有借位未处理
+    while (i >= 0 || j >= 0 || borrow != 0) {
         
-        // 从低位开始逐位相减
-        while (index1 >= 0 || index2 >= 0) {
-            int digit1 = index1 >= 0 ? num1.charAt(index1) - '0' : 0;
-            int digit2 = index2 >= 0 ? num2.charAt(index2) - '0' : 0;
-            
-            int diff = digit1 - borrow - digit2;
-            if (diff < 0) {
-                diff += 10;
-                borrow = 1;
-            } else {
-                borrow = 0;
-            }
-            
-            sb.append(diff);
-            index1--;
-            index2--;
+        // 计算当前位的差值 = s当前位 - t当前位 - 借位
+        // 如果某个数字已遍历完,用 0 代替
+        difference = (i >= 0 ? (s.charAt(i) - '0') : 0)   // s 当前位
+                   - (j >= 0 ? (t.charAt(j) - '0') : 0)   // t 当前位
+                   - borrow;                               // 上一位的借位
+
+        // 如果当前位不够减(difference < 0),需要向高位借位
+        if (difference < 0) {
+            difference = difference + 10;  // 借一当十,当前位加10
+            borrow = 1;                    // 标记需要向高位借位
+        } else {
+            borrow = 0;                    // 够减,不需要借位
         }
         
-        // 去掉可能存在的前导零（注意至少保留一位）
-        while (sb.length() > 1 && sb.charAt(sb.length() - 1) == '0') {
-            sb.setLength(sb.length() - 1);
+        i--;  // 移动到 s 的下一位(更高位)
+        j--;  // 移动到 t 的下一位(更高位)
+
+        // 关键判断: 两个数都遍历完了,还有借位 → 说明 s < t,结果为负数
+        // 此时递归计算 t - s,并在结果前加负号
+        // 注意: 这里 return 后,下面的 sb.append(difference) 不会执行
+        if (i < 0 && j < 0 && borrow != 0) {
+            return "-" + fun(t, s);  // 交换操作数,递归调用
         }
-        
-        return sb.reverse().toString();
+
+        // 将当前位的结果添加到 sb(此时是逆序)
+        sb.append(difference);
     }
+
+    // 反转结果(因为是从低位到高位添加的)
+    String result = sb.reverse().toString();
+    
+    // 去除前导零
+    int k = 0;
+    while (k < result.length() && result.charAt(k) == '0') {
+        k++;
+    }
+    
+    // 如果全是0,返回"0"; 否则返回去除前导零后的结果
+    return k == result.length() ? "0" : result.substring(k);
 }
 ```
 
