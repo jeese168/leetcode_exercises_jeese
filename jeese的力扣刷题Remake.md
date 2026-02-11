@@ -19,7 +19,7 @@
 # 数组
 
 ## 1. 位运算问题
-### 338.比特位计数（hot 100）（10.31）
+### 338.比特位计数（hot 100）
 
 给你一个整数 `n` ，对于 `0 <= i <= n` 中的每个 `i` ，计算其二进制表示中 **`1` 的个数** ，返回一个长度为 `n + 1` 的数组 `ans` 作为答案。
 
@@ -114,7 +114,7 @@ dp[i] = dp[i >> 1] + (i & 1)
 - `i & 1` 就是获取 i 的最低位（0或1）
 - 因为我们已经算过 `dp[i >> 1]`，所以直接复用 + 当前最低位 = 答案
 
-### 461.汉明距离（hot 100）（10.31）
+### 461.汉明距离（hot 100）
 两个整数之间的 [汉明距离](https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB) 指的是这两个数字对应二进制位不同的位置的数目。
 给你两个整数 `x` 和 `y`，计算并返回它们之间的汉明距离。
 
@@ -206,6 +206,8 @@ class Solution {
     }
 }
 ```
+
+
 
 
 ## 2. 二分查找及二分查找的性质运用
@@ -510,6 +512,7 @@ class Solution {
 ```
 
 同样类似的还有"峰值"查找，**"峰值"指的是局部最大值，也就是某个极大值。** 
+这是一种「排除型搜索」，适用于找最大值、峰值、最后一个满足条件的位置、精确查找。
 ```java
 // 查找峰值元素
 public int findPeakElement(int[] nums) {
@@ -683,7 +686,7 @@ return left; // 通常返回left
 - **"排除型"搜索**：用于找最大值、最后一个满足条件的位置，或利用确定性质的搜索
 
 
-### 33.搜索旋转排序数组（new hot100）（10.17）
+### 33.搜索旋转排序数组（new hot100）
 
 整数数组 `nums` 按升序排列，数组中的值 **互不相同** 。
 
@@ -772,7 +775,7 @@ class Solution {
 ```
 
 
-### 4.寻找两个正序数组的中位数（new hot100）(10.6)
+### 4.寻找两个正序数组的中位数（new hot100）
 
 给定两个大小分别为 `m` 和 `n` 的正序（从小到大）数组 `nums1` 和 `nums2`。请你找出并返回这两个正序数组的 **中位数** 。
 
@@ -817,7 +820,8 @@ class Solution {
             // 计算 nums1 的分割点  
             cut1 = (left + right)/2;  
             // 根据 cut1 计算 nums2 的分割点，确保左右两部分元素数量平衡  
-            // 左半部分元素总数为 (m+n+1)/2            cut2 = (n+m+1)/2 - cut1;  
+            // 左半部分元素总数为 (m+n+1)/2            
+            cut2 = (n+m+1)/2 - cut1;  
   
             // 获取分割点左侧的最大值  
             // 如果 cut1 为 0，表示 nums1 没有元素在左半部分，设为最小值  
@@ -860,6 +864,9 @@ class Solution {
 所谓找到两个数组的中位数，从两个数组中各取一部分有序的序列，两个数组各取的数的数量等于中位数的在整体数组的位置，
 "第1个数组取一部分，另外一个数组取另外一个部分，因为这两个数组两个部分内部都是有序的，所以我们以第1个数组为基准，然后确保第2个数组取到的部分是在第1个数组的范围之内"，
 **如果找到了那个数量，那就说明那个所谓分割点拿到了**。
+
+
+
 
 ## 4. 常规的子数组类型(一定要记清楚题目，仔细区分)
 
@@ -1315,7 +1322,7 @@ class Solution {
 ```
 
 
-### 54.螺旋矩阵（new hot100）（10.15）
+### 54.螺旋矩阵（new hot100）
 给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
 
 **示例 1：**
@@ -1593,7 +1600,7 @@ class Solution {
 ```
 
 
-### 238.除自身以外数组的乘积（hot100）(10.23)
+### 238.除自身以外数组的乘积（hot100）
 
 给你一个整数数组 `nums`，返回 数组 `answer` ，其中 `answer[i]` 等于 `nums` 中除 `nums[i]` 之外其余各元素的乘积 。
 
@@ -1733,9 +1740,9 @@ class Solution {
 ```
 
 
-### 75.颜色分类（hot 100）（复习一下冒泡排序和选择排序）
+### 75. 颜色分类（hot 100）（复习一下冒泡排序和选择排序）
 
-给定一个包含红色、白色和蓝色、共 `n` 个元素的数组 `nums` ，**[原地](https://baike.baidu.com/item/原地算法)**对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+给定一个包含红色、白色和蓝色、共 `n` 个元素的数组 `nums` ，[原地](https://baike.baidu.com/item/原地算法) 对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
 
 我们使用整数 `0`、 `1` 和 `2` 分别表示红色、白色和蓝色。
 
@@ -1985,14 +1992,6 @@ class Solution {
  * 解决方案类，用于寻找数组中的重复数字
  */
 class Solution {
-    /**
-     * 寻找重复数字
-     * 该方法使用快慢指针技术，类似于检测链表中的环
-     * 数组中的重复数字导致了值的循环引用，类似于链表中的环入口
-     *
-     * @param nums 输入的整数数组，其中包含一个重复的数字
-     * @return 返回数组中的重复数字
-     */
     public int findDuplicate(int[] nums) {
         // 初始化快慢指针，两者都从索引0开始
         int fast = 0, slow = 0;
@@ -2002,23 +2001,23 @@ class Solution {
             fast = nums[nums[fast]];
             // 慢指针每次移动一步
             slow = nums[slow];
-        } while (fast != slow);
-        // 慢指针重置到起点
-        slow = 0;
+        } while (nums[fast] != nums[slow]);
+        // 快指针重置到起点
+        fast = 0;
         // 快慢指针再次以相同速度移动，直到它们再次相遇
-        while (fast != slow) {
+        while (nums[fast] != nums[slow]) {
             // 快指针每次移动一步
             fast = nums[fast];
             // 慢指针每次移动一步
             slow = nums[slow];
         }
         // 当它们再次相遇时，相遇点即为重复数字
-        return fast;
+        return nums[fast];
     }
 }
 ```
 
-### 11.盛水最多的容器（hot 100）（3.30）
+### 11.盛水最多的容器（hot 100）
 
 给定一个长度为 `n` 的整数数组 `height` 。有 `n` 条垂线，第 `i` 条线的两个端点是 `(i, 0)` 和 `(i, height[i])` 。
 
@@ -2082,7 +2081,7 @@ class Solution {
 }
 ```
 
-### 41.缺失的第一个正数（new hot100）（10.25）
+### 41.缺失的第一个正数（new hot100）
 
 给你一个未排序的整数数组 `nums` ，请你找出其中没有出现的最小的正整数。
 
@@ -2182,6 +2181,97 @@ class Solution {
 
 
 # 链表
+## 1. 数学相关
+
+
+#### 链表边界逻辑的三级定理
+
+按照你的逻辑，我们可以把链表的边界条件分成三级：
+
+1.  **一级边界（单步走）**：`while (cur != null)` —— 遍历完整链表，最后 `cur` 落在 `null`。
+2.  **二级边界（找尾巴）**：`while (cur.next != null)` —— 停在最后一个节点，常用于找尾节点或删除尾节点。
+3.  **万能三级边界（两步跳）**：`while (fast != null && fast.next != null)` —— 安全跳两步，同时利用退出状态判断奇偶。
+
+
+**万能三级边界（两步跳）在 `fast = fast.next.next` 场景下是万能的**
+在执行 `fast = fast.next.next` 之前，必须满足：
+> **`while (fast != null && fast.next != null)`**
+
+这个条件同时锁死了两种崩盘的可能性：
+*   **防止当前为空**：`fast != null` 确保你当前站的地方是有地的（可以访问 `.next`）。
+*   **防止跳跃落空**：`fast.next != null` 确保你下一步是有跳板的（可以访问 `.next.next`）。
+
+**而且对奇偶性的完美适配：**
+这个条件在跳出循环时，自动完成了奇偶分流，这也正是你之前定理的基础：
+*   **如果是偶数**：`fast` 刚好跳到 `null`，由于第一个条件 `fast != null` 失败而停止。
+*   **如果是奇数**：`fast` 刚好停在**最后一个节点**，由于第二个条件 `fast.next != null` 失败而停止。
+
+
+
+
+#### **快慢指针中点定理**
+
+1.  **奇偶判定**：在 `fast != null && fast.next != null` 循环结束后：
+    *   若 `fast == null`：链表为**偶数**长度。
+    *   若 `fast != null`：链表为**奇数**长度。
+2.  **中点定位**：`slow` 必定落在“逻辑中点”（即 $n/2 + 1$）：
+    *   **偶数**：`slow` 指向后半部分的第一个节点。
+    *   **奇数**：`slow` 指向正中间的节点。
+3.  **无需虚拟头**：此类题型仅涉及**拆分**与**全量反转**，不涉及“修改前驱指向”的局部操作，故无需虚拟头节点辅助。
+
+**一句话速记：**
+> **fast 判奇偶（空偶非奇），slow 定中点（偶数上取整），全量反转不带头。**
+
+
+
+#### **固定间距定理（相对定位）**
+
+在执行 `fast` 先走 `n` 步，随后 `fast` 与 `slow` 同速移动的场景下：
+
+1.  **间距锁定**：在 `fast` 先行 `n` 步后，`fast` 与 `slow` 之间维护了一个长度为 `n` 的窗口。
+2.  **边界配合**：必须配合**二级边界** `while (fast.next != null)` 停止。
+    *   当 `fast` 停在**最后一个节点**时，由于间距为 `n`，`slow` 恰好停在**倒数第 $n+1$ 个节点**（即待删除节点的前驱节点）。
+3.  **虚拟头（Dummy Node）的强制性**：
+    *   由于删除操作必须定位到**前驱节点**，若要删除的是头节点（倒数第 $L$ 个），只有引入 `dummy` 节点，才能确保 `slow` 有空间停留在头节点的前一个位置。
+
+**逻辑闭环：**
+> **先走 $n$ 步，配合 `fast.next != null` 停在尾部，`slow` 即定位目标前驱。**
+
+
+
+
+
+
+#### **环形链表定理（双相追及）**
+
+在利用快慢指针处理环形链表时，逻辑分为“检测”与“定位”两个阶段：
+
+1.  **第一阶段：相遇判定（检测环）**
+    *   **边界条件**：必须采用**三级边界** `while (fast != null && fast.next != null)`。
+    *   **运动规律**：`fast` 每次走 2 步，`slow` 每次走 1 步。
+    *   **逻辑结论**：若 `fast == slow`，则链表**必有环**；若 `fast` 触碰边界退出，则链表**无环**。
+
+2.  **第二阶段：等速同步（找入口）**
+    *   **触发前提**：在第一阶段 `fast == slow` 时触发。
+    *   **指针重置**：将其中一个指针（如 `slow`）指向 `head`，另一个指针（`fast`）原地不动。
+    *   **运动规律**：两个指针同时开始**单步移动**（每次皆为 1 步）。
+    *   **逻辑结论**：当两个指针再次相遇时，所指向的节点即为**环的起始入口节点**。
+
+3.  **数学闭环逻辑（原理证明）**：
+    *   设起点到入口距离为 $a$，入口到相遇点距离为 $b$，相遇点绕环回到入口距离为 $c$。
+    *   相遇时：`slow` 走了 $a + b$，`fast` 走了 $a + n(b + c) + b$（$n$ 为圈数）。
+    *   根据 2 倍速关系：$2(a + b) = a + n(b + c) + b$，化简得 $a = (n-1)(b + c) + c$。
+    *   这意味着：**从起点到入口的距离（$a$），等于从相遇点绕环回到入口的距离（$c$）加上若干整圈**。因此，两指针等速移动必在入口处重合。
+
+**逻辑总结：**
+> **三级边界判相遇（2:1倍速），首位等速定入口（1:1同步）。**
+
+
+
+
+
+
+
 
 ### 203.移除链表元素
 给你一个链表的头节点 `head` 和一个整数 `val` ，请你删除链表中所有满足 `Node.val == val` 的节点，并返回 **新的头节点** 。
@@ -2236,234 +2326,10 @@ class Solution {
 }
 ```
 
-### 707.设计链表
-你可以选择使用单链表或者双链表，设计并实现自己的链表。
-
-单链表中的节点应该具备两个属性：`val` 和 `next` 。`val` 是当前节点的值，`next` 是指向下一个节点的指针/引用。
-
-如果是双向链表，则还需要属性 `prev` 以指示链表中的上一个节点。假设链表中的所有节点下标从 **0** 开始。
-
-实现 `MyLinkedList` 类：
-
-- `MyLinkedList()` 初始化 `MyLinkedList` 对象。
-    
-- `int get(int index)` 获取链表中下标为 `index` 的节点的值。如果下标无效，则返回 `-1` 。
-    
-- `void addAtHead(int val)` 将一个值为 `val` 的节点插入到链表中第一个元素之前。在插入完成后，新节点会成为链表的第一个节点。
-    
-- `void addAtTail(int val)` 将一个值为 `val` 的节点追加到链表中作为链表的最后一个元素。
-    
-- `void addAtIndex(int index, int val)` 将一个值为 `val` 的节点插入到链表中下标为 `index` 的节点之前。如果 `index` 等于链表的长度，那么该节点会被追加到链表的末尾。如果 `index` 比长度更大，该节点将 **不会插入** 到链表中。
-    
-- `void deleteAtIndex(int index)` 如果下标有效，则删除链表中下标为 `index` 的节点。
-    
-
-**示例：**
-
-```
-输入  
-["MyLinkedList", "addAtHead", "addAtTail", "addAtIndex", "get", "deleteAtIndex", "get"]  
-[[], [1], [3], [1, 2], [1], [1], [1]]  
-输出  
-[null, null, null, null, 2, null, 3]  
-​  
-解释  
-MyLinkedList myLinkedList = new MyLinkedList();  
-myLinkedList.addAtHead(1);  
-myLinkedList.addAtTail(3);  
-myLinkedList.addAtIndex(1, 2);    // 链表变为 1->2->3  
-myLinkedList.get(1);              // 返回 2  
-myLinkedList.deleteAtIndex(1);    // 现在，链表变为 1->3  
-myLinkedList.get(1);              // 返回 3
-```
-
-```java
-class MyLinkedList {
-    int size;
-    LinkNode head;
-
-    public MyLinkedList() {
-        size = 0;
-        head = new LinkNode();
-    }
-
-    public int get(int index) {
-        if (index >= size) {
-            return -1;
-        }
-        LinkNode auxiliary = head;
-        for (int i = 0; i <= index; i++) {
-            auxiliary = auxiliary.next;
-        }
-        return auxiliary.val;
-    }
-
-    public void addAtHead(int val) {
-        LinkNode current = new LinkNode();
-        current.val = val;
-        current.next = head.next;
-        head.next = current;
-        size++;
-    }
-
-    public void addAtTail(int val) {
-        LinkNode current = new LinkNode();
-        current.val = val;
-        current.next = null;
-        LinkNode auxiliary = head;
-        while (auxiliary.next != null) {
-            auxiliary = auxiliary.next;
-        }
-        auxiliary.next = current;
-        size++;
-    }
-
-    public void addAtIndex(int index, int val) {
-        if (index > size) {
-            return;
-        }
-        if (index == size) {
-            addAtTail(val);
-            return;
-        }
-        LinkNode current = new LinkNode();
-        current.val = val;
-        LinkNode auxiliary = head;
-        for (int i = 0; i < index; i++) {
-            auxiliary = auxiliary.next;
-        }
-        current.next = auxiliary.next;
-        auxiliary.next = current;
-        size++;
-    }
-
-    public void deleteAtIndex(int index) {
-        if (index >= size) {
-            return;
-        }
-        LinkNode auxiliary = head;
-        for (int i = 0; i < index; i++) {
-            auxiliary = auxiliary.next;
-        }
-        auxiliary.next = auxiliary.next.next;
-        size--;
-    }
-}
-
-class LinkNode {
-    int val;
-    LinkNode next;
-}
-```
-
-### 206.反转链表（hot100）
-给你单链表的头节点 `head`，请你反转链表，并返回反转后的链表。
-
-**示例 1：**
-![](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
-```
-输入：head = [1,2,3,4,5]  
-输出：[5,4,3,2,1]
-```
-
-**示例 2：**
-![](https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg)
-```
-输入：head = [1,2]  
-输出：[2,1]
-```
-
-**示例 3：**
-
-```
-输入：head = []  
-输出：[]
-```
-
-```java
-class Solution {
-    // 定义一个方法，用于反转链表
-    public ListNode reverseList(ListNode head) {
-        // 定义三个指针变量
-        ListNode temp;
-        ListNode pre = null; // pre指向前一个节点
-        ListNode cur = head; // cur指向当前节点
-        // 遍历链表
-        while(cur != null) {
-            temp = cur.next; // 临时保存下一个节点
-            cur.next = pre; // 当前节点指向前一个节点
-            pre = cur; // pre指向当前节点
-            cur = temp; // cur指向下一个节点
-        }
-        return pre; // 返回反转后的链表头节点
-    }
-}
-```
-
-### 24.两两交换链表中的节点(10.15)
-
-给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
 
 
 
-**示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
-
-
-
-```
-输入：head = [1,2,3,4]
-输出：[2,1,4,3]
-```
-
-**示例 2：**
-
-```
-输入：head = []
-输出：[]
-```
-
-**示例 3：**
-
-```
-输入：head = [1]
-输出：[1]
-```
-
-```java
-class Solution {
-    public ListNode swapPairs(ListNode head) {
-        // 创建虚拟头节点，避免处理头节点的特殊情况
-        ListNode dummy = new ListNode();
-        dummy.next = head;
-        
-        // left: 当前要交换的一对节点的前驱节点
-        // cur: 当前对中的第一个节点
-        // right: 当前对中的第二个节点
-        // aux: 下一对节点的起始节点（辅助保存）
-        ListNode left = dummy, right, cur = head, aux;
-        
-        // 当存在成对的节点时继续交换
-        while (cur != null && cur.next != null) {
-            // Step 1: 定位节点
-            right = cur.next;        // 第二个节点
-            aux = cur.next.next;     // 保存下一对的起始位置
-            
-            // Step 2: 执行交换
-            cur.next = aux;          // 第一个节点指向下一对
-            right.next = cur;        // 第二个节点指向第一个节点
-            left.next = right;       // 前驱节点指向交换后的第一个节点（原第二个）
-            
-            // Step 3: 移动指针到下一对
-            left = cur;              // 更新前驱节点为当前对的最后一个节点
-            cur = aux;               // 移动到下一对的起始位置
-        }
-        
-        return dummy.next;
-    }
-}
-```
 
 ### 19.删除链表倒数第N个节点（hot100）
 
@@ -2597,69 +2463,31 @@ class Solution {
 ```
 
 ```java
-/**
- * 解决方案类，用于寻找两个链表的交点
- */
-public class Solution {
-    /**
-     * 获取两个链表的交点节点
-     * 
-     * @param headA 第一个链表的头节点
-     * @param headB 第二个链表的头节点
-     * @return 返回两个链表的交点节点，如果不存在交点则返回null
-     */
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        // 辅助节点，用于遍历链表A
-        ListNode auxA = headA;
-        // 辅助节点，用于遍历链表B
-        ListNode auxB = headB;
-        // 链表A的长度
-        int lengthA = 1;
-        // 链表B的长度
-        int lengthB = 1;
-        
-        // 遍历链表A，计算其长度
-        while (auxA.next != null) {
-            auxA = auxA.next;
-            lengthA++;
-        }
-        // 遍历链表B，计算其长度
-        while (auxB.next != null) {
-            auxB = auxB.next;
-            lengthB++;
-        }
-        
-        // 如果链表A比链表B长，交换两个链表的位置，确保链表B是较长的那个
-        if (lengthA > lengthB) {
-            ListNode tempNode = headB;
-            headB = headA;
-            headA = tempNode;
-            int tempLength = lengthB;
-            lengthB = lengthA;
-            lengthA = tempLength;
-        }
-        
-        // 让较长的链表B先走差值步数，这样当两个链表都走到末尾时，它们会同时到达交点节点
-        for (int i = 0; i < lengthB - lengthA; i++) {
-            headB = headB.next;
-        }
-        
-        // 同时遍历两个链表，直到找到交点节点或两个链表都遍历结束
-        while (headA != null && headB != null) {
-            if (headA == headB) {
-                // 找到交点节点
-                return headA;
-            }
-            headA = headA.next;
-            headB = headB.next;
-        }
-        
-        // 如果没有交点，返回null
-        return null;
+//标准巧妙解法
+
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    if (headA == null || headB == null) return null;
+    
+    ListNode pA = headA;
+    ListNode pB = headB;
+    
+    // 当pA和pB相遇时，要么在交点，要么都是null
+    while (pA != pB) {
+        // pA走完链表A后，跳到链表B的头部
+        pA = (pA == null) ? headB : pA.next;
+        // pB走完链表B后，跳到链表A的头部
+        pB = (pB == null) ? headA : pB.next;
     }
+    
+    return pA;  // 返回交点或null
 }
 
 ```
+
+
+
+
+
 
 ### 141.环形链表（hot100）
 给你一个链表的头节点 `head` ，判断链表中是否有环。
@@ -2817,6 +2645,77 @@ public class Solution {
 
 ```
 
+
+
+
+
+## 2. 反转链表及其应用
+
+### 反转链表的核心理论
+
+1.  **关于虚拟头节点（Dummy Node）：**
+    **全量反转不需虚拟头，局部反转必须有。** 因为全量反转是“原地掉头”，原头变尾，只需返回最后一个非空节点（`pre`）；而局部反转（如 K 个一组）涉及与前驱节点的“重新接头”，虚拟头是防止首组断裂的“挂钩”。
+
+2.  **关于指针的分工（Frontier Theory）：**
+    三指针构成了**“已完成区”与“未处理区”的动态边界**：
+    *   **`left` (pre)**：是“已翻转区”的**新领袖**，始终指向翻转链表的当前头部。
+    *   **`mid` (curr)**：是“探路者”，负责执行掉头动作。
+    *   **`right` (temp)**：是“救生索”，负责在掉头瞬间拉住后面的剩余节点防止丢失。
+
+3.  **关于每轮轮回的结果（Pointer State）：**
+    **“左手封口，右手汇合”**。每轮循环结束时：
+    *   `left` 移动到了**已反转部分的最后一个节点**。
+    *   `mid` 与 `right` **完成会师**，两者同时指向“下一个待处理区域”的起始位置。这种状态确保了下一轮循环可以直接从 `mid` 开始，而 `left` 永远作为新前驱严阵以待。
+
+
+
+### 206.反转链表（hot100）
+给你单链表的头节点 `head`，请你反转链表，并返回反转后的链表。
+
+**示例 1：**
+![](https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg)
+```
+输入：head = [1,2,3,4,5]  
+输出：[5,4,3,2,1]
+```
+
+**示例 2：**
+![](https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg)
+```
+输入：head = [1,2]  
+输出：[2,1]
+```
+
+**示例 3：**
+
+```
+输入：head = []  
+输出：[]
+```
+
+```java
+class Solution {
+    // 定义一个方法，用于反转链表
+    public ListNode reverseList(ListNode head) {
+        // 定义三个指针变量
+        ListNode temp;
+        ListNode pre = null; // pre指向前一个节点
+        ListNode cur = head; // cur指向当前节点
+        // 遍历链表
+        while(cur != null) {
+            temp = cur.next; // 临时保存下一个节点
+            cur.next = pre; // 当前节点指向前一个节点
+            pre = cur; // pre指向当前节点
+            cur = temp; // cur指向下一个节点
+        }
+        return pre; // 返回反转后的链表头节点
+    }
+}
+```
+
+> 经典全反转，所以不需要头节点，同样遵循**left 指向已反转部分的头，mid 执行当前节点指向切换，right 暂存后续待处理节点。** 但是是全员反转所以cur最终指向空，得到终止条件。
+
+
 ### 234.回文链表（hot100）
 给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
 
@@ -2827,7 +2726,6 @@ public class Solution {
 ```
 输入：head = [1,2,2,1]
 输出：true
-
 ```
 **示例 2：**
 
@@ -2852,61 +2750,239 @@ public class Solution {
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-        // 边界情况：只有一个节点，必然是回文
-        if(head.next == null){
-            return true;
+        // 第一步：使用快慢指针找到链表中点
+        // fast每次走两步，slow每次走一步
+        // 当fast到达末尾时，slow正好在中点
+        ListNode fast = head, slow = head;
+
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;  // 快指针走两步
+            slow = slow.next;        // 慢指针走一步
         }
-        
-        // 初始化三个指针用于链表反转
+
+        // 处理奇数长度的情况
+        // 如果链表长度为奇数，fast不为null，slow需要再前进一步
+        // 例如：1->2->3->2->1，此时slow在3，需要移到第二个2
+        if(fast != null){
+            slow = slow.next;
+        }
+
+        // 第二步：反转链表的后半部分
+        // slow现在指向后半部分的起始位置
         // left: 反转后的链表头部
         // mid: 当前处理的节点
         // right: mid的下一个节点（临时保存）
-        ListNode left = null, mid = head, right = head;
-        int count = 0;
-        
-        // 第一步：计算链表总长度
-        while(right != null){
-            count++;
-            right = right.next;
-        }
-        
-        // 第二步：反转链表的前半部分
-        // 循环 count/2 次，将前半部分链表反转
-        // 例如：1->2->3->4->5 变成 2->1  3->4->5
-        //      left指向2, mid指向3
-        for(int i = 0; i < count/2; i++){
+        fast = head;  // 重置fast指向链表头部，用于后续比较
+        ListNode left = null, mid = slow, right;
+
+        while(mid != null){
             right = mid.next;    // 保存下一个节点
             mid.next = left;     // 反转当前节点的指向
             left = mid;          // left前移
             mid = right;         // mid前移
         }
         
-        // 第三步：处理奇数长度的情况
-        // 如果链表长度为奇数，需要跳过中间节点
-        // 例如：1->2->3->2->1 (长度5)，跳过中间的3
-        if(count % 2 != 0){
-            right = right.next;  // right指向后半部分的起始位置
-        } else {
-            right = mid;         // 偶数长度，right就是mid
-        }
-        
-        // 第四步：比较反转后的前半部分和后半部分
-        // left指向反转后的前半部分头部
-        // right指向后半部分头部
-        while(left != null && right != null){
-            if(left.val != right.val){
+        // 反转完成后，left指向反转后的后半部分头部
+        slow = left;
+
+        // 第三步：比较前半部分和反转后的后半部分
+        // fast指向链表头部（前半部分）
+        // slow指向反转后的后半部分头部
+        while(slow != null && fast != null){
+            if(slow.val != fast.val){
                 return false;    // 发现不匹配，不是回文
             }
-            left = left.next;
-            right = right.next;
+            slow = slow.next;
+            fast = fast.next;
         }
-        
+
         return true;  // 所有对应位置都匹配，是回文
     }
 }
 
 ```
 
+
+
+
+
+
+
+### 24.两两交换链表中的节点
+
+给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
+
+
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
+
+
+
+```
+输入：head = [1,2,3,4]
+输出：[2,1,4,3]
+```
+
+**示例 2：**
+
+```
+输入：head = []
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：head = [1]
+输出：[1]
+```
+
+```java
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        // 创建虚拟头节点，避免处理头节点的特殊情况
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        
+        // left: 当前要交换的一对节点的前驱节点
+        // cur: 当前对中的第一个节点
+        // right: 当前对中的第二个节点
+        // aux: 下一对节点的起始节点（辅助保存）
+        ListNode left = dummy, right, cur = head, aux;
+        
+        // 当存在成对的节点时继续交换
+        while (cur != null && cur.next != null) {
+            // Step 1: 定位节点
+            right = cur.next;        // 第二个节点
+            aux = cur.next.next;     // 保存下一对的起始位置
+            
+            // Step 2: 执行交换
+            cur.next = aux;          // 第一个节点指向下一对
+            right.next = cur;        // 第二个节点指向第一个节点
+            left.next = right;       // 前驱节点指向交换后的第一个节点（原第二个）
+            
+            // Step 3: 移动指针到下一对
+            left = cur;              // 更新前驱节点为当前对的最后一个节点
+            cur = aux;               // 移动到下一对的起始位置
+        }
+        
+        return dummy.next;
+    }
+}
+```
+
+
+
+
+
+
+### 25.K 个一组翻转链表（new hot100）
+
+
+给你链表的头节点 `head` ，每 `k` 个节点一组进行翻转，请你返回修改后的链表。
+
+`k` 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 `k` 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
+
+
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/reverse_ex1.jpg)
+
+```
+输入：head = [1,2,3,4,5], k = 2
+输出：[2,1,4,3,5]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/reverse_ex2.jpg)
+
+```
+输入：head = [1,2,3,4,5], k = 3
+输出：[3,2,1,4,5]
+```
+
+提示：
+
+- 链表中的节点数目为 `n`
+- `1 <= k <= n <= 5000`
+- `0 <= Node.val <= 1000`
+
+
+
+我的初见，逻辑较为直观。
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        // 1. 初始化虚拟头节点，处理局部反转后的“接头”问题
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        
+        // aux: 辅助指针，始终指向“上一组”反转后的末尾，负责拉住下一组的新头
+        // cur: 探路者，指向当前正在处理的节点
+        ListNode cur = head, aux = dummy, left = null, right = null;
+        
+        // 2. 数学计算：先算出链表总长度，确定需要翻转多少个完整的大组
+        int length = 0;
+        while(cur != null){
+            length++;
+            cur = cur.next;
+        }
+
+        // 重置 cur 回到真正的链表头
+        cur = head;
+
+        // 3. 外层循环：处理 length/k 个完整的组
+        for(int i = 0; i < length / k; i++){
+            // 每组开始前，left 必须置空，作为该组反转后的新尾巴指向
+            left = null; 
+            
+            // 4. 内层循环：标准的 206 三指针反转逻辑（反转 k 个节点）
+            for(int j = 0; j < k; j++){
+                right = cur.next; // 救生索：备份后续节点
+                cur.next = left;  // 掉头：切换指向
+                left = cur;       // left 领航：移动已翻转区的头
+                cur = right;      // cur 推进：汇合于下一个待处理点
+            }
+
+            // 5. 关键连接：上一组的末尾（aux）指向当前组反转后的新头（left）
+            aux.next = left;
+
+            // 6. 指针位移：aux 需要“瞬移”到当前组反转后的末尾
+            // 因为反转后原来的“头”变成了现在的“尾”，我们要跳 k 步找到它
+            for(int j = 0; j < k; j++){
+                aux = aux.next;
+            }
+        }
+
+        // 7. 收尾：将不足 k 个的剩余节点（此时 cur 正指向它们）直接挂在已处理部分的末尾
+        aux.next = cur;
+
+        return dummy.next;  // 返回虚拟头节点的下一个，即为新链表头
+    }
+}
+```
+
+
+
+
+## 3. 排序链表
 ### 21.合并两个有序链表
 
 将两个升序链表合并为一个新的 **升序** 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
@@ -2957,163 +3033,9 @@ class Solution {
 }
 ```
 
-### 2.两数相加（hot100）（10.25）
-
-给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
-
-请你将两个数相加，并以相同形式返回一个表示和的链表。
-
-你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
-
-**示例 1：**
-
-<img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/01/02/addtwonumber1.jpg" alt="img" style="zoom:67%;" />
-
-```
-输入：l1 = [2,4,3], l2 = [5,6,4]
-输出：[7,0,8]
-解释：342 + 465 = 807.
-```
 
 
-```java
-class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        // 保存原始链表头部（实际上这里可以直接使用l1, l2，不需要额外变量）
-        ListNode head1 = l1, head2 = l2;
-        
-        // 使用哑节点简化边界条件处理
-        ListNode dummy = new ListNode();
-        
-        // cur1, cur2: 遍历两个输入链表的指针
-        // cur: 构建结果链表的指针
-        ListNode cur1 = head1, cur2 = head2, cur = dummy;
-        
-        int carry = 0;  // 进位
-        int sum;        // 当前位的和
-        
-        // 继续循环的条件：还有节点未处理 或 还有进位未处理
-        while(cur1 != null || cur2 != null || carry != 0){
-            // 计算当前位的和：两个链表对应位的值 + 进位
-            // 使用三元运算符处理节点为null的情况
-            sum = (cur1 == null ? 0 : cur1.val) + 
-                  (cur2 == null ? 0 : cur2.val) + carry;
-            
-            // 计算新的进位（向上取整除法）
-            carry = sum / 10;
-            
-            // 当前位的实际值（取余运算）
-            sum = sum % 10;
-            
-            // 创建新节点并连接到结果链表
-            cur.next = new ListNode(sum);
-            cur = cur.next;
-            
-            // 移动指针到下一位，处理null情况
-            cur1 = cur1 == null ? null : cur1.next;
-            cur2 = cur2 == null ? null : cur2.next;
-        }
-        
-        // 返回结果链表（跳过哑节点）
-        return dummy.next;
-    }
-}
-```
-
-
-
-### 138.随机链表的复制
-
-给你一个长度为 `n` 的链表，每个节点包含一个额外增加的随机指针 `random` ，该指针可以指向链表中的任何节点或空节点。
-
-构造这个链表的 **深拷贝**。 深拷贝应该正好由 `n` 个 **全新** 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 `next` 指针和 `random` 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。**复制链表中的指针都不应指向原链表中的节点** 。
-
-例如，如果原链表中有 `X` 和 `Y` 两个节点，其中 `X.random --> Y` 。那么在复制链表中对应的两个节点 `x` 和 `y` ，同样有 `x.random --> y` 。
-
-返回复制链表的头节点。
-
-用一个由 `n` 个节点组成的链表来表示输入/输出中的链表。每个节点用一个 `[val, random_index]` 表示：
-
-- `val`：一个表示 `Node.val` 的整数。
-- `random_index`：随机指针指向的节点索引（范围从 `0` 到 `n-1`）；如果不指向任何节点，则为 `null` 。
-
-你的代码 **只** 接受原链表的头节点 `head` 作为传入参数。
-
-
-
-**示例 1：**
-
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e1.png)
-
-```
-输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
-输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
-```
-
-**示例 2：**
-
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e2.png)
-
-```
-输入：head = [[1,1],[2,1]]
-输出：[[1,1],[2,1]]
-```
-
-**示例 3：**
-
-**![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e3.png)**
-
-```
-输入：head = [[3,null],[3,0],[3,null]]
-输出：[[3,null],[3,0],[3,null]]
-```
-
-```java
-class Solution {
-    /**
-     * 复制带随机指针的链表
-     * 
-     * @param head 原始链表的头节点
-     * @return 复制链表的头节点
-     */
-    public Node copyRandomList(Node head) {
-        // 辅助哈希表，用于存储原始节点和新节点之间的映射关系
-        HashMap<Node, Node> auxiliaryMap = new HashMap<Node, Node>();
-        // 创建一个哑节点，作为复制链表的头节点，便于处理链表操作
-        Node dummyHead = new Node(0);
-        // 辅助节点，用于构建复制链表
-        Node auxiliaryNode = dummyHead;
-        // 当前遍历的原始链表节点
-        Node currentNode = head;
-        // 第一次遍历，创建原始节点到新节点的映射
-        while (currentNode != null) {
-            // 将当前节点映射到一个新的节点
-            auxiliaryMap.put(currentNode, new Node(currentNode.val));
-            // 移动到下一个原始节点
-            currentNode = currentNode.next;
-        }
-        // 重新初始化当前节点为头节点，准备第二次遍历
-        currentNode = head;
-        // 辅助节点和当前节点同步遍历原始链表和复制链表
-        while (currentNode != null) {
-            // 将辅助节点的下一个节点指向当前节点在哈希表中对应的新节点
-            auxiliaryNode.next = auxiliaryMap.get(currentNode);
-            // 设置复制链表中节点的random指针
-            auxiliaryNode.next.random = auxiliaryMap.get(currentNode.random);
-            // 辅助节点移动到下一个节点
-            auxiliaryNode = auxiliaryNode.next;
-            // 原始链表的当前节点移动到下一个节点
-            currentNode = currentNode.next;
-        }
-
-        // 返回复制链表的头节点
-        return dummyHead.next;
-    }
-}
-
-```
-
-### 148.排序链表(hot100) （10.24）
+### 148.排序链表(hot100) 
 
 给你链表的头结点 `head` ，请将其按 **升序** 排列并返回 **排序后的链表** 。
 
@@ -3251,61 +3173,218 @@ class Solution {
 
 ```
 
-错误记录：
-250917-2：**归并排序 - 递归终止条件返回null** 
-- 触发：单节点时习惯性返回null
-- 本质：单节点是有效结果，不是无效状态
 
 
-**投机取巧法：先询问允不允许**
+### 23.合并 K 个升序链表（new hot100）
+
+给你一个链表数组，每个链表都已经按升序排列。
+
+请你将所有链表合并到一个升序链表中，返回合并后的链表。
+
+**示例 1：**
+
+```
+输入：lists = [[1,4,5],[1,3,4],[2,6]]
+输出：[1,1,2,3,4,4,5,6]
+解释：链表数组如下：
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+将它们合并到一个有序链表中得到。
+1->1->2->3->4->4->5->6
+```
+
+**示例 2：**
+
+```
+输入：lists = []
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：lists = [[]]
+输出：[]
+```
+
+
+
 ```java
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
-    public ListNode sortList(ListNode head) {
-        // 边界情况处理
-        if (head == null || head.next == null) {
-            return head;
+    /**
+     * 合并多个已排序的链表
+     *
+     * @param lists 包含多个已排序链表的数组
+     * @return 合并后的单个排序链表的头节点
+     */
+    public ListNode mergeKLists(ListNode[] lists) {
+        // 创建一个哑节点作为结果链表的头节点
+        ListNode dummyHead = new ListNode();
+        ListNode currentNode = dummyHead;
+
+        // 创建一个优先队列（最小堆），按节点值排序
+        PriorityQueue<ListNode> auxiliaryQueue = new PriorityQueue<>((a, b) -> a.val - b.val);
+
+        // 将所有链表的头节点加入优先队列
+        for (ListNode curheadNode : lists) {
+            if (curheadNode != null) {
+                auxiliaryQueue.offer(curheadNode);
+            }
         }
-        
-        // 使用哑节点简化结果链表构建
-        ListNode dummy = new ListNode();
-        ListNode cur1 = head, temp, cur = dummy;
-        
-        // 创建最小堆（优先队列），按节点值升序排列
-        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(
-            (a, b) -> a.val - b.val
-        );
-        
-        // 第一步：将所有节点加入堆中
-        // 需要先断开每个节点的next指针，避免后续处理时出现环
-        while (cur1 != null) {
-            temp = cur1.next;    // 保存下一个节点
-            cur1.next = null;    // 断开当前节点的连接
-            minHeap.offer(cur1); // 将当前节点加入堆
-            cur1 = temp;         // 移动到下一个节点
+
+        // 当优先队列不为空时，持续合并
+        while (!auxiliaryQueue.isEmpty()) {
+            // 取出当前最小值的节点
+            ListNode nextHeadNode = auxiliaryQueue.poll();
+            currentNode.next = nextHeadNode;
+            currentNode = currentNode.next;
+
+            // 如果被取出的节点还有下一个节点，将其加入优先队列
+            if (nextHeadNode.next != null) {
+                auxiliaryQueue.offer(nextHeadNode.next);
+            }
         }
-        
-        // 第二步：从堆中依次取出最小元素，重新构建链表
-        while (!minHeap.isEmpty()) {
-            cur.next = minHeap.poll(); // 取出堆顶（最小元素）
-            cur = cur.next;            // 移动结果链表指针
-        }
-        
-        return dummy.next;
+
+        // 返回合并后的链表（去掉哑节点）
+        return dummyHead.next;
     }
+}
+
+```
+
+
+
+
+
+
+
+## 4.设计链表及其应用
+### 707.设计链表
+你可以选择使用单链表或者双链表，设计并实现自己的链表。
+
+单链表中的节点应该具备两个属性：`val` 和 `next` 。`val` 是当前节点的值，`next` 是指向下一个节点的指针/引用。
+
+如果是双向链表，则还需要属性 `prev` 以指示链表中的上一个节点。假设链表中的所有节点下标从 **0** 开始。
+
+实现 `MyLinkedList` 类：
+
+- `MyLinkedList()` 初始化 `MyLinkedList` 对象。
+    
+- `int get(int index)` 获取链表中下标为 `index` 的节点的值。如果下标无效，则返回 `-1` 。
+    
+- `void addAtHead(int val)` 将一个值为 `val` 的节点插入到链表中第一个元素之前。在插入完成后，新节点会成为链表的第一个节点。
+    
+- `void addAtTail(int val)` 将一个值为 `val` 的节点追加到链表中作为链表的最后一个元素。
+    
+- `void addAtIndex(int index, int val)` 将一个值为 `val` 的节点插入到链表中下标为 `index` 的节点之前。如果 `index` 等于链表的长度，那么该节点会被追加到链表的末尾。如果 `index` 比长度更大，该节点将 **不会插入** 到链表中。
+    
+- `void deleteAtIndex(int index)` 如果下标有效，则删除链表中下标为 `index` 的节点。
+    
+
+**示例：**
+
+```
+输入  
+["MyLinkedList", "addAtHead", "addAtTail", "addAtIndex", "get", "deleteAtIndex", "get"]  
+[[], [1], [3], [1, 2], [1], [1], [1]]  
+输出  
+[null, null, null, null, 2, null, 3]  
+​  
+解释  
+MyLinkedList myLinkedList = new MyLinkedList();  
+myLinkedList.addAtHead(1);  
+myLinkedList.addAtTail(3);  
+myLinkedList.addAtIndex(1, 2);    // 链表变为 1->2->3  
+myLinkedList.get(1);              // 返回 2  
+myLinkedList.deleteAtIndex(1);    // 现在，链表变为 1->3  
+myLinkedList.get(1);              // 返回 3
+```
+
+```java
+class MyLinkedList {
+    int size;
+    LinkNode head;
+
+    public MyLinkedList() {
+        size = 0;
+        head = new LinkNode();
+    }
+
+    public int get(int index) {
+        if (index >= size) {
+            return -1;
+        }
+        LinkNode auxiliary = head;
+        for (int i = 0; i <= index; i++) {
+            auxiliary = auxiliary.next;
+        }
+        return auxiliary.val;
+    }
+
+    public void addAtHead(int val) {
+        LinkNode current = new LinkNode();
+        current.val = val;
+        current.next = head.next;
+        head.next = current;
+        size++;
+    }
+
+    public void addAtTail(int val) {
+        LinkNode current = new LinkNode();
+        current.val = val;
+        current.next = null;
+        LinkNode auxiliary = head;
+        while (auxiliary.next != null) {
+            auxiliary = auxiliary.next;
+        }
+        auxiliary.next = current;
+        size++;
+    }
+
+    public void addAtIndex(int index, int val) {
+        if (index > size) {
+            return;
+        }
+        if (index == size) {
+            addAtTail(val);
+            return;
+        }
+        LinkNode current = new LinkNode();
+        current.val = val;
+        LinkNode auxiliary = head;
+        for (int i = 0; i < index; i++) {
+            auxiliary = auxiliary.next;
+        }
+        current.next = auxiliary.next;
+        auxiliary.next = current;
+        size++;
+    }
+
+    public void deleteAtIndex(int index) {
+        if (index >= size) {
+            return;
+        }
+        LinkNode auxiliary = head;
+        for (int i = 0; i < index; i++) {
+            auxiliary = auxiliary.next;
+        }
+        auxiliary.next = auxiliary.next.next;
+        size--;
+    }
+}
+
+class LinkNode {
+    int val;
+    LinkNode next;
 }
 ```
 
-### 146. LRU缓存（hot100）（10.10）
+
+
+### 146. LRU缓存（hot100，难题）
 
 请你设计并实现一个满足 [LRU (最近最少使用) 缓存](https://baike.baidu.com/item/LRU) 约束的数据结构。
 
@@ -3482,7 +3561,7 @@ class LRUCache {
 }
 ```
 
-### 460.LFU（10.11）
+### 460.LFU（非必要、难题）
 
 请你为 [最不经常使用（LFU）](https://baike.baidu.com/item/%E7%BC%93%E5%AD%98%E7%AE%97%E6%B3%95)缓存算法设计并实现数据结构。
 
@@ -3713,178 +3792,167 @@ class LFUCache {
 }
 ```
 
-错误记录：
-250917-1：**LFU缓存 - 把capacity当成需要维护的量**
-- 触发：看到size、minFreq等都在动态维护，以为capacity也要维护
-- 本质：混淆了"配置参数"vs"状态变量"
+
+## 5. 其他类型
 
 
-### 25.K 个一组翻转链表（new hot100）（10.25）
-
-给你链表的头节点 `head` ，每 `k` 个节点一组进行翻转，请你返回修改后的链表。
-
-`k` 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 `k` 的整数倍，那么请将最后剩余的节点保持原有顺序。
-
-你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
 
 
+### 2.两数相加（hot100）
+
+给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
+
+请你将两个数相加，并以相同形式返回一个表示和的链表。
+
+你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
 
 **示例 1：**
 
-![img](https://assets.leetcode.com/uploads/2020/10/03/reverse_ex1.jpg)
+<img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/01/02/addtwonumber1.jpg" alt="img" style="zoom:67%;" />
 
 ```
-输入：head = [1,2,3,4,5], k = 2
-输出：[2,1,4,3,5]
+输入：l1 = [2,4,3], l2 = [5,6,4]
+输出：[7,0,8]
+解释：342 + 465 = 807.
 ```
 
-**示例 2：**
-
-![img](https://assets.leetcode.com/uploads/2020/10/03/reverse_ex2.jpg)
-
-```
-输入：head = [1,2,3,4,5], k = 3
-输出：[3,2,1,4,5]
-```
-
-提示：
-
-- 链表中的节点数目为 `n`
-- `1 <= k <= n <= 5000`
-- `0 <= Node.val <= 1000`
-
-
-
-我的初见，逻辑较为直观。
 
 ```java
 class Solution {
-    public ListNode reverseKGroup(ListNode head, int k) {
-        // 创建一个辅助头节点，用于简化头节点处理逻辑
-        ListNode auxiliaryHead = new ListNode();
-        auxiliaryHead.next = head;
-        ListNode current = auxiliaryHead; // current用于遍历和连接各组
-        ListNode left = null;  // 反转部分的头节点（反转后变为尾节点）
-        ListNode right = head; // 当前待反转部分的起始节点
-        ListNode temp = head;  // 临时节点用于遍历计算长度和反转操作
-        int length = 0;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // 保存原始链表头部（实际上这里可以直接使用l1, l2，不需要额外变量）
+        ListNode head1 = l1, head2 = l2;
         
-        // 计算链表总长度
-        while (temp != null) {
-            length++;
-            temp = temp.next;
+        // 使用哑节点简化边界条件处理
+        ListNode dummy = new ListNode();
+        
+        // cur1, cur2: 遍历两个输入链表的指针
+        // cur: 构建结果链表的指针
+        ListNode cur1 = head1, cur2 = head2, cur = dummy;
+        
+        int carry = 0;  // 进位
+        int sum;        // 当前位的和
+        
+        // 继续循环的条件：还有节点未处理 或 还有进位未处理
+        while(cur1 != null || cur2 != null || carry != 0){
+            // 计算当前位的和：两个链表对应位的值 + 进位
+            // 使用三元运算符处理节点为null的情况
+            sum = (cur1 == null ? 0 : cur1.val) + 
+                  (cur2 == null ? 0 : cur2.val) + carry;
+            
+            // 计算新的进位（向上取整除法）
+            carry = sum / 10;
+            
+            // 当前位的实际值（取余运算）
+            sum = sum % 10;
+            
+            // 创建新节点并连接到结果链表
+            cur.next = new ListNode(sum);
+            cur = cur.next;
+            
+            // 移动指针到下一位，处理null情况
+            cur1 = cur1 == null ? null : cur1.next;
+            cur2 = cur2 == null ? null : cur2.next;
         }
         
-        // 外层循环：处理每一组k个节点的反转
-        for (int i = 0; i < length / k; i++) {
-            // 内层循环：反转当前k个节点
-            for (int j = 0; j < k; j++) {
-                temp = right.next; // 保存下一个节点
-                right.next = left; // 反转指针，将当前节点指向left
-                left = right;      // left移动到当前节点，作为新的反转头
-                right = temp;      // right移动到下一个待处理节点
-            }
-            // 将当前反转后的k个节点连接到已处理部分的末尾
-            current.next = left;
-            // 移动current到当前组的末尾，以便连接下一组
-            for (int j = 0; j < k; j++) {
-                current = current.next;
-            }
-        }
-        // 处理剩余不足k个的节点，直接连接到current的末尾
-        current.next = right;
-        // 返回辅助头节点的下一个节点，即新链表的头
-        return auxiliaryHead.next;
+        // 返回结果链表（跳过哑节点）
+        return dummy.next;
     }
 }
 ```
 
 
 
+### 138.随机链表的复制
+
+给你一个长度为 `n` 的链表，每个节点包含一个额外增加的随机指针 `random` ，该指针可以指向链表中的任何节点或空节点。
+
+构造这个链表的 **深拷贝**。 深拷贝应该正好由 `n` 个 **全新** 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 `next` 指针和 `random` 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。**复制链表中的指针都不应指向原链表中的节点** 。
+
+例如，如果原链表中有 `X` 和 `Y` 两个节点，其中 `X.random --> Y` 。那么在复制链表中对应的两个节点 `x` 和 `y` ，同样有 `x.random --> y` 。
+
+返回复制链表的头节点。
+
+用一个由 `n` 个节点组成的链表来表示输入/输出中的链表。每个节点用一个 `[val, random_index]` 表示：
+
+- `val`：一个表示 `Node.val` 的整数。
+- `random_index`：随机指针指向的节点索引（范围从 `0` 到 `n-1`）；如果不指向任何节点，则为 `null` 。
+
+你的代码 **只** 接受原链表的头节点 `head` 作为传入参数。
 
 
-
-### 23.合并 K 个升序链表（new hot100）（10.20）
-
-给你一个链表数组，每个链表都已经按升序排列。
-
-请你将所有链表合并到一个升序链表中，返回合并后的链表。
 
 **示例 1：**
 
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e1.png)
+
 ```
-输入：lists = [[1,4,5],[1,3,4],[2,6]]
-输出：[1,1,2,3,4,4,5,6]
-解释：链表数组如下：
-[
-  1->4->5,
-  1->3->4,
-  2->6
-]
-将它们合并到一个有序链表中得到。
-1->1->2->3->4->4->5->6
+输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
 ```
 
 **示例 2：**
 
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e2.png)
+
 ```
-输入：lists = []
-输出：[]
+输入：head = [[1,1],[2,1]]
+输出：[[1,1],[2,1]]
 ```
 
 **示例 3：**
 
-```
-输入：lists = [[]]
-输出：[]
-```
+**![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e3.png)**
 
-
+```
+输入：head = [[3,null],[3,0],[3,null]]
+输出：[[3,null],[3,0],[3,null]]
+```
 
 ```java
 class Solution {
-    /**
-     * 合并多个已排序的链表
-     *
-     * @param lists 包含多个已排序链表的数组
-     * @return 合并后的单个排序链表的头节点
-     */
-    public ListNode mergeKLists(ListNode[] lists) {
-        // 创建一个哑节点作为结果链表的头节点
-        ListNode dummyHead = new ListNode();
-        ListNode currentNode = dummyHead;
-
-        // 创建一个优先队列（最小堆），按节点值排序
-        PriorityQueue<ListNode> auxiliaryQueue = new PriorityQueue<>((a, b) -> a.val - b.val);
-
-        // 将所有链表的头节点加入优先队列
-        for (ListNode curheadNode : lists) {
-            if (curheadNode != null) {
-                auxiliaryQueue.offer(curheadNode);
-            }
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        
+        Node cur = head;
+        
+        // HashMap存储 原节点 -> 新节点 的映射关系
+        HashMap<Node, Node> auxMap = new HashMap<>();
+        
+        // 第一次遍历：创建所有新节点，建立映射关系
+        while (cur != null) {
+            Node temp = new Node(cur.val);
+            auxMap.put(cur, temp);
+            cur = cur.next;
         }
-
-        // 当优先队列不为空时，持续合并
-        while (!auxiliaryQueue.isEmpty()) {
-            // 取出当前最小值的节点
-            ListNode nextHeadNode = auxiliaryQueue.poll();
-            currentNode.next = nextHeadNode;
-            currentNode = currentNode.next;
-
-            // 如果被取出的节点还有下一个节点，将其加入优先队列
-            if (nextHeadNode.next != null) {
-                auxiliaryQueue.offer(nextHeadNode.next);
-            }
+        
+        // 重置cur到链表头部
+        cur = head;
+        
+        // 第二次遍历：设置新节点的next和random指针
+        while (cur != null) {
+            Node newNode = auxMap.get(cur);
+            
+            // 设置next指针
+            newNode.next = auxMap.get(cur.next);
+            
+            // 设置random指针
+            newNode.random = auxMap.get(cur.random);
+            
+            cur = cur.next;
         }
-
-        // 返回合并后的链表（去掉哑节点）
-        return dummyHead.next;
+        
+        // 返回新链表的头节点
+        return auxMap.get(head);
     }
 }
-
 ```
 
+
+
 # 哈希表
+
+## 1. 奇特的最优解法，优先使用最优解法
 
 ### 169.多数元素（hot 100）
 
@@ -3906,7 +3974,7 @@ class Solution {
 输出：2
 ```
 
-最佳
+**最佳摩尔投票法**
 ```java
 class Solution {
     /**
@@ -3993,66 +4061,6 @@ class Solution {
 
 
 
-### 242.有效的字母异位词
-给定两个字符串 `s` 和 `t` ，编写一个函数来判断 `t` 是否是 `s` 的 字母异位词。
-
-**示例 1:**
-
-```
-输入: s = "anagram", t = "nagaram"
-输出: true
-```
-
-**示例 2:**
-
-```
-输入: s = "rat", t = "car"
-输出: false
-```
-
-**进阶:** 如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？
-
-```java
-class Solution {
-    
-    /**
-     * 方法1：HashMap解法 - 适用于Unicode字符（进阶情况的最优解）
-     * 时间复杂度：O(n)，空间复杂度：O(k)，k为字符种类数
-     * 
-     * @param s 第一个字符串
-     * @param t 第二个字符串
-     * @return 是否为字母异位词
-     */
-    public boolean isAnagram(String s, String t) {
-        // 长度不同直接返回false，优化性能
-        if (s.length() != t.length()) {
-            return false;
-        }
-        
-        // 使用HashMap统计字符出现次数
-        HashMap<Character, Integer> auxiliaryMap = new HashMap<>();
-        
-        // 遍历字符串s，统计每个字符出现次数
-        for (int i = 0; i < s.length(); i++) {
-            auxiliaryMap.put(s.charAt(i), auxiliaryMap.getOrDefault(s.charAt(i), 0) + 1);
-        }
-        
-        // 遍历字符串t，减少对应字符的计数
-        for (int i = 0; i < t.length(); i++) {
-            auxiliaryMap.put(t.charAt(i), auxiliaryMap.getOrDefault(t.charAt(i), 0) - 1);
-        }
-        
-        // 检查所有字符的计数是否都为0
-        for (int count : auxiliaryMap.values()) {
-            if (count != 0) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-```
-
 ### 448.找出数组中消失的数字（hot100）
 
 给你一个含 `n` 个整数的数组 `nums` ，其中 `nums[i]` 在区间 `[1, n]` 内。请你找出所有在 `[1, n]` 范围内但没有出现在 `nums` 中的数字，并以数组的形式返回结果。
@@ -4070,6 +4078,34 @@ class Solution {
 输入：nums = [1,1]
 输出：[2]
 ```
+
+**最优解应该是原地标记法,空间复杂度O(1):**
+
+```java
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        
+        // 第一次遍历:将每个数字对应的索引位置标记为负数
+        for (int i = 0; i < nums.length; i++) {
+            int index = Math.abs(nums[i]) - 1;
+            if (nums[index] > 0) {
+                nums[index] = -nums[index];
+            }
+        }
+        
+        // 第二次遍历:索引位置为正数的,说明该数字消失了
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0) {
+                result.add(i + 1);
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
 
 ```java
 /**
@@ -4110,66 +4146,8 @@ class Solution {
 
 
 
-### 349.两个数组的交集（10.31）
 
-给定两个数组 `nums1` 和 `nums2` ，返回 _它们的 交集_ 。输出结果中的每个元素一定是 **唯一** 的。我们可以 **不考虑输出结果的顺序** 。
-
-**示例 1：**
-
-```
-输入：nums1 = [1,2,2,1], nums2 = [2,2]
-输出：[2]
-
-```
-**示例 2：**
-
-```
-输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
-输出：[9,4]
-解释：[4,9] 也是可通过的
-```
-
-```java
-/**
- * Solution类用于寻找两个数组的交集
- * 它提供了一个公共方法来实现这一功能
- */
-class Solution {
-    /**
-     * 寻找两个数组的交集
-     * 该方法通过遍历数组并将结果存储在新的列表中来找到两个数组的交集元素
-     * 
-     * @param nums1 第一个数组，包含一组整数
-     * @param nums2 第二个数组，包含另一组整数
-     * @return 交集数组，包含两个数组中都出现的元素
-     */
-    public int[] intersection(int[] nums1, int[] nums2) {
-        // 创建一个ArrayList来存储最终的交集结果
-        ArrayList<Integer> resultList = new ArrayList<>();
-        // 创建一个HashSet用于辅助计算交集，避免重复元素的影响
-        HashSet<Integer> auxiliarySet = new HashSet<>();
-        
-        // 遍历第一个数组，将元素添加到辅助集合中
-        for (int i = 0; i < nums1.length; i++) {
-            auxiliarySet.add(nums1[i]);
-        }
-        
-        // 遍历第二个数组，检查元素是否在辅助集合中
-        for (int i = 0; i < nums2.length; i++) {
-            // 如果元素在辅助集合中，则添加到结果列表中，并从辅助集合中移除，以避免重复添加
-            if (auxiliarySet.contains(nums2[i])) {
-                resultList.add(nums2[i]);
-                auxiliarySet.remove(nums2[i]);
-            }
-        }
-        
-        // 将结果列表转换为整数数组并返回
-        return resultList.stream().mapToInt(i -> i).toArray();
-    }
-}
-```
-
-### 202.快乐数（10.27，很有意思）
+### 202.快乐数
 
 编写一个算法来判断一个数 `n` 是不是快乐数。
 
@@ -4200,6 +4178,58 @@ class Solution {
 输出：false
 ```
 
+最优，快慢指针解法
+```java
+/**
+ * Solution类提供了一个方法来判断一个数字是否为快乐数
+ * 使用快慢指针法，空间复杂度O(1)
+ */
+class Solution {
+    /**
+     * 判断给定的数字n是否为快乐数
+     * 使用快慢指针检测循环，类似于链表环检测
+     * 
+     * @param n 待判断的数字
+     * @return 如果n是快乐数，返回true；否则返回false
+     */
+    public boolean isHappy(int n) {
+        int slow = n;
+        int fast = n;
+        
+        // 快慢指针移动，直到相遇
+        do {
+            slow = calculateTheSumOfSquares(slow);           // 慢指针走一步
+            fast = calculateTheSumOfSquares(
+                       calculateTheSumOfSquares(fast));      // 快指针走两步
+        } while (slow != fast);
+        
+        // 如果相遇点是1，说明是快乐数
+        // 如果相遇点不是1，说明陷入了循环，不是快乐数
+        return slow == 1;
+    }
+
+    /**
+     * 计算给定数字的各位平方和
+     * 
+     * @param num 待计算的数字
+     * @return 计算结果，即各位平方和
+     */
+    int calculateTheSumOfSquares(int num) {
+        int sum = 0;
+        // 遍历数字的每一位，计算平方和
+        while (num > 0) {
+            // 取出最后一位数字，计算其平方并累加到sum上
+            sum += (num % 10) * (num % 10);
+            // 将数字除以10，移除最后一位
+            num = num / 10;
+        }
+        return sum;
+    }
+}
+```
+
+
+常见解法
 ```java
 /**
  * Solution类提供了一个方法来判断一个数字是否为快乐数
@@ -4251,6 +4281,9 @@ class Solution {
 
 ```
 
+
+## 2. 双（多）指针最优解法，优先使用最优解法
+
 ### 1.两数之和（hot100）
 
 给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
@@ -4298,129 +4331,8 @@ class Solution {
 }
 ```
 
-### 454.四数相加II
 
-给你四个整数数组 `nums1`、`nums2`、`nums3` 和 `nums4` ，数组长度都是 `n` ，请你计算有多少个元组 `(i, j, k, l)` 能满足：
-
-- `0 <= i, j, k, l < n`
-- `nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0`
-
-**示例 1：**
-
-```
-输入：nums1 = [1,2], nums2 = [-2,-1], nums3 = [-1,2], nums4 = [0,2]
-输出：2
-解释：
-两个元组如下：
-1. (0, 0, 0, 1) -> nums1[0] + nums2[0] + nums3[0] + nums4[1] = 1 + (-2) + (-1) + 2 = 0
-2. (1, 1, 0, 0) -> nums1[1] + nums2[1] + nums3[0] + nums4[0] = 2 + (-1) + (-1) + 0 = 0
-```
-
-```java
-class Solution {
-    /**
-     * 计算四个数组中，选取的任意四个数相加等于0的组合数量
-     * 
-     * @param nums1 第一个整数数组
-     * @param nums2 第二个整数数组
-     * @param nums3 第三个整数数组
-     * @param nums4 第四个整数数组
-     * @return 满足条件的组合数量
-     */
-    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-        // 辅助哈希表，用于存储nums1和nums2中两两元素相加的和及其出现的次数
-        HashMap<Integer, Integer> auxiliaryMap = new HashMap<>();
-        // 最终结果的计数器
-        int resultCount = 0, tempNum;
-        
-        // 遍历nums1和nums2数组，计算所有可能的两数之和，并记录每个和出现的次数
-        for (int i = 0; i < nums1.length; i++) {
-            for (int j = 0; j < nums2.length; j++) {
-                // 计算当前的和，并获取这个和当前出现的次数，然后次数加1
-                tempNum = auxiliaryMap.getOrDefault(nums1[i] + nums2[j], 0) + 1;
-                // 将计算得到的和及更新后的次数存入辅助哈希表
-                auxiliaryMap.put(nums1[i] + nums2[j], tempNum);
-            }
-        }
-        
-        // 遍历nums3和nums4数组，查找与nums3[i] + nums4[j]和为0的组合数量
-        for (int i = 0; i < nums3.length; i++) {
-            for (int j = 0; j < nums4.length; j++) {
-                // 从辅助哈希表中查找与nums3[i] + nums4[j]和为0的次数，并累加到结果计数器
-                resultCount += auxiliaryMap.getOrDefault(0 - nums3[i] - nums4[j], 0);
-            }
-        }
-        
-        // 返回满足条件的组合数量
-        return resultCount;
-    }
-}
-
-```
-
-
-
-### 383.赎金信
-
-给你两个字符串：`ransomNote` 和 `magazine` ，判断 `ransomNote` 能不能由 `magazine` 里面的字符构成。
-
-如果可以，返回 `true` ；否则返回 `false` 。
-
-`magazine` 中的每个字符只能在 `ransomNote` 中使用一次。
-
-**示例 1：**
-
-```
-输入：ransomNote = "a", magazine = "b"
-输出：false
-```
-
-**示例 2：**
-
-```
-输入：ransomNote = "aa", magazine = "ab"
-输出：false
-```
-
-**示例 3：**
-
-```
-输入：ransomNote = "aa", magazine = "aab"
-输出：true
-```
-
-```java
-class Solution {
-    /**
-     * 判断是否可以使用杂志字符串中的字符构成勒索信字符串
-     * 
-     * @param ransomNote 勒索信字符串
-     * @param magazine 杂志字符串
-     * @return 如果可以构成，返回true；否则返回false
-     */
-    public boolean canConstruct(String ransomNote, String magazine) {
-        // 创建一个辅助数组，记录每个字母的出现次数
-        int[] auxiliaryArray = new int[26];
-        // 遍历杂志字符串，统计每个字符出现的次数
-        for (int i = 0; i < magazine.length(); i++) {
-            auxiliaryArray[magazine.charAt(i) - 'a']++;
-        }
-
-        // 遍历勒索信字符串，减去对应字符的出现次数
-        for (int i = 0; i < ransomNote.length(); i++) {
-            auxiliaryArray[ransomNote.charAt(i) - 'a']--;
-            // 如果某个字符的出现次数小于0，说明无法构成勒索信，返回false
-            if (auxiliaryArray[ransomNote.charAt(i) - 'a'] < 0) {
-                return false;
-            }
-        }
-        // 如果能完整遍历勒索信字符串而没有返回false，说明可以构成，返回true
-        return true;
-    }
-}
-```
-
-### 15.三数之和（hot100）（10.31）
+### 15.三数之和（hot100）
 
 给你一个整数数组 `nums` ，判断是否存在三元组 `[nums[i], nums[j], nums[k]]` 满足 `i != j`、`i != k` 且 `j != k` ，同时还满足 `nums[i] + nums[j] + nums[k] == 0` 。请
 
@@ -4604,6 +4516,317 @@ class Solution {
 
 ```
 
+
+## 3. 使用哈希表才能实现最优解的
+
+
+### 454.四数相加II
+
+给你四个整数数组 `nums1`、`nums2`、`nums3` 和 `nums4` ，数组长度都是 `n` ，请你计算有多少个元组 `(i, j, k, l)` 能满足：
+
+- `0 <= i, j, k, l < n`
+- `nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0`
+
+**示例 1：**
+
+```
+输入：nums1 = [1,2], nums2 = [-2,-1], nums3 = [-1,2], nums4 = [0,2]
+输出：2
+解释：
+两个元组如下：
+1. (0, 0, 0, 1) -> nums1[0] + nums2[0] + nums3[0] + nums4[1] = 1 + (-2) + (-1) + 2 = 0
+2. (1, 1, 0, 0) -> nums1[1] + nums2[1] + nums3[0] + nums4[0] = 2 + (-1) + (-1) + 0 = 0
+```
+
+```java
+class Solution {
+    /**
+     * 计算四个数组中，选取的任意四个数相加等于0的组合数量
+     * 
+     * @param nums1 第一个整数数组
+     * @param nums2 第二个整数数组
+     * @param nums3 第三个整数数组
+     * @param nums4 第四个整数数组
+     * @return 满足条件的组合数量
+     */
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        // 辅助哈希表，用于存储nums1和nums2中两两元素相加的和及其出现的次数
+        HashMap<Integer, Integer> auxiliaryMap = new HashMap<>();
+        // 最终结果的计数器
+        int resultCount = 0, tempNum;
+        
+        // 遍历nums1和nums2数组，计算所有可能的两数之和，并记录每个和出现的次数
+        for (int i = 0; i < nums1.length; i++) {
+            for (int j = 0; j < nums2.length; j++) {
+                // 计算当前的和，并获取这个和当前出现的次数，然后次数加1
+                tempNum = auxiliaryMap.getOrDefault(nums1[i] + nums2[j], 0) + 1;
+                // 将计算得到的和及更新后的次数存入辅助哈希表
+                auxiliaryMap.put(nums1[i] + nums2[j], tempNum);
+            }
+        }
+        
+        // 遍历nums3和nums4数组，查找与nums3[i] + nums4[j]和为0的组合数量
+        for (int i = 0; i < nums3.length; i++) {
+            for (int j = 0; j < nums4.length; j++) {
+                // 从辅助哈希表中查找与nums3[i] + nums4[j]和为0的次数，并累加到结果计数器
+                resultCount += auxiliaryMap.getOrDefault(0 - nums3[i] - nums4[j], 0);
+            }
+        }
+        
+        // 返回满足条件的组合数量
+        return resultCount;
+    }
+}
+
+```
+
+
+
+
+
+### 349. 两个数组的交集
+
+给定两个数组 `nums1` 和 `nums2` ，返回 _它们的 交集_ 。输出结果中的每个元素一定是 **唯一** 的。我们可以 **不考虑输出结果的顺序** 。
+
+**示例 1：**
+
+```
+输入：nums1 = [1,2,2,1], nums2 = [2,2]
+输出：[2]
+```
+**示例 2：**
+
+```
+输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出：[9,4]
+解释：[4,9] 也是可通过的
+```
+
+**如果用list的话，那就要注意怎么去重的**
+```java
+/**
+ * Solution类用于寻找两个数组的交集
+ * 它提供了一个公共方法来实现这一功能
+ */
+class Solution {
+    /**
+     * 寻找两个数组的交集
+     * 该方法通过遍历数组并将结果存储在新的列表中来找到两个数组的交集元素
+     * 
+     * @param nums1 第一个数组，包含一组整数
+     * @param nums2 第二个数组，包含另一组整数
+     * @return 交集数组，包含两个数组中都出现的元素
+     */
+    public int[] intersection(int[] nums1, int[] nums2) {
+        // 创建一个ArrayList来存储最终的交集结果
+        ArrayList<Integer> resultList = new ArrayList<>();
+        // 创建一个HashSet用于辅助计算交集，避免重复元素的影响
+        HashSet<Integer> auxiliarySet = new HashSet<>();
+        
+        // 遍历第一个数组，将元素添加到辅助集合中
+        for (int i = 0; i < nums1.length; i++) {
+            auxiliarySet.add(nums1[i]);
+        }
+        
+        // 遍历第二个数组，检查元素是否在辅助集合中
+        for (int i = 0; i < nums2.length; i++) {
+            // 如果元素在辅助集合中，则添加到结果列表中，并从辅助集合中移除，以避免重复添加
+            if (auxiliarySet.contains(nums2[i])) {
+                resultList.add(nums2[i]);
+                auxiliarySet.remove(nums2[i]);
+            }
+        }
+        
+        // 将结果列表转换为整数数组并返回
+        return resultList.stream().mapToInt(i -> i).toArray();
+    }
+}
+```
+
+
+
+
+### 242.有效的字母异位词
+给定两个字符串 `s` 和 `t` ，编写一个函数来判断 `t` 是否是 `s` 的 字母异位词。
+
+**示例 1:**
+
+```
+输入: s = "anagram", t = "nagaram"
+输出: true
+```
+
+**示例 2:**
+
+```
+输入: s = "rat", t = "car"
+输出: false
+```
+
+**进阶:** 如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？
+
+```java
+class Solution {
+    
+    /**
+     * 方法1：HashMap解法 - 适用于Unicode字符（进阶情况的最优解）
+     * 时间复杂度：O(n)，空间复杂度：O(k)，k为字符种类数
+     * 
+     * @param s 第一个字符串
+     * @param t 第二个字符串
+     * @return 是否为字母异位词
+     */
+    public boolean isAnagram(String s, String t) {
+        // 长度不同直接返回false，优化性能
+        if (s.length() != t.length()) {
+            return false;
+        }
+        
+        // 使用HashMap统计字符出现次数
+        HashMap<Character, Integer> auxiliaryMap = new HashMap<>();
+        
+        // 遍历字符串s，统计每个字符出现次数
+        for (int i = 0; i < s.length(); i++) {
+            auxiliaryMap.put(s.charAt(i), auxiliaryMap.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        
+        // 遍历字符串t，减少对应字符的计数
+        for (int i = 0; i < t.length(); i++) {
+            auxiliaryMap.put(t.charAt(i), auxiliaryMap.getOrDefault(t.charAt(i), 0) - 1);
+        }
+        
+        // 检查所有字符的计数是否都为0
+        for (int count : auxiliaryMap.values()) {
+            if (count != 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+```
+
+
+
+### 383.赎金信（这道题本质上和上面这道题没啥区别）
+
+给你两个字符串：`ransomNote` 和 `magazine` ，判断 `ransomNote` 能不能由 `magazine` 里面的字符构成。
+
+如果可以，返回 `true` ；否则返回 `false` 。
+
+`magazine` 中的每个字符只能在 `ransomNote` 中使用一次。
+
+**示例 1：**
+
+```
+输入：ransomNote = "a", magazine = "b"
+输出：false
+```
+
+**示例 2：**
+
+```
+输入：ransomNote = "aa", magazine = "ab"
+输出：false
+```
+
+**示例 3：**
+
+```
+输入：ransomNote = "aa", magazine = "aab"
+输出：true
+```
+
+**字母异位词解法**：优先用这个
+
+```java
+class Solution {
+    /**
+     * 判断是否可以使用杂志字符串中的字符构成勒索信字符串
+     * 使用HashMap解法 - 适用于Unicode字符的通用最优解
+     * 时间复杂度：O(n)，空间复杂度：O(k)，k为字符种类数
+     * 
+     * @param ransomNote 勒索信字符串
+     * @param magazine 杂志字符串
+     * @return 如果可以构成，返回true；否则返回false
+     */
+    public boolean canConstruct(String ransomNote, String magazine) {
+        // 变量命名：t代表目标字符串(ransomNote)，s代表源字符串(magazine)
+        String t = ransomNote, s = magazine;
+        
+        // 使用HashMap统计字符出现次数
+        // Key: 字符, Value: 该字符在magazine中出现的次数
+        HashMap<Character, Integer> auxiliaryMap = new HashMap<>();
+        
+        // 第一步：遍历源字符串s(magazine)，统计每个字符出现次数
+        // 相当于建立"字符仓库"，记录每个字符的库存
+        for (int i = 0; i < s.length(); i++) {
+            // getOrDefault: 如果字符不存在返回0，存在则返回当前计数
+            // 然后+1表示该字符的计数增加
+            auxiliaryMap.put(s.charAt(i), auxiliaryMap.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        
+        // 第二步：遍历目标字符串t(ransomNote)，减少对应字符的计数
+        // 相当于从"字符仓库"中取出字符
+        for (int i = 0; i < t.length(); i++) {
+            // 每使用一个字符，对应计数-1
+            auxiliaryMap.put(t.charAt(i), auxiliaryMap.getOrDefault(t.charAt(i), 0) - 1);
+        }
+        
+        // 第三步：检查所有字符的计数是否都 >= 0
+        // 如果某个字符的计数 < 0，说明magazine中该字符不够用
+        for (int count : auxiliaryMap.values()) {
+            if (count < 0) {
+                return false;  // 字符不够用，无法构成勒索信
+            }
+        }
+        
+        // 所有字符计数都 >= 0，说明magazine的字符足够构成ransomNote
+        // 注意：这里允许有剩余字符(count > 0)，这是与字母异位词的区别
+        return true;
+    }
+}
+```
+
+
+**这个也是优秀解法，但是不是一套记忆模板**
+
+```java
+class Solution {
+    /**
+     * 判断是否可以使用杂志字符串中的字符构成勒索信字符串
+     * 
+     * @param ransomNote 勒索信字符串
+     * @param magazine 杂志字符串
+     * @return 如果可以构成，返回true；否则返回false
+     */
+    public boolean canConstruct(String ransomNote, String magazine) {
+        // 创建一个辅助数组，记录每个字母的出现次数
+        int[] auxiliaryArray = new int[26];
+        // 遍历杂志字符串，统计每个字符出现的次数
+        for (int i = 0; i < magazine.length(); i++) {
+            auxiliaryArray[magazine.charAt(i) - 'a']++;
+        }
+
+        // 遍历勒索信字符串，减去对应字符的出现次数
+        for (int i = 0; i < ransomNote.length(); i++) {
+            auxiliaryArray[ransomNote.charAt(i) - 'a']--;
+            // 如果某个字符的出现次数小于0，说明无法构成勒索信，返回false
+            if (auxiliaryArray[ransomNote.charAt(i) - 'a'] < 0) {
+                return false;
+            }
+        }
+        // 如果能完整遍历勒索信字符串而没有返回false，说明可以构成，返回true
+        return true;
+    }
+}
+```
+
+
+
+
+
+
 ### 49.字母异位词分组（hot100）
 
 给你一个字符串数组，请你将 **字母异位词** 组合在一起。可以按任意顺序返回结果列表。
@@ -4715,7 +4938,7 @@ class Solution {
 
 
 
-### 621.任务调度器（hot100）(10.26)
+### 621.任务调度器（hot100）
 
 给你一个用字符数组 `tasks` 表示的 CPU 需要执行的任务列表，用字母 A 到 Z 表示，以及一个冷却时间 `n`。每个周期或时间间隔允许完成一项任务。任务可以按任何顺序完成，但有一个限制：两个 **相同种类** 的任务之间必须有长度为 `n` 的冷却时间。
 
@@ -4810,7 +5033,7 @@ class Solution {
 }
 ```
 
-### 541.反转字符串II（10.7）
+### 541.反转字符串II
 
 给定一个字符串 `s` 和一个整数 `k`，从字符串开头算起，每计数至 `2k` 个字符，就反转这 `2k` 字符中的前 `k` 个字符。
 
@@ -4836,45 +5059,63 @@ class Solution {
     /**
      * 反转字符串s中每2k个字符的前k个字符
      * 
+     * 算法思路：
+     * 1. 将字符串分成若干个2k长度的周期
+     * 2. 每个周期中，反转前k个字符，保留后k个字符
+     * 3. 对于不足2k的剩余部分，如果≥k则反转前k个，否则反转全部
+     * 
+     * 时间复杂度：O(n)，其中n是字符串长度
+     * 空间复杂度：O(1)，只使用了常数额外空间（不计返回值）
+     * 
      * @param s 输入的字符串
      * @param k 每2k个字符中要反转的字符数量
      * @return 反转后的字符串
      */
     public String reverseStr(String s, int k) {
         // 将字符串转换为字符数组，便于逐个字符操作
-        char[] str = s.toCharArray();
-        // 计算完整周期的数量，每个周期包含2k个字符
-        int numberOfCycles = str.length / (2 * k);
-        // 遍历每个完整周期，对每个周期的前k个字符进行反转
-        for (int i = 0; i < numberOfCycles; i++) {
-            reverseString(str, i * 2 * k, i * 2 * k + k - 1);
+        char[] chars = s.toCharArray();
+
+        // 计算能组成完整周期(2k个字符)的数量
+        // 例如：s="abcdefghij", k=3时，完整周期数 = 10/6 = 1
+        for (int i = 0; i < s.length() / (2 * k); i++) {
+            // 对第i个周期的前k个字符进行反转
+            // 起始位置：i*2*k，结束位置：i*2*k + k - 1
+            fun1(chars, i * 2 * k, i * 2 * k + k - 1);
         }
-        // 如果剩余字符数量大于等于k，对最后一个周期的前k个字符进行反转
-        if (str.length % (2 * k) >= k) {
-            reverseString(str, numberOfCycles * 2 * k, numberOfCycles * 2 * k + k - 1);
-        } else {
-            // 否则，对剩余的所有字符进行反转
-            reverseString(str, numberOfCycles * 2 * k, str.length - 1);
+
+        // 处理剩余不足2k的字符部分
+        int num1 = s.length() / (2 * k);      // 完整周期的数量
+        int num2 = s.length() % (2 * k);      // 剩余的字符数量
+        
+        // 剩余字符数量≥k时，说明至少有k个字符可以反转
+        // 这k个字符是剩余部分的前k个
+        if (num2 >= k) {
+            fun1(chars, num1 * 2 * k, num1 * 2 * k + k - 1);
+        } else{
+            fun1(chars, num1 * 2 * k, s.length() - 1);
         }
+
         // 将字符数组转换回字符串并返回
-        return String.valueOf(str);
+        return new String(chars);
     }
 
     /**
-     * 辅助函数：反转指定位置之间的字符
+     * 辅助函数：反转指定范围内的字符
+     * 使用双指针技术，从两端向中间交换字符
      * 
-     * @param s   待操作的字符数组
-     * @param left 左边界位置
-     * @param right 右边界位置
+     * @param chars 待操作的字符数组
+     * @param i     左边界位置（包含）
+     * @param j     右边界位置（包含）
      */
-    void reverseString(char[] s, int left, int right) {
-        // 使用双指针技术从两端交换字符，直到左指针大于等于右指针
-        while (left < right) {
-            char tempChar = s[left];
-            s[left] = s[right];
-            s[right] = tempChar;
-            left++;
-            right--;
+    static void fun1(char[] chars, int i, int j) {
+        // 使用双指针法反转：左右指针相向而行，交换指针所指的字符
+        while (i <= j) {
+            // 交换chars[i]和chars[j]
+            char temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
+            i++;
+            j--;
         }
     }
 }
@@ -5041,7 +5282,7 @@ class Solution {
 }
 ```
 
-### 151.翻转字符串里的单词(10.11)
+### 151.翻转字符串里的单词
 
 给你一个字符串 `s` ，请你反转字符串中 **单词** 的顺序。
 
@@ -5060,69 +5301,65 @@ class Solution {
 
 ```java
 class Solution {
-    /**
-     * 反转字符串中的单词
-     * 
-     * @param s 输入的字符串
-     * @return 反转后的字符串
-     */
     public String reverseWords(String s) {
-        // 将字符串转换为字符数组
-        char[] str = s.toCharArray();
-        // 初始化左右指针
-        int left = 0, right = str.length - 1;
-        // 移除前导空格
-        while (str[left] == ' ') {
+        // 1. 去除首尾空格
+        int left = 0, right = s.length() - 1;
+        while (left <= right && s.charAt(left) == ' ') left++;
+        while (left <= right && s.charAt(right) == ' ') right--;
+        
+        // 边界：全是空格的情况
+        if (left > right) return "";
+
+        // 2. 收集有效字符（去重空格）
+        StringBuilder sb = new StringBuilder();
+        while (left <= right) {
+            char c = s.charAt(left);
+            // 逻辑：当前不是空格，或者sb最后一个字符不是空格（避免连续空格）
+            if (c != ' ' || sb.charAt(sb.length() - 1) != ' ') {
+                sb.append(c);
+            }
             left++;
         }
-        // 移除尾随空格
-        while (str[right] == ' ') {
-            right--;
-        }
-        // 将整个字符串反转
-        reverseString(str, left, right);
-        // 移除多余空格
-        for (int i = left; i <= right; i++) {
-            if (str[i] == ' ' && str[i] == str[i - 1]) {
-                continue;
+
+        // 3. 核心优化：利用 StringBuilder 直接整体翻转
+        // 此时 "the sky is blue" -> "eulb si yks eht"
+        sb.reverse();
+
+        // 4. 转为数组进行单词内部翻转
+        char[] arr = sb.toString().toCharArray();
+        int n = arr.length;
+        int start = 0; // 对应你的 j
+
+        for (int i = 0; i < n; i++) {
+            // 遇到空格，翻转前面的单词
+            if (arr[i] == ' ') {
+                reverse(arr, start, i - 1);
+                start = i + 1; // 更新 j 到下一个单词开头
             }
-            str[count++] = str[i];
-        }
-        // 反转每个单词
-        for (int i = 0, j = 0; i < count; i++) {
-            if (str[i] == ' ') {
-                reverseString(str, j, i - 1);
-                j = i + 1;
-            } else if (i == count - 1) {
-                reverseString(str, j, i);
+            // 遇到结尾，翻转最后一个单词
+            else if (i == n - 1) {
+                reverse(arr, start, i);
             }
         }
-        // 返回处理后的字符串
-        return String.valueOf(str).substring(0, count);
+
+        return new String(arr);
     }
 
-    /**
-     * 反转字符数组中指定区间的字符
-     * 
-     * @param s 字符数组
-     * @param left 左边界
-     * @param right 右边界
-     */
-    void reverseString(char[] s, int left, int right) {
-        // 使用双指针技术进行反转
-        while (left < right) {
-            char tempChar = s[left];
-            s[left] = s[right];
-            s[right] = tempChar;
-            left++;
-            right--;
+    // 你的 fun2
+    private void reverse(char[] arr, int i, int j) {
+        while (i < j) {
+            char temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
         }
     }
 }
 
 ```
 
-### 28.找出字符串中第一个匹配项的下标(KMP)  (10.7)
+### 28.找出字符串中第一个匹配项的下标(KMP) 
 
 给你两个字符串 `haystack` 和 `needle` ，请你在 `haystack` 字符串中找出 `needle` 字符串的第一个匹配项的下标（下标从 0 开始）。如果 `needle` 不是 `haystack` 的一部分，则返回 `-1` 。
 
@@ -5378,7 +5615,7 @@ class Solution {
 }
 ```
 
-### 76.最小覆盖子串（hot100）(10.7)
+### 76.最小覆盖子串（hot100）(10.14)
 
 给你一个字符串 `s` 、一个字符串 `t` 。返回 `s` 中涵盖 `t` 所有字符的最小子串。如果 `s` 中不存在涵盖 `t` 所有字符的子串，则返回空字符串 `""` 。
 
@@ -5415,57 +5652,87 @@ class Solution {
 ```java
 class Solution {
     /**
-     * 寻找字符串s中包含字符串t的最小子串
+     * 寻找字符串 s 中包含字符串 t 所有字符的最小子串
+     * 使用滑动窗口算法
      * 
-     * @param s 字符串s
-     * @param t 字符串t
-     * @return 返回包含字符串t的最小子串，如果不存在则返回空字符串
+     * @param s 源字符串
+     * @param t 目标字符串(需要被覆盖的字符)
+     * @return 最小覆盖子串,如果不存在则返回空字符串
      */
     public String minWindow(String s, String t) {
-        // 使用哈希表辅助存储字符串t中每个字符的出现次数
-        HashMap<Character, Integer> auxiliaryMap = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            auxiliaryMap.put(t.charAt(i), auxiliaryMap.getOrDefault(t.charAt(i), 0) + 1);
+        // 边界条件: 如果 t 比 s 长,不可能找到覆盖子串
+        if(t.length() > s.length()){
+            return "";
         }
-
-        // 初始化最小窗口的长度为最大值，左侧位置为0，start和end作为窗口的左右指针，count表示未覆盖的t字符数
-        int minLength = Integer.MAX_VALUE, minLeft = 0, start = 0, end = 0, count = t.length();
-
-        // 遍历字符串s
-        while (end < s.length()) {
-            char endChar = s.charAt(end);
-            // 如果当前字符在t中存在
-            if (auxiliaryMap.containsKey(endChar)) {
-                // 如果当前字符在辅助哈希表中的计数大于0，说明需要覆盖，count减1
-                if (auxiliaryMap.get(endChar) > 0) {
-                    count--;
+        
+        // 辅助HashMap: 记录 t 中每个字符需要的数量
+        // key: 字符, value: 需要的数量(正数表示还需要,0表示刚好,负数表示多余)
+        HashMap<Character, Integer> auxMap = new HashMap<>();
+        for(char c : t.toCharArray()){
+            auxMap.put(c, auxMap.getOrDefault(c, 0) + 1);
+        }
+        
+        // left, right: 滑动窗口的左右指针
+        int left = 0, right = 0;
+        // count: 还需要满足的字符总数(当count=0时表示窗口已包含t的所有字符)
+        int count = t.length();
+        // minLength: 记录最小窗口的长度
+        int minLength = Integer.MAX_VALUE;
+        // minLeft: 记录最小窗口的起始位置
+        int minLeft = 0;
+        
+        // 外层循环: 右指针向右扩展窗口
+        while(right < s.length()){
+            // 获取右指针指向的字符
+            char rightChar = s.charAt(right);
+            
+            // 如果该字符是 t 中需要的字符
+            if(auxMap.containsKey(rightChar)){
+                // 先更新: 消费一个该字符,需求量-1
+                auxMap.put(rightChar, auxMap.get(rightChar) - 1);
+                
+                // 后判断: 如果更新后的需求量 >= 0,说明这次消费是有效的
+                // (满足了一个需求或刚好满足最后一个需求)
+                if(auxMap.get(rightChar) >= 0){
+                    count--;  // 需要满足的字符总数-1
                 }
-                // 当前字符的计数减1
-                auxiliaryMap.put(endChar, auxiliaryMap.get(endChar) - 1);
+                // 注意: 如果需求量变成负数(如-1,-2...),说明该字符多余了,不影响count
             }
-            end++;
-
-            // 当count为0时，表示找到了一个包含t的子串
-            while (count == 0) {
-                // 如果当前窗口长度小于最小长度，更新最小长度和左侧位置
-                if (end - start < minLength) {
-                    minLength = end - start;
-                    minLeft = start;
+            
+            // 右指针右移,扩大窗口
+            right++;
+            
+            // 内层循环: 当窗口已包含t的所有字符时(count=0),尝试收缩左边界
+            while(count == 0){
+                // 更新最小窗口: 如果当前窗口更小,记录其位置和长度
+                if(right - left < minLength){
+                    minLeft = left;
+                    minLength = right - left;
                 }
-                char startChar = s.charAt(start);
-                // 移动左指针，重新调整窗口
-                if (auxiliaryMap.containsKey(startChar)) {
-                    // 将覆盖的字符计数加1
-                    auxiliaryMap.put(startChar, auxiliaryMap.get(startChar) + 1);
-                    // 如果计数大于0，表示该字符还需要被覆盖，count加1
-                    if (auxiliaryMap.get(startChar) > 0) {
-                        count++;
+                
+                // 获取左指针指向的字符
+                char leftChar = s.charAt(left);
+                
+                // 如果该字符是 t 中需要的字符
+                if(auxMap.containsKey(leftChar)){
+                    // 先判断: 如果当前需求量 >= 0,说明移除这个字符会导致需求不满足
+                    if(auxMap.get(leftChar) >= 0){
+                        count++;  // 需要满足的字符总数+1
                     }
+                    // 注意: 如果需求量是负数(如-1),说明该字符本来就多余,移除不影响count
+                    
+                    // 后更新: 移除一个该字符,需求量+1
+                    auxMap.put(leftChar, auxMap.get(leftChar) + 1);
                 }
-                start++;
+                
+                // 左指针右移,缩小窗口
+                left++;
+                
+                // 当count变成非0时,退出内层循环,继续扩展右边界
             }
         }
-        // 根据最小长度从s中提取最小子串
+        
+        // 返回结果: 如果找到了最小窗口,返回对应子串;否则返回空字符串
         return minLength == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minLength);
     }
 }
@@ -5634,11 +5901,11 @@ class Solution {
 
 
 
-### **43.字符串相乘** *
+### **43.字符串相乘** （10.19）
 
 给定两个以字符串形式表示的非负整数 `num1` 和 `num2`，返回 `num1` 和 `num2` 的乘积，它们的乘积也表示为字符串形式。
 
-**注意：**不能使用任何内置的 BigInteger 库或直接将输入转换为整数。
+**注意：** 不能使用任何内置的 BigInteger 库或直接将输入转换为整数。
 
 
 
