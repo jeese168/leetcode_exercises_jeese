@@ -5302,55 +5302,43 @@ class Solution {
 ```java
 class Solution {
     public String reverseWords(String s) {
-        // 1. 去除首尾空格
-        int left = 0, right = s.length() - 1;
-        while (left <= right && s.charAt(left) == ' ') left++;
-        while (left <= right && s.charAt(right) == ' ') right--;
-        
-        // 边界：全是空格的情况
-        if (left > right) return "";
+        char[] chars = s.toCharArray();
+        int j = 0;
 
-        // 2. 收集有效字符（去重空格）
-        StringBuilder sb = new StringBuilder();
-        while (left <= right) {
-            char c = s.charAt(left);
-            // 逻辑：当前不是空格，或者sb最后一个字符不是空格（避免连续空格）
-            if (c != ' ' || sb.charAt(sb.length() - 1) != ' ') {
-                sb.append(c);
-            }
-            left++;
-        }
-
-        // 3. 核心优化：利用 StringBuilder 直接整体翻转
-        // 此时 "the sky is blue" -> "eulb si yks eht"
-        sb.reverse();
-
-        // 4. 转为数组进行单词内部翻转
-        char[] arr = sb.toString().toCharArray();
-        int n = arr.length;
-        int start = 0; // 对应你的 j
-
-        for (int i = 0; i < n; i++) {
-            // 遇到空格，翻转前面的单词
-            if (arr[i] == ' ') {
-                reverse(arr, start, i - 1);
-                start = i + 1; // 更新 j 到下一个单词开头
-            }
-            // 遇到结尾，翻转最后一个单词
-            else if (i == n - 1) {
-                reverse(arr, start, i);
+        // 去除多余空格
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0 && chars[i] == ' ') continue;
+            if (chars[i] == ' ' && chars[i] == chars[i - 1]) continue;
+            if (Character.isLetter(chars[i]) || (chars[i] == ' ' && Character.isLetter(chars[i - 1]))) {
+                chars[j++] = chars[i];
             }
         }
 
-        return new String(arr);
+        // 去掉末尾空格
+        if (j > 0 && chars[j - 1] == ' ') {
+            j--;
+        }
+
+        // 第一步：翻转整个字符串
+        fun(chars, 0, j - 1);
+
+        // 第二步：翻转每个单词
+        int start = 0;
+        for (int i = 0; i <= j; i++) {
+            if (i == j || chars[i] == ' ') {
+                fun(chars, start, i - 1);
+                start = i + 1;
+            }
+        }
+
+        return new StringBuilder().append(chars, 0, j).toString();
     }
 
-    // 你的 fun2
-    private void reverse(char[] arr, int i, int j) {
-        while (i < j) {
-            char temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
+    static void fun(char[] chars, int i, int j) {
+        while (i <= j) {
+            char temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
             i++;
             j--;
         }
@@ -5433,7 +5421,7 @@ class Solution {
 
 ```
 
-### 459.重复的子字符串(10.16)
+### 459.重复的子字符串
 
 给定一个非空的字符串 `s` ，检查是否可以通过由它的一个子串重复多次构成。
 
@@ -5493,7 +5481,10 @@ class Solution {
 
 ```
 
-### 438.找到字符串中所有的字母异位词（hot100）(10.19)
+
+
+
+### 438.找到字符串中所有的字母异位词（hot100）
 
 给定两个字符串 `s` 和 `p`，找到 `s` 中所有 `p` 的 **异位词** 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
 
@@ -5552,7 +5543,7 @@ class Solution {
 ```
 
 
-### 3.无重复字符的最长子串（hot100）(10.8)
+### 3.无重复字符的最长子串（hot100）
 
 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
 
@@ -5615,7 +5606,7 @@ class Solution {
 }
 ```
 
-### 76.最小覆盖子串（hot100）(10.14)
+### 76.最小覆盖子串（hot100）
 
 给你一个字符串 `s` 、一个字符串 `t` 。返回 `s` 中涵盖 `t` 所有字符的最小子串。如果 `s` 中不存在涵盖 `t` 所有字符的子串，则返回空字符串 `""` 。
 
@@ -5824,7 +5815,7 @@ return minLength == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minL
 
 
 
-### 415. 字符串相加 (10.24)
+### 415. 字符串相加 
 
 给定两个字符串形式的非负整数 `num1` 和`num2` ，计算它们的和并同样以字符串形式返回。
 
@@ -5901,7 +5892,7 @@ class Solution {
 
 
 
-### **43.字符串相乘** （10.19）
+### **43.字符串相乘** 
 
 给定两个以字符串形式表示的非负整数 `num1` 和 `num2`，返回 `num1` 和 `num2` 的乘积，它们的乘积也表示为字符串形式。
 
@@ -6363,55 +6354,28 @@ class MinStack {
 
 ```java
 class Solution {
-    /**
-     * 检查给定的字符串中的括号是否有效
-     * 通过使用栈来处理括号的匹配问题
-     * 
-     * @param s 待检查的字符串，包含可能的括号字符
-     * @return 如果字符串中的括号有效，则返回true；否则返回false
-     */
     public boolean isValid(String s) {
-        // 使用栈作为辅助数据结构，用于存储左括号
-        Stack<Character> auxiliaryStack = new Stack<>();
-        // 遍历字符串中的每个字符，判断是否为括号并进行相应处理
-        for (int i = 0; i < s.length(); i++) {
-            // 遇到左括号时，将其压入栈中
-            if (s.charAt(i) == '(' || s.charAt(i) == '[' || s.charAt(i) == '{') {
-                auxiliaryStack.push(s.charAt(i));
-            } 
-            // 当栈为空且遇到右括号时，说明没有左括号与之匹配，返回false
-            else if (auxiliaryStack.isEmpty() && (s.charAt(i) == ')' || s.charAt(i) == ']' || s.charAt(i) == '}')) {
-                return false;
-            } 
-            // 遇到右括号时，根据栈顶的左括号进行匹配
-            else if (s.charAt(i) == ')') {
-                // 如果栈顶的左括号为'('，则弹出栈顶元素，表示匹配成功
-                if (auxiliaryStack.peek() == '(') {
-                    auxiliaryStack.pop();
-                } else {
-                    // 如果栈顶的左括号不为'('，说明括号不匹配，返回false
-                    return false;
-                }
-            } else if (s.charAt(i) == ']') {
-                // 如果栈顶的左括号为'['，则弹出栈顶元素，表示匹配成功
-                if (auxiliaryStack.peek() == '[') {
-                    auxiliaryStack.pop();
-                } else {
-                    // 如果栈顶的左括号不为'['，说明括号不匹配，返回false
-                    return false;
-                }
+        // 使用栈存储未匹配的左括号
+        Stack<Character> stack = new Stack<>();
+        
+        for (char c : s.toCharArray()) {
+            // 遇到左括号，压入栈中等待匹配
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push(c);
             } else {
-                // 如果栈顶的左括号为'{'，则弹出栈顶元素，表示匹配成功
-                if (auxiliaryStack.peek() == '{') {
-                    auxiliaryStack.pop();
-                } else {
-                    // 如果栈顶的左括号不为'{'，说明括号不匹配，返回false
-                    return false;
-                }
+                // 遇到右括号时，栈为空说明没有对应的左括号，直接返回 false
+                if (stack.isEmpty()) return false;
+                
+                // 弹出栈顶左括号，与当前右括号进行匹配
+                char top = stack.pop();
+                if (c == ')' && top != '(') return false;
+                if (c == ']' && top != '[') return false;
+                if (c == '}' && top != '{') return false;
             }
         }
-        // 如果遍历完字符串后，栈为空，则说明所有括号都有效，返回true；否则返回false
-        return auxiliaryStack.empty() ? true : false;
+        
+        // 栈为空说明所有括号均已匹配，否则存在未匹配的左括号
+        return stack.isEmpty();
     }
 }
 
@@ -6436,36 +6400,21 @@ class Solution {
 
 ```java
 class Solution {
-    /**
-     * 移除字符串中所有相邻重复项
-     * 
-     * @param s 输入的字符串
-     * @return 移除所有相邻重复项后的字符串
-     */
     public String removeDuplicates(String s) {
-        // 使用栈作为辅助结构，用于临时存储字符并方便移除相邻重复项
-        Stack<Character> auxiliaryStack = new Stack<>();
-        // StringBuilder用于构建最终的结果字符串
+        // 用 StringBuilder 直接模拟栈，末尾即栈顶，省去最后反转的步骤
         StringBuilder sb = new StringBuilder();
         
-        // 遍历输入字符串的每个字符
-        for (int i = 0; i < s.length(); i++) {
-            // 如果栈不为空且栈顶元素与当前字符相同，则移除栈顶元素，即移除相邻重复项
-            if (!auxiliaryStack.isEmpty() && auxiliaryStack.peek() == s.charAt(i)) {
-                auxiliaryStack.pop();
+        for (char c : s.toCharArray()) {
+            // 栈不为空且栈顶与当前字符相同，弹出栈顶（消除相邻重复）
+            if (sb.length() > 0 && sb.charAt(sb.length() - 1) == c) {
+                sb.deleteCharAt(sb.length() - 1);
             } else {
-                // 否则，将当前字符压入栈中
-                auxiliaryStack.push(s.charAt(i));
+                // 否则将当前字符压入栈顶
+                sb.append(c);
             }
         }
         
-        // 将栈中剩余的字符转移到StringBuilder中，构建移除重复项后的字符串
-        while (!auxiliaryStack.isEmpty()) {
-            sb.append(auxiliaryStack.pop());
-        }
-        
-        // 由于栈的特性是后进先出，所以需要将StringBuilder中的字符串反转，以得到正确的顺序
-        return sb.reverse().toString();
+        return sb.toString();
     }
 }
 ```
@@ -6495,65 +6444,34 @@ class Solution {
 
 ```java
 class Solution {
-    /**
-     * 根据逆波兰表达式计算结果
-     * 逆波兰表达式是一种没有括号的算术表达式，以 postfix 形式表示
-     * 在这种表示中，操作数可以是数字或另一个表达式，而运算符位于操作数之后
-     *
-     * @param tokens 字符串数组，包含逆波兰表达式的符号和操作数
-     * @return 表达式的计算结果
-     */
     public int evalRPN(String[] tokens) {
-        // 创建一个辅助栈，用于存储运算过程中的中间结果
-        Stack<Integer> auxiliaryStack = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
         
-        // 遍历逆波兰表达式的每个元素
-        for (int i = 0; i < tokens.length; i++) {
-            // 当前元素为运算符"+"
-            if (tokens[i].equals("+")) {
-                // 从栈中弹出两个操作数
-                int num1 = auxiliaryStack.pop();
-                int num2 = auxiliaryStack.pop();
-                // 将两个操作数的和压入栈中
-                auxiliaryStack.push(num2 + num1);
-            } 
-            // 当前元素为运算符"-"
-            else if (tokens[i].equals("-")) {
-                // 从栈中弹出两个操作数
-                int num1 = auxiliaryStack.pop();
-                int num2 = auxiliaryStack.pop();
-                // 将两个操作数的差压入栈中
-                auxiliaryStack.push(num2 - num1);
-            } 
-            // 当前元素为运算符"*"
-            else if (tokens[i].equals("*")) {
-                // 从栈中弹出两个操作数
-                int num1 = auxiliaryStack.pop();
-                int num2 = auxiliaryStack.pop();
-                // 将两个操作数的乘积累入栈中
-                auxiliaryStack.push(num2 * num1);
-            } 
-            // 当前元素为运算符"/"
-            else if (tokens[i].equals("/")) {
-                // 从栈中弹出两个操作数
-                int num1 = auxiliaryStack.pop();
-                int num2 = auxiliaryStack.pop();
-                // 将两个操作数的商压入栈中
-                auxiliaryStack.push(num2 / num1);
-            } 
-            // 当前元素为操作数
-            else {
-                // 将操作数解析为整数并压入栈中
-                auxiliaryStack.push(Integer.parseInt(tokens[i]));
+        for (String token : tokens) {
+            // 遇到运算符，弹出两个操作数进行计算，结果压回栈中
+            // 注意：先弹出的是右操作数，后弹出的是左操作数
+            if (token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/")) {
+                int right = stack.pop();
+                int left = stack.pop();
+                switch (token) {
+                    case "+": stack.push(left + right); break;
+                    case "-": stack.push(left - right); break;
+                    case "*": stack.push(left * right); break;
+                    case "/": stack.push(left / right); break;
+                }
+            } else {
+                // 遇到数字，直接压入栈中
+                stack.push(Integer.parseInt(token));
             }
         }
-        // 返回栈顶元素，即表达式的计算结果
-        return auxiliaryStack.peek();
+        
+        // 栈顶即为最终计算结果
+        return stack.pop();
     }
 }
 ```
 
-### 394.字符串解码（hot100）(4.2)
+### 394.字符串解码（hot100）
 
 给定一个经过编码的字符串，返回它解码后的字符串。
 
@@ -6584,142 +6502,40 @@ class Solution {
 输出："abcabccdcdcdef"
 ```
 
-直观的解法，比较复杂，不推荐记忆。
 
 ```java
 class Solution {
-    /**
-     * 解码字符串
-     * 
-     * 根据给定的规则解码字符串，规则为：k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次
-     * 数字 k 为正整数，输入字符串保证是有效的，不包含额外的空格，并且方括号总是以正确的顺序闭合
-     * 
-     * @param s 待解码的字符串
-     * @return 解码后的字符串
-     */
     public String decodeString(String s) {
-        // 用于拼接最终的解码字符串
-        StringBuilder sb = new StringBuilder();
-        // 辅助栈，用于存储遇到的数字，以便后续重复字符串
-        Stack<Integer> auxiliaryStackDigit = new Stack<>();
-        // 辅助栈，用于存储字符串片段
-        Stack<String> auxiliaryStackChar = new Stack<>();
-        // 当前处理的位置
-        int pos = 0;
-        // 临时存储数字，用于计算重复次数
+        // 数字栈存储重复次数，字符串栈存储待拼接的前缀
+        Stack<Integer> numStack = new Stack<>();
+        Stack<StringBuilder> strStack = new Stack<>();
+        StringBuilder cur = new StringBuilder();
         int num = 0;
-        // 输入字符串的长度
-        int size = s.length();
-        // 临时字符串构建器，用于组装重复的字符串
-        StringBuilder tempSB = new StringBuilder();
 
-        // 遍历输入字符串
-        while (pos < size) {
-            // 如果当前字符是字母且栈为空，直接将字母添加到结果字符串中
-            if (Character.isLetter(s.charAt(pos)) && auxiliaryStackDigit.isEmpty()) {
-                sb.append(s.charAt(pos));
-            } else if (Character.isDigit(s.charAt(pos))) {
-                // 如果当前字符是数字，计算数字的值
-                num = num * 10 + s.charAt(pos) - '0';
-            } else if (s.charAt(pos) == '[') {
-                /**
-                 * 遇到左括号 '['，将之前的数字入栈，并初始化字符串片段
-                 * 
-                 * 为什么要在遇到左括号时加入空字符串？
-                 * - 因为每当遇到左括号时，我们即将处理新的括号范围内的字符串。
-                 * - 需要初始化一个空字符串用于保存该范围内的字符。如果后面有嵌套的结构，则还会进一步处理，
-                 *   最终将解码后的字符串拼接到这里存储的空字符串中。
-                 * - 这样做确保了在嵌套的情况下，能够正确保存每层的子字符串。
-                 */
-                auxiliaryStackDigit.push(num);  // 将重复的次数推入栈
-                auxiliaryStackChar.push("");    // 在字符栈中存入空字符串，表示新的子字符串
-                num = 0;  // 将 num 重置为 0，准备解析下一个数字
-            } else if (Character.isLetter(s.charAt(pos))) {
-                // 如果在括号内遇到字母，将其添加到栈顶的字符串中
-                auxiliaryStackChar.push(auxiliaryStackChar.pop() + s.charAt(pos));
-            } else {
-                // 遇到右括号 ']'，处理括号内的字符串重复问题
-                int tempNum = auxiliaryStackDigit.pop();  // 弹出数字，表示重复次数
-                String tempStr = auxiliaryStackChar.pop();  // 弹出栈顶的字符串，即方括号内的字符串
-
-                // 将弹出的字符串重复 tempNum 次
-                for (int i = 0; i < tempNum; i++) {
-                    tempSB.append(tempStr);
-                }
-
-                /**
-                 * 如果栈不为空，说明还有更外层的嵌套，当前重复结果需要继续存放在栈顶的字符串中
-                 * 否则，将重复后的字符串添加到最终的结果 sb 中
-                 */
-                if (!auxiliaryStackChar.isEmpty()) {
-                    auxiliaryStackChar.push(auxiliaryStackChar.pop() + tempSB.toString());
-                } else {
-                    sb.append(tempSB.toString());
-                }
-
-                /**
-                 * 清空临时字符串构建器 tempSB，以便后续使用
-                 * 
-                 * 为什么 StringBuilder.setLength(0) 可行？
-                 * - `StringBuilder.setLength(0)` 实际上是重置 `StringBuilder` 的长度为 0，
-                 *   清空所有字符的有效部分，不会重新分配内存。
-                 * - 这个操作很高效，它不会删除底层数组中的数据，但会将其视为无效，从而允许在同一块
-                 *   内存中重新追加新内容。
-                 * - 在这里使用 `setLength(0)` 来清空 `tempSB`，是为了避免在每次循环中创建新的 `StringBuilder` 对象，
-                 *   提高性能。
-                 */
-                tempSB.setLength(0);
-            }
-            // 移动到下一个字符
-            pos++;
-        }
-        // 返回解码后的字符串
-        return sb.toString();
-    }
-}
-```
-
-**递归的解法，更直观推荐**
-
-```java
-class Solution {
-    public String decodeString(String s) {
-        // 使用递归方法，入口是位置0
-        return dfs(s, new int[]{0});
-    }
-
-    // 递归函数，参数s是原始字符串，index是当前处理位置的指针（用数组模拟引用传递）
-    private String dfs(String s, int[] index) {
-        StringBuilder res = new StringBuilder();
-        int num = 0; // 用于累积当前数字
-
-        while (index[0] < s.length()) {
-            char c = s.charAt(index[0]);
+        for (char c : s.toCharArray()) {
             if (Character.isDigit(c)) {
-                // 计算数字的值
+                // 累积多位数字
                 num = num * 10 + (c - '0');
-                index[0]++; // 移动到下一个字符
             } else if (c == '[') {
-                // 遇到左括号，递归处理子串
-                index[0]++; // 跳过'['
-                String inner = dfs(s, index); // 递归得到括号内的解码结果
-                // 将子串重复num次拼接到结果
-                for (int i = 0; i < num; i++) {
-                    res.append(inner);
-                }
-                num = 0; // 重置num
+                // 保存当前状态，准备进入新的括号层
+                numStack.push(num);
+                strStack.push(cur);
+                cur = new StringBuilder();
+                num = 0;
             } else if (c == ']') {
-                // 遇到右括号，结束当前递归层，返回结果
-                index[0]++; // 跳过']'
-                return res.toString();
+                // 弹出重复次数和前缀，拼接当前层结果
+                int repeatTimes = numStack.pop();
+                StringBuilder prev = strStack.pop();
+                for (int i = 0; i < repeatTimes; i++) {
+                    prev.append(cur);
+                }
+                cur = prev;
             } else {
-                // 普通字符直接拼接
-                res.append(c);
-                index[0]++;
+                cur.append(c);
             }
         }
-        // 返回最终结果
-        return res.toString();
+
+        return cur.toString();
     }
 }
 ```
@@ -6728,7 +6544,7 @@ class Solution {
 
 
 
-### 239.滑动窗口最大值（hot100）(3.25)
+### 239.滑动窗口最大值（hot100）
 
 给你一个整数数组 `nums`，有一个大小为 `k` 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 `k` 个数字。滑动窗口每次只向右移动一位。
 
@@ -6817,38 +6633,52 @@ class Solution {
 输出: 4
 ```
 
+
+小根堆维护法，主要就是申请一个与第k大相同容量的小跟堆，然后把所有元素放进去过一遍小的自然而然会被弹出来，堆里面肯定就是最大的那k个，然后堆顶的话就是第k大的
 ```java
-/**
- * Solution类提供了一个方法来寻找数组中第k大的元素
- */
-class Solution {
-    /**
-     * 寻找数组中第k大的元素
-     * 
-     * @param nums 一个整数数组
-     * @param k 第k大的元素的索引
-     * @return 数组中第k大的元素
-     */
-    public int findKthLargest(int[] nums, int k) {
-        // 创建一个最大堆，用于存储数组中的元素，并能高效地获取最大元素
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
-        // 将所有元素添加到最大堆中
-        for (int num : nums) {
-            maxHeap.add(num);
+public int findKthLargest(int[] nums, int k) {
+    // 维护一个大小为k的最小堆
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    
+    for (int num : nums) {
+        minHeap.add(num);
+        if (minHeap.size() > k) {
+            minHeap.poll(); // 踢掉最小的
         }
-        // 从最大堆中移除k-1个元素，以便堆顶元素为第k大的元素
-        for (int i = 0; i < k - 1; i++) {
-            maxHeap.poll();
-        }
-        // 返回最大堆的堆顶元素，即第k大的元素
-        return maxHeap.peek();
     }
+    return minHeap.peek(); // 堆顶就是第k大
+}
+```
+
+利用快速排序来做，这个一般是最优做法
+```java
+public int findKthLargest(int[] nums, int k) {
+    return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+}
+
+private int quickSelect(int[] nums, int left, int right, int targetIdx) {
+    int pivot = nums[right];
+    int p = left;
+    
+    for (int i = left; i < right; i++) {
+        if (nums[i] <= pivot) {
+            swap(nums, p++, i);
+        }
+    }
+    swap(nums, p, right); // pivot 归位
+    
+    if (p == targetIdx) return nums[p];
+    else if (p < targetIdx) return quickSelect(nums, p + 1, right, targetIdx);
+    else return quickSelect(nums, left, p - 1, targetIdx);
+}
+
+private void swap(int[] nums, int i, int j) {
+    int tmp = nums[i]; nums[i] = nums[j]; nums[j] = tmp;
 }
 ```
 
 
-
-### 347.前k个高频元素（hot100）(3.20)
+### 347.前k个高频元素（hot100）
 
 给你一个整数数组 `nums` 和一个整数 `k` ，请你返回其中出现频率前 `k` 高的元素。你可以按 **任意顺序** 返回答案。
 
@@ -6911,7 +6741,7 @@ class Solution {
 }
 ```
 
-### 295.数据流的中位数（new hot100）(3.20)
+### 295.数据流的中位数（new hot100）
 
 **中位数**是有序整数列表中的中间值。如果列表的大小是偶数，则没有中间值，中位数是两个中间值的平均值。
 
@@ -7000,6 +6830,468 @@ class MedianFinder {
 
 # 二叉树
 
+
+
+## 1. 层序遍历以及应用
+
+### 102.二叉树的层序遍历
+
+给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
+
+**示例 1：**
+
+![image-20240625112827066](C:\Users\16083\AppData\Roaming\Typora\typora-user-images\image-20240625112827066.png)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[9,20],[15,7]]
+```
+
+```java
+/**
+ * 二叉树的层序遍历
+ */
+class Solution {
+    /**
+     * 层序遍历二叉树
+     * @param root 二叉树的根节点
+     * @return 返回二叉树层序遍历的结果
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>(); // 创建一个队列用于层序遍历
+        List<List<Integer>> res = new ArrayList<>(); // 用于存储层序遍历的结果
+        if (root == null) {
+            return res; // 如果根节点为空，直接返回空结果
+        }
+        queue.add(root); // 将根节点加入队列
+        while (!queue.isEmpty()) {
+            int size = queue.size(); // 获取当前层的节点个数
+            List<Integer> list = new ArrayList<>(); // 用于存储当前层的节点值
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll(); // 从队列中取出节点
+                list.add(node.val); // 将节点值加入当前层的列表
+                if (node.left != null) {
+                    queue.add(node.left); // 将左子节点加入队列
+                }
+                if (node.right != null) {
+                    queue.add(node.right); // 将右子节点加入队列
+                }
+            }
+            res.add(list); // 将当前层的节点值列表加入结果列表
+        }
+        return res; // 返回层序遍历的结果
+    }
+}
+```
+
+### 107.二叉树的层次遍历II
+
+给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151058308.png" alt="107.二叉树的层次遍历II" style="zoom:50%;" />
+
+```java
+/**
+ * 二叉树的层序遍历
+ */
+class Solution {
+    /**
+     * 层序遍历二叉树
+     * @param root 二叉树的根节点
+     * @return 返回二叉树层序遍历的结果
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>(); // 创建一个队列用于层序遍历
+        List<List<Integer>> res = new ArrayList<>(); // 用于存储层序遍历的结果
+        if (root == null) {
+            return res; // 如果根节点为空，直接返回空结果
+        }
+        queue.add(root); // 将根节点加入队列
+        while (!queue.isEmpty()) {
+            int size = queue.size(); // 获取当前层的节点个数
+            List<Integer> list = new ArrayList<>(); // 用于存储当前层的节点值
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll(); // 从队列中取出节点
+                list.add(node.val); // 将节点值加入当前层的列表
+                if (node.left != null) {
+                    queue.add(node.left); // 将左子节点加入队列
+                }
+                if (node.right != null) {
+                    queue.add(node.right); // 将右子节点加入队列
+                }
+            }
+            res.add(list); // 将当前层的节点值列表加入结果列表
+        }
+        return res; // 返回层序遍历的结果
+    }
+}
+```
+
+### 199.二叉树的右视图
+
+给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+
+![199.二叉树的右视图](https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151307377.png)
+
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> resultList = new ArrayList<>();
+        if (root == null) {
+            return resultList;
+        }
+        Queue<TreeNode> auxiliaryQueue = new LinkedList<>();
+        TreeNode tempNode;
+        auxiliaryQueue.add(root);
+        int size;
+        while (!auxiliaryQueue.isEmpty()) {
+            size = auxiliaryQueue.size();
+            while (size > 0) {
+                tempNode = auxiliaryQueue.poll();
+                if (tempNode.left != null) {
+                    auxiliaryQueue.add(tempNode.left);
+                }
+                if (tempNode.right != null) {
+                    auxiliaryQueue.add(tempNode.right);
+                }
+                size--;
+                if (size == 0) {
+                    resultList.add(tempNode.val);
+                }
+            }
+        }
+        return resultList;
+    }
+}
+```
+
+### 637.二叉树的层平均值
+
+给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。
+
+<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151350500.png" alt="637.二叉树的层平均值" style="zoom: 50%;" />
+
+```java
+class Solution {
+    // 计算二叉树每层节点的平均值
+    public List<Double> averageOfLevels(TreeNode root) {
+        // 使用队列来进行层次遍历
+        Queue<TreeNode> queue = new LinkedList<>();
+        // 用于存储每层节点的平均值
+        List<Double> list = new ArrayList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            double sum = 0;
+            // 遍历当前层的节点
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+                // 将当前节点的子节点加入队列
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+            // 计算当前层节点的平均值并加入到结果列表中
+            list.add(sum / size);
+        }
+        // 返回每层节点的平均值列表
+        return list;
+    }
+}
+```
+
+### 429. N叉树的层序遍历
+
+给定一个 N 叉树，返回其节点值的层序遍历。 (即从左到右，逐层遍历)。
+
+例如，给定一个 3叉树 :
+
+<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151439168.png" alt="429. N叉树的层序遍历" style="zoom:50%;" />
+
+返回其层序遍历:
+
+[ [1], [3,2,4], [5,6] ]
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> resultList = new ArrayList<>();
+        if (root == null) {
+            return resultList;
+        }
+        Queue<Node> auxiliaryQueue = new LinkedList<>();
+        Node tempNode;
+        int size;
+        auxiliaryQueue.add(root);
+        while (!auxiliaryQueue.isEmpty()) {
+            size = auxiliaryQueue.size();
+            List<Integer> listOfLevel = new ArrayList<>();
+            while (size > 0) {
+                tempNode = auxiliaryQueue.poll();
+                for (Node current : tempNode.children) {
+                    auxiliaryQueue.add(current);
+                }
+                listOfLevel.add(tempNode.val);
+                size--;
+            }
+            resultList.add(listOfLevel);
+        }
+        return resultList;
+    }
+}
+```
+
+### 515.在每个树行中找最大值
+
+您需要在二叉树的每一行中找到最大的值。
+
+<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151532153.png" alt="515.在每个树行中找最大值" style="zoom:50%;" />
+
+```java
+class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> resultList = new ArrayList<>();
+        if (root == null) {
+            return resultList;
+        }
+        Queue<TreeNode> auxiliaryQueue = new LinkedList<>();
+        TreeNode tempNode;
+        auxiliaryQueue.add(root);
+        int size;
+
+        while (!auxiliaryQueue.isEmpty()) {
+            size = auxiliaryQueue.size();
+            int max = Integer.MIN_VALUE;
+            while (size > 0) {
+                tempNode = auxiliaryQueue.poll();
+                max = Math.max(max, tempNode.val);
+                if (tempNode.left != null) {
+                    auxiliaryQueue.offer(tempNode.left);
+                }
+                if (tempNode.right != null) {
+                    auxiliaryQueue.offer(tempNode.right);
+                }
+                size--;
+            }
+
+            resultList.add(max);
+        }
+        return resultList;
+    }
+}
+```
+
+### 116.填充每个节点的下一个右侧节点指针
+
+给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+
+```cpp
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+```
+
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+
+初始状态下，所有 next 指针都被设置为 NULL。
+
+<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203152044855.jpg" alt="116.填充每个节点的下一个右侧节点指针" style="zoom:50%;" />
+
+**优化后的**
+
+```java
+/**
+ * 填充每个节点的下一个右侧节点指针
+ */
+class Solution {
+    /**
+     * 连接每个节点的下一个右侧节点
+     * @param root 给定的根节点
+     * @return 连接后的根节点
+     */
+    public Node connect(Node root) {
+        Queue<Node> queue = new LinkedList<>(); // 创建一个队列用于层序遍历
+        if (root == null) { // 如果根节点为空，则直接返回
+            return root;
+        }
+        queue.offer(root); // 将根节点加入队列
+        while (!queue.isEmpty()) { // 当队列不为空时循环
+            int size = queue.size(); // 获取当前层的节点数量
+            for (int i = 0; i < size; i++) { // 遍历当前层的节点
+                Node node = queue.poll(); // 弹出队首节点
+                if (i < size - 1) { // 如果不是当前层的最后一个节点
+                    node.next = queue.peek(); // 将当前节点的next指向队首节点
+                }
+                if (node.left != null) { // 如果当前节点有左子节点，则加入队列
+                    queue.offer(node.left);
+                }
+                if (node.right != null) { // 如果当前节点有右子节点，则加入队列
+                    queue.offer(node.right);
+                }
+            }
+        }
+        return root; // 返回连接后的根节点
+    }
+}
+```
+
+
+
+
+
+### 513.找树左下角的值
+
+给定一个二叉树，在树的最后一行找到最左边的值。
+
+```java
+/**
+ * Solution类用于解决找出二叉树最后一行最左边的值的问题
+ */
+class Solution {
+    /**
+     * 找出二叉树最后一行最左边的值
+     * 
+     * @param root 二叉树的根节点
+     * @return 最后一行最左边节点的值
+     */
+    public int findBottomLeftValue(TreeNode root) {
+        // 辅助队列，用于层序遍历二叉树
+        Queue<TreeNode> auxiliaryQueue = new LinkedList<>();
+        // 用于记录当前层的节点数
+        int size;
+        // 用于记录最后一行最左边的值
+        int num = 0;
+        // 临时节点，用于遍历
+        TreeNode tempNode;
+        
+        // 将根节点加入队列开始层序遍历
+        auxiliaryQueue.add(root);
+        
+        // 当队列不为空时，继续遍历
+        while (!auxiliaryQueue.isEmpty()) {
+            size = auxiliaryQueue.size();
+            // flag用于标记当前层的第一个节点
+            int flag = size;
+            
+            // 遍历当前层的所有节点
+            while (size > 0) {
+                tempNode = auxiliaryQueue.poll();
+                
+                // 如果是当前层的第一个节点，更新num
+                if (size == flag) {
+                    num = tempNode.val;
+                }
+                
+                // 如果左子节点不为空，加入队列
+                if (tempNode.left != null) {
+                    auxiliaryQueue.add(tempNode.left);
+                }
+                // 如果右子节点不为空，加入队列
+                if (tempNode.right != null) {
+                    auxiliaryQueue.add(tempNode.right);
+                }
+                
+                size--;
+            }
+        }
+        
+        // 返回最后一行最左边的值
+        return num;
+    }
+}
+```
+
+
+
+
+### 111.二叉树的最小深度
+
+给定一个二叉树，找出其最小深度。
+
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+**说明：** 叶子节点是指没有子节点的节点。
+
+
+
+**示例 1：**
+
+![img](文档图片/ex_depth.jpg)
+
+
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：2
+```
+
+**示例 2：**
+
+```
+输入：root = [2,null,3,null,4,null,5,null,6]
+输出：5
+```
+
+最优
+```java
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int depth = 1;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                // 遇到叶子节点直接返回
+                if (node.left == null && node.right == null) return depth;
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+            depth++;
+        }
+        return depth;
+    }
+}
+```
+
+dfs
+
+```java
+// 定义Solution类
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+
+        // 单侧为空，不能取 min，否则会把 0 当最短路径
+        if (root.left == null) return 1 + minDepth(root.right);
+        if (root.right == null) return 1 + minDepth(root.left);
+
+        return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+    }
+}
+```
+
+
+
+
+
+
+## 2. 深度优先搜索（三种遍历算法）的应用
+
+
+
+
 ### 94.二叉树的中序遍历（hot100）
 
 给定一个二叉树的根节点 `root` ，返回 *它的 **中序** 遍历* 。
@@ -7030,25 +7322,20 @@ class MedianFinder {
 ```java
 //递归
 class Solution {
-    // 定义一个方法，实现二叉树的中序遍历
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> res = new ArrayList<>();// 创建一个存放结果的列表
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        postorder(result, root);
+        return result;
+    }
+
+    private void postorder(List<Integer> result,TreeNode root) {
         if (root == null) {
-            return res; // 如果根节点为空，直接返回空列表
+            return;
         }
-        Stack<TreeNode> stack = new Stack<>(); // 创建一个栈用于辅助遍历
-        TreeNode cur = root;// 当前节点初始化为根节点
-        while (cur != null || !stack.isEmpty()) { // 循环直到当前节点为空且栈为空
-            while (cur != null) { // 将当前节点及其左子节点依次入栈
-                stack.push(cur);
-                cur = cur.left;
-            }
-            cur = stack.pop(); // 弹出栈顶节点，将节点值加入结果列表
-            res.add(cur.val);
-            cur = cur.right;  // 将当前节点指向右子节点，继续遍历右子树
-        }
-        // 返回最终结果列表
-        return res;
+        postorder(result, root.left);
+        result.add(root.val);
+        postorder(result, root.right);
+        
     }
 }
 
@@ -7079,13 +7366,14 @@ class Solution {
 
 
 
+
 ### 144.二叉树的前序遍历
 
 给你二叉树的根节点 `root` ，返回它节点值的 **前序** 遍历。
 
 **示例 1：**
 
-![image-20240625111913951](C:\Users\16083\AppData\Roaming\Typora\typora-user-images\image-20240625111913951.png)
+![](https://assets.leetcode.com/uploads/2024/08/29/screenshot-2024-08-29-202743.png)
 
 ```
 输入：root = [1,null,2,3]
@@ -7193,368 +7481,7 @@ class Solution {
 
 
 
-
-### 102.二叉树的层序遍历
-
-给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
-
-**示例 1：**
-
-![image-20240625112827066](C:\Users\16083\AppData\Roaming\Typora\typora-user-images\image-20240625112827066.png)
-
-```
-输入：root = [3,9,20,null,null,15,7]
-输出：[[3],[9,20],[15,7]]
-```
-
-```java
-/**
- * 二叉树的层序遍历
- */
-class Solution {
-    /**
-     * 层序遍历二叉树
-     * @param root 二叉树的根节点
-     * @return 返回二叉树层序遍历的结果
-     */
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        Queue<TreeNode> queue = new LinkedList<>(); // 创建一个队列用于层序遍历
-        List<List<Integer>> res = new ArrayList<>(); // 用于存储层序遍历的结果
-        if (root == null) {
-            return res; // 如果根节点为空，直接返回空结果
-        }
-        queue.add(root); // 将根节点加入队列
-        while (!queue.isEmpty()) {
-            int size = queue.size(); // 获取当前层的节点个数
-            List<Integer> list = new ArrayList<>(); // 用于存储当前层的节点值
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll(); // 从队列中取出节点
-                list.add(node.val); // 将节点值加入当前层的列表
-                if (node.left != null) {
-                    queue.add(node.left); // 将左子节点加入队列
-                }
-                if (node.right != null) {
-                    queue.add(node.right); // 将右子节点加入队列
-                }
-            }
-            res.add(list); // 将当前层的节点值列表加入结果列表
-        }
-        return res; // 返回层序遍历的结果
-    }
-}
-```
-
-### 107.二叉树的层次遍历II(3.26)
-
-给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
-
-<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151058308.png" alt="107.二叉树的层次遍历II" style="zoom:50%;" />
-
-```java
-class Solution {
-    // 二叉树的层序遍历 II
-    public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        // 创建一个队列用于层序遍历
-        Queue<TreeNode> queue = new LinkedList<>();
-        // 创建一个列表用于存储结果
-        List<List<Integer>> res = new ArrayList<>();
-        // 如果根节点为空，直接返回空结果列表
-        if (root == null) {
-            return res;
-        }
-        // 将根节点加入队列
-        queue.add(root);
-        // 遍历队列直到为空
-        while (!queue.isEmpty()) {
-            // 获取当前层的节点数
-            int size = queue.size();
-            // 创建一个列表用于存储当前层的节点值
-            List<Integer> list = new ArrayList<>();
-            // 遍历当前层的节点
-            for (int i = 0; i < size; i++) {
-                // 弹出队首节点
-                TreeNode node = queue.poll();
-                // 将节点值加入当前层列表
-                list.add(node.val);
-                // 将左子节点加入队列
-                if (node.left != null) {
-                    queue.add(node.left);
-                }
-                // 将右子节点加入队列
-                if (node.right != null) {
-                    queue.add(node.right);
-                }
-            }
-            // 将当前层列表加入结果列表
-            res.add(list);
-        }
-        // 将结果列表反转
-        Collections.reverse(res);
-        // 返回结果列表
-        return res;
-    }
-}
-```
-
-### 199.二叉树的右视图
-
-给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
-
-![199.二叉树的右视图](https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151307377.png)
-
-```java
-class Solution {
-    public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> resultList = new ArrayList<>();
-        if (root == null) {
-            return resultList;
-        }
-        Queue<TreeNode> auxiliaryQueue = new LinkedList<>();
-        TreeNode tempNode;
-        auxiliaryQueue.add(root);
-        int size;
-        while (!auxiliaryQueue.isEmpty()) {
-            size = auxiliaryQueue.size();
-            while (size > 0) {
-                tempNode = auxiliaryQueue.poll();
-                if (tempNode.left != null) {
-                    auxiliaryQueue.add(tempNode.left);
-                }
-                if (tempNode.right != null) {
-                    auxiliaryQueue.add(tempNode.right);
-                }
-                size--;
-                if (size == 0) {
-                    resultList.add(tempNode.val);
-                }
-            }
-        }
-        return resultList;
-    }
-}
-```
-
-### 637.二叉树的层平均值
-
-给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。
-
-<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151350500.png" alt="637.二叉树的层平均值" style="zoom: 50%;" />
-
-```java
-class Solution {
-    // 计算二叉树每层节点的平均值
-    public List<Double> averageOfLevels(TreeNode root) {
-        // 使用队列来进行层次遍历
-        Queue<TreeNode> queue = new LinkedList<>();
-        // 用于存储每层节点的平均值
-        List<Double> list = new ArrayList<>();
-        queue.add(root);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            double sum = 0;
-            // 遍历当前层的节点
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                sum += node.val;
-                // 将当前节点的子节点加入队列
-                if (node.left != null) {
-                    queue.add(node.left);
-                }
-                if (node.right != null) {
-                    queue.add(node.right);
-                }
-            }
-            // 计算当前层节点的平均值并加入到结果列表中
-            list.add(sum / size);
-        }
-        // 返回每层节点的平均值列表
-        return list;
-    }
-}
-```
-
-### 429. N叉树的层序遍历(3.24)
-
-给定一个 N 叉树，返回其节点值的层序遍历。 (即从左到右，逐层遍历)。
-
-例如，给定一个 3叉树 :
-
-<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151439168.png" alt="429. N叉树的层序遍历" style="zoom:50%;" />
-
-返回其层序遍历:
-
-[ [1], [3,2,4], [5,6] ]
-
-```java
-class Solution {
-    public List<List<Integer>> levelOrder(Node root) {
-        List<List<Integer>> resultList = new ArrayList<>();
-        if (root == null) {
-            return resultList;
-        }
-        Queue<Node> auxiliaryQueue = new LinkedList<>();
-        Node tempNode;
-        int size;
-        auxiliaryQueue.add(root);
-        while (!auxiliaryQueue.isEmpty()) {
-            size = auxiliaryQueue.size();
-            List<Integer> listOfLevel = new ArrayList<>();
-            while (size > 0) {
-                tempNode = auxiliaryQueue.poll();
-                for (Node current : tempNode.children) {
-                    auxiliaryQueue.add(current);
-                }
-                listOfLevel.add(tempNode.val);
-                size--;
-            }
-            resultList.add(listOfLevel);
-        }
-        return resultList;
-    }
-}
-```
-
-### 515.在每个树行中找最大值
-
-您需要在二叉树的每一行中找到最大的值。
-
-<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203151532153.png" alt="515.在每个树行中找最大值" style="zoom:50%;" />
-
-```java
-class Solution {
-    public List<Integer> largestValues(TreeNode root) {
-        List<Integer> resultList = new ArrayList<>();
-        if (root == null) {
-            return resultList;
-        }
-        Queue<TreeNode> auxiliaryQueue = new LinkedList<>();
-        TreeNode tempNode;
-        auxiliaryQueue.add(root);
-        int size;
-
-        while (!auxiliaryQueue.isEmpty()) {
-            size = auxiliaryQueue.size();
-            int max = Integer.MIN_VALUE;
-            while (size > 0) {
-                tempNode = auxiliaryQueue.poll();
-                max = Math.max(max, tempNode.val);
-                if (tempNode.left != null) {
-                    auxiliaryQueue.offer(tempNode.left);
-                }
-                if (tempNode.right != null) {
-                    auxiliaryQueue.offer(tempNode.right);
-                }
-                size--;
-            }
-
-            resultList.add(max);
-        }
-        return resultList;
-    }
-}
-```
-
-### 116.填充每个节点的下一个右侧节点指针(3.28)
-
-给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
-
-```cpp
-struct Node {
-  int val;
-  Node *left;
-  Node *right;
-  Node *next;
-}
-```
-
-填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
-
-初始状态下，所有 next 指针都被设置为 NULL。
-
-<img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210203152044855.jpg" alt="116.填充每个节点的下一个右侧节点指针" style="zoom:50%;" />
-
-**比较低效的方法（使用了栈），直觉。**
-
-```java
-class Solution {
-    public Node connect(Node root) {
-        if (root == null) {
-            return root;
-        }
-        Queue<Node> auxiliaryQueue = new LinkedList<>();
-        auxiliaryQueue.add(root);
-        Stack<Node> auxiliaryStack = new Stack<Node>();
-        int size;
-        Node tempNode;
-        while (!auxiliaryQueue.isEmpty()) {
-            size = auxiliaryQueue.size();
-            while (size > 0) {
-                tempNode = auxiliaryQueue.poll();
-                auxiliaryStack.push(tempNode);
-                if (tempNode.left != null) {
-                    auxiliaryQueue.offer(tempNode.left);
-                }
-                if (tempNode.right != null) {
-                    auxiliaryQueue.offer(tempNode.right);
-                }
-                size--;
-            }
-
-            tempNode = auxiliaryStack.pop();
-            tempNode.next = null;
-            while (!auxiliaryStack.empty()) {
-                auxiliaryStack.peek().next = tempNode;
-                tempNode = auxiliaryStack.pop();
-            }
-        }
-        return root;
-    }
-}
-```
-
-**优化后的**
-
-```java
-/**
- * 填充每个节点的下一个右侧节点指针
- */
-class Solution {
-    /**
-     * 连接每个节点的下一个右侧节点
-     * @param root 给定的根节点
-     * @return 连接后的根节点
-     */
-    public Node connect(Node root) {
-        Queue<Node> queue = new LinkedList<>(); // 创建一个队列用于层序遍历
-        if (root == null) { // 如果根节点为空，则直接返回
-            return root;
-        }
-        queue.offer(root); // 将根节点加入队列
-        while (!queue.isEmpty()) { // 当队列不为空时循环
-            int size = queue.size(); // 获取当前层的节点数量
-            for (int i = 0; i < size; i++) { // 遍历当前层的节点
-                Node node = queue.poll(); // 弹出队首节点
-                if (i < size - 1) { // 如果不是当前层的最后一个节点
-                    node.next = queue.peek(); // 将当前节点的next指向队首节点
-                }
-                if (node.left != null) { // 如果当前节点有左子节点，则加入队列
-                    queue.offer(node.left);
-                }
-                if (node.right != null) { // 如果当前节点有右子节点，则加入队列
-                    queue.offer(node.right);
-                }
-            }
-        }
-        return root; // 返回连接后的根节点
-    }
-}
-```
-
-
-
-
-
-### 226.翻转二叉树(3.31)
+ ### 226.翻转二叉树
 
 翻转一棵二叉树。
 
@@ -7603,7 +7530,7 @@ class Solution {
 
 ```
 
-### 101.对称二叉树(4.2)
+### 101.对称二叉树
 
 给定一个二叉树，检查它是否是镜像对称的。
 
@@ -7696,131 +7623,160 @@ class Solution {
 }
 ```
 
-### 111.二叉树的最小深度(3.31)
 
-给定一个二叉树，找出其最小深度。
 
-最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
 
-**说明：**叶子节点是指没有子节点的节点。
+### 543.二叉树的直径
+
+给你一棵二叉树的根节点，返回该树的 **直径** 。
+
+二叉树的 **直径** 是指树中任意两个节点之间最长路径的 **长度** 。这条路径可能经过也可能不经过根节点 `root` 。
+
+两节点之间路径的 **长度** 由它们之间边数表示。
+
+**示例 1：**
+
+<img src="https://assets.leetcode.com/uploads/2021/03/06/diamtree.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [1,2,3,4,5]
+输出：3
+解释：3 ，取路径 [4,2,1,3] 或 [5,2,1,3] 的长度。
+```
+
+**注：虽然是在求二叉树最大深度的代码基础上修改，但不能简单理解为直径是根节点左右子树最大高度之和，因为二叉树直径可能不包括根节点**
+
+```java
+/**
+ * Solution类用于计算二叉树的直径
+ */
+class Solution {
+    /**
+     * 用于存储二叉树的最大直径
+     */
+    int dia = 0;
+
+    /**
+     * 计算二叉树的直径
+     * 直径的定义是二叉树中任意两个节点之间最长路径的长度
+     *
+     * @param root 二叉树的根节点
+     * @return 返回二叉树的直径
+     */
+    public int diameterOfBinaryTree(TreeNode root) {
+        // 通过深度优先搜索计算每个节点的最长路径
+        sortOrder(root);
+        // 返回计算得到的最大直径
+        return dia;
+    }
+
+    /**
+     * 深度优先搜索遍历二叉树，计算每个节点的最长路径
+     *
+     * @param current 当前遍历的节点
+     * @return 返回当前节点的最长路径
+     */
+    int sortOrder(TreeNode current) {
+        // 如果当前节点为空，返回0
+        if (current == null) {
+            return 0;
+        }
+        // 计算左子树的最长路径
+        int leftLegth = sortOrder(current.left);
+        // 计算右子树的最长路径
+        int rightLegth = sortOrder(current.right);
+        // 更新最大直径，直径为左子树最长路径加右子树最长路径
+        dia = Math.max(dia, leftLegth + rightLegth);
+
+        // 返回当前节点的最长路径，取左子树和右子树最长路径的最大值，再加1
+        return Math.max(leftLegth, rightLegth) + 1;
+    }
+}
+
+```
+
+### 124.二叉树中的最大路径和（new hot 100）
+
+二叉树中的 **路径** 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 **至多出现一次** 。该路径 **至少包含一个** 节点，且不一定经过根节点。
+
+**路径和** 是路径中各节点值的总和。
+
+给你一个二叉树的根节点 `root` ，返回其 **最大路径和** 。
 
 
 
 **示例 1：**
 
-![img](文档图片/ex_depth.jpg)
+![img](../leetcode%E5%88%B7%E9%A2%98/%E6%96%87%E6%A1%A3%E5%9B%BE%E7%89%87/exx1.jpg)
 
 
 
 ```
-输入：root = [3,9,20,null,null,15,7]
-输出：2
+输入：root = [1,2,3]
+输出：6
+解释：最优路径是 2 -> 1 -> 3 ，路径和为 2 + 1 + 3 = 6
 ```
 
 **示例 2：**
 
+![img](../leetcode%E5%88%B7%E9%A2%98/%E6%96%87%E6%A1%A3%E5%9B%BE%E7%89%87/exx2.jpg)
+
+
+
 ```
-输入：root = [2,null,3,null,4,null,5,null,6]
-输出：5
+输入：root = [-10,9,20,null,null,15,7]
+输出：42
+解释：最优路径是 15 -> 20 -> 7 ，路径和为 15 + 20 + 7 = 42
 ```
 
 ```java
-/**
- * Solution类用于解决计算二叉树最小深度的问题
- */
 class Solution {
+    // 记录全局最大路径和
+    int maxDis = Integer.MIN_VALUE;
+
     /**
-     * 计算给定二叉树的最小深度
-     * 
+     * 计算二叉树中的最大路径和
      * @param root 二叉树的根节点
-     * @return 返回二叉树的最小深度
+     * @return 最大路径和
      */
-    public int minDepth(TreeNode root) {
-        // 如果根节点为空，返回0，表示空树的深度为0
-        if (root == null) {
-            return 0;
-        }
-        // 调用辅助函数sortOrder来计算最小深度
-        return sortOrder(root, 1);
+    public int maxPathSum(TreeNode root) {
+        // 调用辅助函数计算从根节点出发的最大路径和
+        sortOrder(root);
+        // 返回全局最大路径和
+        return maxDis;
     }
 
     /**
-     * 辅助函数，用于递归地计算当前节点的最小深度
-     * 
-     * @param currentNode 当前节点
-     * @param depth 当前节点所在的深度
-     * @return 返回当前节点的最小深度
+     * 计算从当前节点出发的最大路径和
+     * @param current 当前节点
+     * @return 从当前节点出发的最大路径和
      */
-    int sortOrder(TreeNode currentNode, int depth) {
-        // 如果当前节点没有左右子节点，说明找到了一个叶节点，返回当前深度
-        if (currentNode.left == null && currentNode.right == null) {
-            return depth;
-        }
-        // 初始化左子树和右子树的最小深度为最大整数值，以便后续比较
-        int minLeft = Integer.MAX_VALUE;
-        int minRight = Integer.MAX_VALUE;
-        // 如果当前节点有左子节点，递归计算左子树的最小深度
-        if (currentNode.left != null) {
-            minLeft = sortOrder(currentNode.left, depth + 1);
-        }
-        // 如果当前节点有右子节点，递归计算右子树的最小深度
-        if (currentNode.right != null) {
-            minRight = sortOrder(currentNode.right, depth + 1);
-        }
-        // 返回左右子树中的最小深度
-        return Math.min(minLeft, minRight);
-    }
-}
-```
-
-层次遍历
-
-```java
-// 定义Solution类
-class Solution {
-    // 定义minDepth方法，返回值为int类型，参数为TreeNode类型的root
-    public int minDepth(TreeNode root) {
-        // 创建一个LinkedList类型的队列queue
-        Queue<TreeNode> queue = new LinkedList<>();
-        // 如果root为null，返回0
-        if (root == null) {
+    int sortOrder(TreeNode current) {
+        // 如果当前节点为空，返回0
+        if (current == null) {
             return 0;
         }
-        // 将root加入队列
-        queue.offer(root);
-        // 初始化深度为1
-        int depth = 1;
-        // 当队列不为空时循环
-        while (!queue.isEmpty()) {
-            // 获取当前队列的大小
-            int size = queue.size();
-            // 遍历当前队列中的节点
-            for (int i = 0; i < size; i++) {
-                // 从队列中取出节点
-                TreeNode node = queue.poll();
-                // 如果节点的左右子节点都为null，返回当前深度
-                if (node.left == null && node.right == null) {
-                    return depth;
-                }
-                // 如果节点的左子节点不为null，将左子节点加入队列
-                if (node.left != null) {
-                    queue.offer(node.left);
-                }
-                // 如果节点的右子节点不为null，将右子节点加入队列
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
-            }
-            // 深度加一
-            depth++;
-        }
-        // 返回深度
-        return depth;
+
+        // 递归计算左子树的最大路径和，如果为负则不考虑，取0
+        int leftMax = Math.max(0,sortOrder(current.left));
+        // 递归计算右子树的最大路径和，如果为负则不考虑，取0
+        int rightMax = Math.max(0,sortOrder(current.right));
+
+        // 更新全局最大路径和，考虑当前节点和左右子树的最大路径和
+        maxDis = Math.max(maxDis, current.val + leftMax + rightMax);
+
+        // 返回从当前节点出发的最大路径和，只能选择左右子树中较大的一个
+        return current.val + Math.max(leftMax, rightMax);
     }
 }
 ```
 
-### 257. 二叉树的所有路径(4.4)
+
+
+
+
+
+### 257. 二叉树的所有路径
 
 给定一个二叉树，返回所有从根节点到叶子节点的路径。
 
@@ -7905,7 +7861,7 @@ class Solution {
 
 
 
-### 404.左叶子之和(2.xx)
+### 404.左叶子之和
 
 计算给定二叉树的所有左叶子之和。
 
@@ -7984,126 +7940,8 @@ class Solution {
 ```
 
 
-
-### 513.找树左下角的值(4.16)
-
-给定一个二叉树，在树的最后一行找到最左边的值。
-
-```java
-/**
- * Solution类用于解决找出二叉树最后一行最左边的值的问题
- */
-class Solution {
-    /**
-     * 找出二叉树最后一行最左边的值
-     * 
-     * @param root 二叉树的根节点
-     * @return 最后一行最左边节点的值
-     */
-    public int findBottomLeftValue(TreeNode root) {
-        // 辅助队列，用于层序遍历二叉树
-        Queue<TreeNode> auxiliaryQueue = new LinkedList<>();
-        // 用于记录当前层的节点数
-        int size;
-        // 用于记录最后一行最左边的值
-        int num = 0;
-        // 临时节点，用于遍历
-        TreeNode tempNode;
-        
-        // 将根节点加入队列开始层序遍历
-        auxiliaryQueue.add(root);
-        
-        // 当队列不为空时，继续遍历
-        while (!auxiliaryQueue.isEmpty()) {
-            size = auxiliaryQueue.size();
-            // flag用于标记当前层的第一个节点
-            int flag = size;
-            
-            // 遍历当前层的所有节点
-            while (size > 0) {
-                tempNode = auxiliaryQueue.poll();
-                
-                // 如果是当前层的第一个节点，更新num
-                if (size == flag) {
-                    num = tempNode.val;
-                }
-                
-                // 如果左子节点不为空，加入队列
-                if (tempNode.left != null) {
-                    auxiliaryQueue.add(tempNode.left);
-                }
-                // 如果右子节点不为空，加入队列
-                if (tempNode.right != null) {
-                    auxiliaryQueue.add(tempNode.right);
-                }
-                
-                size--;
-            }
-        }
-        
-        // 返回最后一行最左边的值
-        return num;
-    }
-}
-```
-
 ### 112.路径总和
 
-```java
-class Solution{
-	Public boolean haspathSum(TreeNode root,int targetSum){
-		if(root == null)
-			return false;
-		if(root.left == null && root.right == null &&root.val == targetSum)
-			return true;
-		if(root.left == null && root.right == null)
-			return false;
-		if(root.left != null)
-			if(hasPathSum(root.left, targetSum-root.val))
-				return true;
-		if(root.right != null)
-			if(hasPathSum(root.right, targetSum-root.val))
-				return true;
-		return false;
-	}
-}
-```
-
-
-
-我的直觉版
-
-```java
-class Solution {
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-        return getorder(root, 0, targetSum);
-    }
-
-    boolean getorder(TreeNode current, int sum, int targetSum) {
-        if (current == null) {
-            return false;
-        }
-
-        sum = sum + current.val;
-        if (current.left == null && current.right == null) {
-            return sum == targetSum;
-        }
-
-        boolean left = getorder(current.left, sum, targetSum);
-        boolean right = getorder(current.right, sum, targetSum);
-
-        if (left || right) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-```
-
-
-
-修正后版本
 
 ```java
 /**
@@ -8222,7 +8060,7 @@ class Solution {
 }
 ```
 
-### 437.路径总和III（new hot 100）(4.5)
+### 437.路径总和III（new hot 100）
 
 给定一个二叉树的根节点 `root` ，和一个整数 `targetSum` ，求该二叉树里节点值之和等于 `targetSum` 的 **路径** 的数目。
 
@@ -8300,6 +8138,93 @@ class Solution {
 
 
 
+
+### 617.合并二叉树
+
+给你两棵二叉树： `root1` 和 `root2` 。
+
+想象一下，当你将其中一棵覆盖到另一棵之上时，两棵树上的一些节点将会重叠（而另一些不会）。你需要将这两棵树合并成一棵新二叉树。合并的规则是：如果两个节点重叠，那么将这两个节点的值相加作为合并后节点的新值；否则，**不为** null 的节点将直接作为新二叉树的节点。
+
+返回合并后的二叉树。
+
+**注意:** 合并过程必须从两个树的根节点开始。
+
+
+
+**示例 1：**
+
+![img](文档图片/merge.jpg)
+
+
+
+```
+输入：root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]
+输出：[3,4,5,5,4,null,7]
+```
+
+**示例 2：**
+
+```
+输入：root1 = [1], root2 = [1,2]
+输出：[2,2]
+```
+
+```java
+/**
+ * Solution类用于合并两棵二叉树
+ */
+class Solution {
+    /**
+     * 合并两棵二叉树
+     *
+     * @param root1 第一棵二叉树的根节点
+     * @param root2 第二棵二叉树的根节点
+     * @return 返回合并后的二叉树根节点
+     */
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        return sortOrder(root1, root2);
+    }
+
+    /**
+     * 递归函数，用于合并两棵二叉树的节点
+     *
+     * @param current1 第一棵二叉树的当前节点
+     * @param current2 第二棵二叉树的当前节点
+     * @return 返回合并后的当前节点
+     */
+    TreeNode sortOrder(TreeNode current1, TreeNode current2) {
+        // 如果第一棵树的当前节点为空，则直接返回第二棵树的当前节点
+        if (current1 == null) {
+            return current2;
+        }
+        // 如果第二棵树的当前节点为空，则直接返回第一棵树的当前节点
+        if (current2 == null) {
+            return current1;
+        }
+        // 将两个节点的值相加，作为合并后节点的值
+        current1.val = current1.val + current2.val;
+        // 递归合并左子树
+        current1.left = sortOrder(current1.left, current2.left);
+        // 递归合并右子树
+        current1.right = sortOrder(current1.right, current2.right);
+        // 返回合并后的当前节点
+        return current1;
+    }
+}
+```
+
+1. **检查根节点是否为空**：
+   - 如果 `root1` 为 `null`，直接返回 `root2`。这意味着如果第一棵树的当前节点为空，那么合并后的结果就是第二棵树的当前节点。
+   - 如果 `root2` 为 `null`，直接返回 `root1`。这意味着如果第二棵树的当前节点为空，那么合并后的结果就是第一棵树的当前节点。
+2. **创建合并后的节点**：
+   - 如果 `root1` 和 `root2` 都不为 `null`，创建一个新的节点，其值为两者值之和。
+3. **递归合并左右子树**：
+   - 递归合并左子树和右子树，分别设置为合并后节点的左子树和右子树。
+
+
+
+
+## 3. 构建树
 ### 106.中序和后序遍历构造二叉树（3.31）
 
 给定两个整数数组 `inorder` 和 `postorder` ，其中 `inorder` 是二叉树的中序遍历， `postorder` 是同一棵树的后序遍历，请你构造并返回这颗 *二叉树* 。
@@ -8456,7 +8381,7 @@ class Solution {
 }
 ```
 
-### 654.最大二叉树(4.6)
+### 654.最大二叉树
 
 给定一个不重复的整数数组 `nums` 。 **最大二叉树** 可以用下面的算法从 `nums` 递归地构建:
 
@@ -8529,7 +8454,10 @@ class Solution {
 }
 ```
 
-### 108.将有序数组转换为二叉搜索树(3.28)
+
+## 4. 二叉搜索树
+
+### 108.将有序数组转换为二叉搜索树
 
 给你一个整数数组 `nums` ，其中元素已经按 **升序** 排列，请你将其转换为一棵 平衡 二叉搜索树。
 
@@ -8537,7 +8465,7 @@ class Solution {
 
 **示例 1：**
 
-![img](../leetcode%E5%88%B7%E9%A2%98/%E6%96%87%E6%A1%A3%E5%9B%BE%E7%89%87/btree1.jpg)
+![img](文档图片/btree1.jpg)
 
 
 
@@ -8592,131 +8520,6 @@ class Solution {
     }
 }
 ```
-
-### 617.合并二叉树(4.12)
-
-给你两棵二叉树： `root1` 和 `root2` 。
-
-想象一下，当你将其中一棵覆盖到另一棵之上时，两棵树上的一些节点将会重叠（而另一些不会）。你需要将这两棵树合并成一棵新二叉树。合并的规则是：如果两个节点重叠，那么将这两个节点的值相加作为合并后节点的新值；否则，**不为** null 的节点将直接作为新二叉树的节点。
-
-返回合并后的二叉树。
-
-**注意:** 合并过程必须从两个树的根节点开始。
-
-
-
-**示例 1：**
-
-![img](文档图片/merge.jpg)
-
-
-
-```
-输入：root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]
-输出：[3,4,5,5,4,null,7]
-```
-
-**示例 2：**
-
-```
-输入：root1 = [1], root2 = [1,2]
-输出：[2,2]
-```
-
-**初映象，很冗余但很直觉**
-
-```java
-class Solution {
-    /**
-     * 合并两棵二叉树
-     * 
-     * @param root1 第一棵二叉树的根节点
-     * @param root2 第二棵二叉树的根节点
-     * @return 返回合并后的二叉树根节点
-     */
-    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
-        return sortOrder(root1, root2);
-    }
-
-    /**
-     * 递归函数，用于合并当前节点
-     * 
-     * @param current1 第一棵二叉树的当前节点
-     * @param current2 第二棵二叉树的当前节点
-     * @return 返回合并后当前节点
-     */
-    TreeNode sortOrder(TreeNode current1, TreeNode current2) {
-        // 如果两个节点都为空，则返回空节点
-        if (current1 == null && current2 == null) {
-            return null;
-        }
-
-        // 创建新节点，值为两个节点值之和
-        TreeNode current = new TreeNode((current1 == null ? 0 : current1.val) + (current2 == null ? 0 : current2.val));
-        // 递归合并左子树
-        current.left = sortOrder(current1 == null ? null :current1.left, current2 == null ? null :current2.left);
-        // 递归合并右子树
-        current.right = sortOrder(current1 == null ? null :current1.right, current2 == null ? null :current2.right);
-        return current;
-    }
-}
-```
-
-
-
-优化后
-
-```java
-/**
- * Solution类用于合并两棵二叉树
- */
-class Solution {
-    /**
-     * 合并两棵二叉树
-     *
-     * @param root1 第一棵二叉树的根节点
-     * @param root2 第二棵二叉树的根节点
-     * @return 返回合并后的二叉树根节点
-     */
-    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
-        return sortOrder(root1, root2);
-    }
-
-    /**
-     * 递归函数，用于合并两棵二叉树的节点
-     *
-     * @param current1 第一棵二叉树的当前节点
-     * @param current2 第二棵二叉树的当前节点
-     * @return 返回合并后的当前节点
-     */
-    TreeNode sortOrder(TreeNode current1, TreeNode current2) {
-        // 如果第一棵树的当前节点为空，则直接返回第二棵树的当前节点
-        if (current1 == null) {
-            return current2;
-        }
-        // 如果第二棵树的当前节点为空，则直接返回第一棵树的当前节点
-        if (current2 == null) {
-            return current1;
-        }
-        // 将两个节点的值相加，作为合并后节点的值
-        current1.val = current1.val + current2.val;
-        // 递归合并左子树
-        current1.left = sortOrder(current1.left, current2.left);
-        // 递归合并右子树
-        current1.right = sortOrder(current1.right, current2.right);
-        // 返回合并后的当前节点
-        return current1;
-    }
-}
-```
-
-1. **检查根节点是否为空**：
-   - 如果 `root1` 为 `null`，直接返回 `root2`。这意味着如果第一棵树的当前节点为空，那么合并后的结果就是第二棵树的当前节点。
-   - 如果 `root2` 为 `null`，直接返回 `root1`。这意味着如果第二棵树的当前节点为空，那么合并后的结果就是第一棵树的当前节点。
-2. **创建合并后的节点**：
-   - 如果 `root1` 和 `root2` 都不为 `null`，创建一个新的节点，其值为两者值之和。
-3. **递归合并左右子树**：
-   - 递归合并左子树和右子树，分别设置为合并后节点的左子树和右子树。
 
 ### 700.二叉搜索树中的搜索
 
@@ -8867,7 +8670,7 @@ class Solution {
 }
 ```
 
-### 501.二叉搜索树中的众数(3.22)
+### 501.二叉搜索树中的众数
 
 给你一个含重复值的二叉搜索树（BST）的根节点 `root` ，找出并返回 BST 中的所有 [众数](https://baike.baidu.com/item/%E4%BC%97%E6%95%B0/44796)（即，出现频率最高的元素）。
 
@@ -8961,7 +8764,7 @@ class Solution {
 }
 ```
 
-### 236.二叉树的最近公共祖先(4.10)
+### 236.二叉树的最近公共祖先 
 
 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 
@@ -9056,7 +8859,7 @@ class Solution {
 }
 ```
 
-### 235.二叉搜索树的最近公共祖先（3.20）
+### 235.二叉搜索树的最近公共祖先
 
 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
 
@@ -9135,7 +8938,7 @@ class Solution {
 }
 ```
 
-### 701.二叉搜索树中的插入操作(3.28)
+### 701.二叉搜索树中的插入操作
 
 给定二叉搜索树（BST）的根节点 `root` 和要插入树中的值 `value` ，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据 **保证** ，新值和原始二叉搜索树中的任意节点值都不同。
 
@@ -9227,7 +9030,7 @@ class Solution {
 
 ```
 
-### 450.删除二叉搜索树中的节点(3.27)
+### 450.删除二叉搜索树中的节点
 
 给定一个二叉搜索树的根节点 **root** 和一个值 **key**，删除二叉搜索树中的 **key** 对应的节点，并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用。
 
@@ -9335,7 +9138,7 @@ class Solution {
 }
 ```
 
-### 669.修剪二叉搜索树(4.2)
+### 669.修剪二叉搜索树
 
 给你二叉搜索树的根节点 `root` ，同时给定最小边界`low` 和最大边界 `high`。通过修剪二叉搜索树，使得所有节点的值在`[low, high]`中。修剪树 **不应该** 改变保留在树中的元素的相对结构 (即，如果没有被移除，原有的父代子代关系都应当保留)。 可以证明，存在 **唯一的答案** 。
 
@@ -9427,7 +9230,7 @@ class Solution {
 }
 ```
 
-### 538.将二叉搜索树转换为累加树(4.2)
+### 538.将二叉搜索树转换为累加树
 
 给出二叉 **搜索** 树的根节点，该树的节点值各不相同，请你将其转换为累加树（Greater Sum Tree），使每个节点 `node` 的新值等于原树中大于或等于 `node.val` 的值之和。
 
@@ -9510,153 +9313,6 @@ class Solution {
     }
 }
 ```
-
-### 543.二叉树的直径(3.26)
-
-给你一棵二叉树的根节点，返回该树的 **直径** 。
-
-二叉树的 **直径** 是指树中任意两个节点之间最长路径的 **长度** 。这条路径可能经过也可能不经过根节点 `root` 。
-
-两节点之间路径的 **长度** 由它们之间边数表示。
-
-**示例 1：**
-
-<img src="https://assets.leetcode.com/uploads/2021/03/06/diamtree.jpg" alt="img" style="zoom:50%;" />
-
-```
-输入：root = [1,2,3,4,5]
-输出：3
-解释：3 ，取路径 [4,2,1,3] 或 [5,2,1,3] 的长度。
-```
-
-**注：虽然是在求二叉树最大深度的代码基础上修改，但不能简单理解为直径是根节点左右子树最大高度之和，因为二叉树直径可能不包括根节点**
-
-```java
-/**
- * Solution类用于计算二叉树的直径
- */
-class Solution {
-    /**
-     * 用于存储二叉树的最大直径
-     */
-    int dia = 0;
-
-    /**
-     * 计算二叉树的直径
-     * 直径的定义是二叉树中任意两个节点之间最长路径的长度
-     *
-     * @param root 二叉树的根节点
-     * @return 返回二叉树的直径
-     */
-    public int diameterOfBinaryTree(TreeNode root) {
-        // 通过深度优先搜索计算每个节点的最长路径
-        sortOrder(root);
-        // 返回计算得到的最大直径
-        return dia;
-    }
-
-    /**
-     * 深度优先搜索遍历二叉树，计算每个节点的最长路径
-     *
-     * @param current 当前遍历的节点
-     * @return 返回当前节点的最长路径
-     */
-    int sortOrder(TreeNode current) {
-        // 如果当前节点为空，返回0
-        if (current == null) {
-            return 0;
-        }
-        // 计算左子树的最长路径
-        int leftLegth = sortOrder(current.left);
-        // 计算右子树的最长路径
-        int rightLegth = sortOrder(current.right);
-        // 更新最大直径，直径为左子树最长路径加右子树最长路径
-        dia = Math.max(dia, leftLegth + rightLegth);
-
-        // 返回当前节点的最长路径，取左子树和右子树最长路径的最大值，再加1
-        return Math.max(leftLegth, rightLegth) + 1;
-    }
-}
-
-```
-
-### 124.二叉树中的最大路径和（new hot 100）(3.27)
-
-二叉树中的 **路径** 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 **至多出现一次** 。该路径 **至少包含一个** 节点，且不一定经过根节点。
-
-**路径和** 是路径中各节点值的总和。
-
-给你一个二叉树的根节点 `root` ，返回其 **最大路径和** 。
-
-
-
-**示例 1：**
-
-![img](../leetcode%E5%88%B7%E9%A2%98/%E6%96%87%E6%A1%A3%E5%9B%BE%E7%89%87/exx1.jpg)
-
-
-
-```
-输入：root = [1,2,3]
-输出：6
-解释：最优路径是 2 -> 1 -> 3 ，路径和为 2 + 1 + 3 = 6
-```
-
-**示例 2：**
-
-![img](../leetcode%E5%88%B7%E9%A2%98/%E6%96%87%E6%A1%A3%E5%9B%BE%E7%89%87/exx2.jpg)
-
-
-
-```
-输入：root = [-10,9,20,null,null,15,7]
-输出：42
-解释：最优路径是 15 -> 20 -> 7 ，路径和为 15 + 20 + 7 = 42
-```
-
-```java
-class Solution {
-    // 记录全局最大路径和
-    int maxDis = Integer.MIN_VALUE;
-
-    /**
-     * 计算二叉树中的最大路径和
-     * @param root 二叉树的根节点
-     * @return 最大路径和
-     */
-    public int maxPathSum(TreeNode root) {
-        // 调用辅助函数计算从根节点出发的最大路径和
-        sortOrder(root);
-        // 返回全局最大路径和
-        return maxDis;
-    }
-
-    /**
-     * 计算从当前节点出发的最大路径和
-     * @param current 当前节点
-     * @return 从当前节点出发的最大路径和
-     */
-    int sortOrder(TreeNode current) {
-        // 如果当前节点为空，返回0
-        if (current == null) {
-            return 0;
-        }
-
-        // 递归计算左子树的最大路径和，如果为负则不考虑，取0
-        int leftMax = Math.max(0,sortOrder(current.left));
-        // 递归计算右子树的最大路径和，如果为负则不考虑，取0
-        int rightMax = Math.max(0,sortOrder(current.right));
-
-        // 更新全局最大路径和，考虑当前节点和左右子树的最大路径和
-        maxDis = Math.max(maxDis, current.val + leftMax + rightMax);
-
-        // 返回从当前节点出发的最大路径和，只能选择左右子树中较大的一个
-        return current.val + Math.max(leftMax, rightMax);
-    }
-}
-```
-
-### 
 
 
 
@@ -9827,7 +9483,7 @@ class Solution {
 
 
 
-### 297.二叉树的序列化与反序列化（hot100）（3.21）
+### 297.二叉树的序列化与反序列化（hot100）
 
 序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
 
