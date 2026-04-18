@@ -944,6 +944,8 @@ class Solution {
 }
 ```
 
+
+
 ### 560.和为k的子数组(hot100)
 
 给你一个整数数组 `nums` 和一个整数 `k` ，请你统计并返回 *该数组中和为 `k` 的子数组的个数* 。
@@ -1039,41 +1041,40 @@ class Solution {
 输出：0
 ```
 
-这个问题的核心是需要找到一个子数组，使得排序这个子数组后，整个数组变为有序。
 
-这个子数组的起点和终点需要满足：
-
-- 起点是第一个不满足升序的位置。
-- 终点是最后一个不满足升序的位置。
-
-整个思路其实用排序比较法O(nlogn)，而且用了双指针的方式。
 
 ```java
-public class Solution {
-    // 寻找最短无序连续子数组的方法
+class Solution {
     public int findUnsortedSubarray(int[] nums) {
-        // 复制原始数组
-        int[] temp = Arrays.copyOf(nums, nums.length);
-        // 对复制的数组进行排序
-        Arrays.sort(temp);
-        // 初始化左右指针
-        int leftPos = 0;
-        int rightPos = nums.length - 1;
+        int n = nums.length;
+        int left = -1, right = -1;
 
-        // 循环直到找到需要调整的子数组
-        while (leftPos <= rightPos && (temp[leftPos] == nums[leftPos] || temp[rightPos] == nums[rightPos])) {
-            // 移动左指针直到找到需要调整的位置
-            if (temp[leftPos] == nums[leftPos]) {
-                leftPos++;
-            }
-            // 移动右指针直到找到需要调整的位置
-            if (temp[rightPos] == nums[rightPos]) {
-                rightPos--;
+        // 从左往右找右边界
+        int max = nums[0];
+        for (int i = 1; i < n; i++) {
+            if (nums[i] < max) {
+                right = i;
+            } else {
+                max = nums[i];
             }
         }
 
-        // 返回需要调整的子数组的长度
-        return rightPos - leftPos + 1 >= 0 ? rightPos - leftPos + 1 : 0;
+        // 从右往左找左边界
+        int min = nums[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] > min) {
+                left = i;
+            } else {
+                min = nums[i];
+            }
+        }
+
+        // 本身就是有序数组
+        if (right == -1) {
+            return 0;
+        }
+
+        return right - left + 1;
     }
 }
 ```
@@ -6650,26 +6651,28 @@ public int findKthLargest(int[] nums, int k) {
 }
 ```
 
-利用快速排序来做，这个一般是最优做法
+**利用快速排序来做，这个一般是最优做法**
 ```java
 public int findKthLargest(int[] nums, int k) {
     return quickSelect(nums, 0, nums.length - 1, nums.length - k);
 }
 
 private int quickSelect(int[] nums, int left, int right, int targetIdx) {
-    int pivot = nums[right];
-    int p = left;
-    
-    for (int i = left; i < right; i++) {
+    int pivot = nums[left];  // 改这里：取第一个
+    int p = left + 1;        // p 从 left+1 开始，因为 left 已经是 pivot
+
+    for (int i = left + 1; i <= right; i++) {
         if (nums[i] <= pivot) {
             swap(nums, p++, i);
         }
     }
-    swap(nums, p, right); // pivot 归位
-    
-    if (p == targetIdx) return nums[p];
-    else if (p < targetIdx) return quickSelect(nums, p + 1, right, targetIdx);
-    else return quickSelect(nums, left, p - 1, targetIdx);
+
+    swap(nums, left, p - 1); // pivot 归位到 p-1
+    int pivotIdx = p - 1;
+
+    if (pivotIdx == targetIdx) return nums[pivotIdx];
+    else if (pivotIdx < targetIdx) return quickSelect(nums, pivotIdx + 1, right, targetIdx);
+    else return quickSelect(nums, left, pivotIdx - 1, targetIdx);
 }
 
 private void swap(int[] nums, int i, int j) {
@@ -6883,6 +6886,8 @@ class Solution {
     }
 }
 ```
+
+
 
 ### 107.二叉树的层次遍历II
 
@@ -8528,47 +8533,18 @@ class Solution {
 <img src="C:\Users\16083\AppData\Roaming\Typora\typora-user-images\image-20240104114017223.png" alt="image-20240104114017223" style="zoom: 80%;" />
 
 ```java
-/**
- * Solution类用于解决二叉搜索树中的搜索问题
- */
 class Solution {
-    /**
-     * 在二叉搜索树中搜索给定值
-     *
-     * @param root 二叉搜索树的根节点
-     * @param val 需要搜索的值
-     * @return 如果找到含有给定值的节点，则返回该节点；否则返回null
-     */
     public TreeNode searchBST(TreeNode root, int val) {
-        return sortOrder(root, val);
-    }
+        // base case：节点为空 或 找到目标
+        if (root == null || root.val == val) {
+            return root;
+        }
 
-    /**
-     * 递归函数，用于在二叉树中搜索给定值
-     *
-     * @param currentNode 当前节点
-     * @param val 需要搜索的值
-     * @return 如果找到含有给定值的节点，则返回该节点；否则返回null
-     */
-    TreeNode sortOrder(TreeNode currentNode, int val) {
-        // 如果当前节点为空，说明未找到目标节点，返回null
-        if (currentNode == null) {
-            return null;
-        }
-        // 如果当前节点的值等于目标值，说明找到了目标节点，返回当前节点
-        if (currentNode.val == val) {
-            return currentNode;
-        }
-        // 在左子树中递归搜索目标值
-        TreeNode left = sortOrder(currentNode.left, val);
-        // 在右子树中递归搜索目标值
-        TreeNode right = sortOrder(currentNode.right, val);
-        // 如果左右子树都没有找到目标节点，返回null
-        if (left == null && right == null) {
-            return null;
+        // BST 剪枝：只走一侧
+        if (val < root.val) {
+            return searchBST(root.left, val);  // 小于 → 去左边
         } else {
-            // 如果在左子树中找到了目标节点，则返回左子树的搜索结果；否则返回右子树的搜索结果
-            return left == null ? right : left;
+            return searchBST(root.right, val); // 大于 → 去右边
         }
     }
 }
@@ -9396,7 +9372,7 @@ class Solution {
 
 
 
-### 114.二叉树展开为链表（new hot 100）(3.28)
+### 114.二叉树展开为链表（new hot 100）
 
 给你二叉树的根结点 `root` ，请你将它展开为一个单链表：
 
@@ -9577,7 +9553,7 @@ public class Codec {
 
 # 回溯
 
-### 77.组合(3.23)
+### 77.组合
 
 给定两个整数 `n` 和 `k`，返回范围 `[1, n]` 中所有可能的 `k` 个数的组合。
 
@@ -9655,7 +9631,7 @@ class Solution {
 }
 ```
 
-### 216.组合总和III(3.22)
+### 216.组合总和III
 
 找出所有相加之和为 `n` 的 `k` 个数的组合，且满足下列条件：
 
@@ -9745,7 +9721,7 @@ class Solution {
 
 ```
 
-### 17.电话号码的字母组合(3.20)
+### 17.电话号码的字母组合
 
 给定一个仅包含数字 `2-9` 的字符串，返回所有它能表示的字母组合。答案可以按 **任意顺序** 返回。
 
@@ -9816,7 +9792,7 @@ class Solution {
 }
 ```
 
-### 39.组合总和(3.20)
+### 39.组合总和
 
 给你一个 **无重复元素** 的整数数组 `candidates` 和一个目标整数 `target` ，找出 `candidates` 中可以使数字和为目标数 `target` 的 所有 **不同组合** ，并以列表形式返回。你可以按 **任意顺序** 返回这些组合。
 
@@ -9889,7 +9865,7 @@ class Solution {
 }
 ```
 
-### 40.组合总和II(3.20)
+### 40.组合总和II
 
 给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
 
@@ -9966,7 +9942,7 @@ class Solution7 {
 }
 ```
 
-### 131.分割回文串(3.21)
+### 131.分割回文串
 
 给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。
 
@@ -10037,7 +10013,7 @@ class Solution {
 }
 ```
 
-### 93.复原IP地址(3.21)
+### 93.复原IP地址
 
 给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
 
@@ -10154,7 +10130,7 @@ class Solution {
 最后，restoreIpAddresses 方法返回 result 列表作为最终结果，包含所有可能的有效 IP 地址。
 ```
 
-### 22.括号生成（new hot100）(3.22)
+### 22.括号生成（new hot100）
 
 数字 `n` 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 **有效的** 括号组合。
 
@@ -10227,7 +10203,7 @@ class Solution {
 }
 ```
 
-### 301.删除无效的括号(hot100)(3.28)
+### 301.删除无效的括号(hot100)
 
 给你一个由若干括号和字母组成的字符串 `s` ，删除最小数量的无效括号，使得输入的字符串有效。
 
@@ -10323,7 +10299,7 @@ class Solution {
 
 
 
-### 79.单词搜索（new hot100）(4.8)
+### 79.单词搜索（new hot100）
 
 给定一个 `m x n` 二维字符网格 `board` 和一个字符串单词 `word` 。如果 `word` 存在于网格中，返回 `true` ；否则，返回 `false` 。
 
@@ -10432,7 +10408,7 @@ class Solution {
 
 
 
-### 78.子集(4.9)
+### 78.子集
 
 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
 
@@ -10492,7 +10468,7 @@ class Solution {
 }
 ```
 
-### 90.子集II(4.9)
+### 90.子集II
 
 给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
 
@@ -10541,7 +10517,7 @@ class Solution {
 }
 ```
 
-### 491.非递减子序列(3.24)
+### 491.非递减子序列
 
 给你一个整数数组 `nums` ，找出并返回所有该数组中不同的递增子序列，递增子序列中 **至少有两个元素** 。你可以按 **任意顺序** 返回答案。
 
@@ -10620,7 +10596,7 @@ class Solution {
 }
 ```
 
-### 46.全排列(3.24)
+### 46.全排列
 
 给定一个不含重复数字的数组 `nums` ，返回其 *所有可能的全排列* 。你可以 **按任意顺序** 返回答案。
 
@@ -11120,44 +11096,6 @@ class Solution {
 
 - `1 <= nums.length <= 1000`
 - `0 <= nums[i] <= 1000`
-
-**初见，有bug，但可以通过**
-
-```java
-class Solution {
-    // 计算数组中波峰波谷的数量
-    public int wiggleMaxLength(int[] nums) {
-        // 如果数组长度为1，则返回1
-        if (nums.length == 1) {
-            return 1;
-        }
-        // 初始化计数器
-        int count = 0;
-        // 计算第二个数与第一个数的差值
-        int num = nums[1] - nums[0];
-        // 如果差值不为0，则计数器加1
-        if (num != 0) {
-            count++;
-        }
-        // 遍历数组，从第三个数开始
-        for (int i = 2; i < nums.length; i++) {
-            // 如果当前数与前一个数相等，则跳过
-            if (nums[i] == nums[i - 1]) {
-                continue;
-            }
-            // 如果前一个差值不为0，且当前差值与前一个差值的乘积小于0，或者前一个差值为0，且当前差值与前一个差值不相等，则计数器加1
-            if ((num != 0 && num * (nums[i] - nums[i - 1]) < 0) || (num == 0 && nums[i] - nums[i - 1] != 0)) {
-                count++;
-            }
-
-            // 更新差值
-            num = nums[i] - nums[i - 1];
-        }
-        // 返回计数器加1，因为第一个数也算一个波峰或波谷
-        return count + 1;
-    }
-}
-```
 
 比较好记的答案，推荐。
 
@@ -12512,7 +12450,7 @@ class Solution {
 
 
 
-### 221.最大正方形（hot 100）（3.25）
+### 221.最大正方形（hot 100）
 
 在一个由 `'0'` 和 `'1'` 组成的二维矩阵内，找到只包含 `'1'` 的最大正方形，并返回其面积。
 
@@ -12558,7 +12496,7 @@ class Solution {
 }
 ```
 
-### 85.最大矩形（hot100）(3.24)
+### 85.最大矩形（hot100）
 
 给定一个仅包含 `0` 和 `1` 、大小为 `rows x cols` 的二维二进制矩阵，找出只包含 `1` 的最大矩形，并返回其面积。
 
@@ -12648,7 +12586,7 @@ public class Solution {
 
 
 
-### 343.整数拆分（4.7）
+### 343.整数拆分
 
 给定一个正整数 n，将其拆分为至少两个正整数的和，并使这些整数的乘积最大化。 返回你可以获得的最大乘积。
 
@@ -12722,7 +12660,7 @@ dp[i] = Math.max(dp[i], Math.max(j * (i - j), j * dp[i - j]));
 
 
 
-### 96.不同的二叉搜索树（4.8）
+### 96.不同的二叉搜索树
 
 给你一个整数 `n` ，求恰由 `n` 个节点组成且节点值从 `1` 到 `n` 互不相同的 **二叉搜索树** 有多少种？返回满足题意的二叉搜索树的种数。
 
@@ -12776,7 +12714,7 @@ class Solution {
 
 ```
 
-### 118.杨辉三角（new hot100）（3.25）
+### 118.杨辉三角（new hot100）
 
 给定一个非负整数 *numRows，*生成「杨辉三角」的前 *numRows* 行。
 
@@ -13082,7 +13020,7 @@ class Solution {
 
 
 
-### 1049.最后一块石头的重量II（3.23）
+### 1049.最后一块石头的重量II
 
 有一堆石头，每块石头的重量都是正整数。
 
@@ -13141,7 +13079,7 @@ class Solution {
 }
 ```
 
-### 494.目标和（3.29）
+### 494.目标和
 
 给定一个非负整数数组，a1, a2, ..., an, 和一个目标数，S。现在你有两个符号 + 和 -。对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。
 
@@ -13224,7 +13162,7 @@ class Solution {
 
 
 
-### 474.一和零（4.2）
+### 474.一和零
 
 给你一个二进制字符串数组 strs 和两个整数 m 和 n 。
 
@@ -13363,7 +13301,7 @@ class Solution {
 }
 ```
 
-### 518.零钱兑换II（4.6）
+### 518.零钱兑换II
 
 给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。
 
@@ -13429,7 +13367,7 @@ class Solution {
 
 ```
 
-### 377.组合总和IV（3.21）
+### 377.组合总和IV
 
 给定一个由正整数组成且不存在重复数字的数组，找出和为给定目标正整数的组合的个数。
 
@@ -13480,7 +13418,7 @@ class Solution {
 }
 ```
 
-### 322.零钱兑换（3.28）
+### 322.零钱兑换
 
 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
 
@@ -13590,11 +13528,11 @@ class Solution {
 }
 ```
 
-### 139.单词拆分（3.31）
+### 139.单词拆分
 
 给你一个字符串 `s` 和一个字符串列表 `wordDict` 作为字典。如果可以利用字典中出现的一个或多个单词拼接出 `s` 则返回 `true`。
 
-**注意：**不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+**注意：** 不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
 
 
 
@@ -13789,7 +13727,7 @@ class Solution {
 }
 ```
 
-### 213.打家劫舍II（3.26）
+### 213.打家劫舍II
 
 你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着**第一个房屋和最后一个房屋是紧挨着的**。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
 
@@ -13871,7 +13809,7 @@ class Solution {
 }
 ```
 
-### 337.打家劫舍III（4.15）
+### 337.打家劫舍III
 
 小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为 `root` 。
 
@@ -13935,7 +13873,7 @@ class Solution {
 }
 ```
 
-### 121.买卖股票的最佳时机（3.28）
+### 121.买卖股票的最佳时机
 
 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
 
@@ -14283,7 +14221,7 @@ class Solution {
 }
 ```
 
-### 309.最佳买卖股票时机含冷冻期（3.26）
+### 309.最佳买卖股票时机含冷冻期
 
 给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。
 
@@ -14490,7 +14428,7 @@ class Solution {
 
 ```
 
-### 300.最长递增子序列(4.3)
+### 300.最长递增子序列
 
 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
 
@@ -14631,7 +14569,7 @@ class Solution {
 }
 ```
 
-### 718. 最长重复子数组（要求连续）（4.17）
+### 718. 最长重复子数组（要求连续）
 
 给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组的长度。
 
@@ -14702,8 +14640,8 @@ class Solution {
             dp[0][i] = 0;
         }
 
-        // 第三步：确定递推公式
-        // 如果nums1[i-1] == nums2[j-1]，则dp[i][j] = dp[i-1][j-1] + 1
+        // 第三步：确定递推公式[[
+]]        // 如果nums1[i-1] == nums2[j-1]，则dp[i][j] = dp[i-1][j-1] + 1
         // 否则，dp[i][j] = 0，因为子数组必须是连续的
         int maxInt = 0; // 用来记录最大值
         for (int i = 1; i <= nums1.length; i++) {
@@ -14724,7 +14662,7 @@ class Solution {
 
 ```
 
-### 1143.最长公共子序列（3.22）
+### 1143.最长公共子序列
 
 给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列的长度。
 
@@ -14880,7 +14818,7 @@ class Solution {
 
 ```
 
-### 53. 最大子序和（3.31）
+### 53. 最大子序和
 
 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
 
@@ -14946,7 +14884,7 @@ class Solution {
 
 ```
 
-### 152.乘积最大的子数组（new hot100）(3.23)
+### 152.乘积最大的子数组（new hot100）
 
 给你一个整数数组 `nums` ，请你找出数组中乘积最大的非空连续 子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
 
@@ -14972,7 +14910,7 @@ class Solution {
 解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
 ```
 
-```
+```java
 class Solution {
     public int maxProduct(int[] nums) {
         // 1. 确定dp数组以及下标的含义
@@ -15083,7 +15021,7 @@ dp[i][0] 表示以下标i-1为结尾的字符串，与空字符串的相同子�
 vector<vector<int>> dp(s.size() + 1, vector<int>(t.size() + 1, 0));
 ```
 
-1
+
 
 1. 确定遍历顺序
 
@@ -15290,7 +15228,7 @@ class Solution {
 
 ```
 
-### 583.两个字符串的删除操作（4.13）
+### 583.两个字符串的删除操作
 
 给定两个单词 word1 和 word2，找到使得 word1 和 word2 相同所需的最小步数，每步可以删除任意一个字符串中的一个字符。
 
@@ -15401,7 +15339,7 @@ class Solution {
 
 ```
 
-### 72.编辑距离(4.5)
+### 72.编辑距离
 
 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
 
@@ -15574,7 +15512,7 @@ class Solution {
 
 ```
 
-### 10.正则表达式匹配（hot 100）（3.22）
+### 10.正则表达式匹配（hot 100）
 
 给你一个字符串 `s` 和一个字符规律 `p`，请你来实现一个支持 `'.'` 和 `'*'` 的正则表达式匹配。
 
@@ -15853,7 +15791,7 @@ class Solution {
 
 
 
-### 516.最长回文子序列（3.20）
+### 516.最长回文子序列
 
 给定一个字符串 s ，找到其中最长的回文子序列，并返回该序列的长度。可以假设 s 的最大长度为 1000 。
 
@@ -15961,7 +15899,7 @@ class Solution {
 
 ```
 
-### 32.最长有效括号（hot100）（4.2）
+### 32.最长有效括号（hot100）
 
 给你一个只包含 `'('` 和 `')'` 的字符串，找出最长有效（格式正确且连续）括号子串的长度。 
 
@@ -16082,7 +16020,7 @@ class Solution {
 
 ```
 
-### 312.戳气球（hot100）(3.30)
+### 312.戳气球（hot100）
 
 有 `n` 个气球，编号为`0` 到 `n - 1`，每个气球上都标有一个数字，这些数字存在数组 `nums` 中。
 
@@ -16162,7 +16100,7 @@ public class Solution {
 
 # 单调栈
 
-### 739.每日温度（3.21）
+### 739.每日温度
 
 给定一个整数数组 `temperatures` ，表示每天的温度，返回一个数组 `answer` ，其中 `answer[i]` 是指对于第 `i` 天，下一个更高温度出现在几天后。如果气温在这之后都不会升高，请在该位置用 `0` 来代替。
 
@@ -16254,7 +16192,7 @@ class Solution {
 - `return result;`
 - 最终返回结果数组 `result`，每个位置存储的天数表示从该天起需等待多少天才能遇到更高的温度；如果在之后的日子里再也没有更高温度，则该位置值为 `0`。
 
-### 496.下一个更大元素（3.31）
+### 496.下一个更大元素
 
 `nums1` 中数字 `x` 的 **下一个更大元素** 是指 `x` 在 `nums2` 中对应位置 **右侧** 的 **第一个** 比 `x` 大的元素。
 
@@ -16375,7 +16313,7 @@ class Solution {
 
 
 
-### 503.下一个更大元素II（4.3）
+### 503.下一个更大元素II
 
 给定一个循环数组（最后一个元素的下一个元素是数组的第一个元素），输出每个元素的下一个更大元素。数字 x 的下一个更大的元素是按数组遍历顺序，这个数字之后的第一个比它更大的数，这意味着你应该循环地搜索它的下一个更大的数。如果不存在，则输出 -1。
 
@@ -16418,7 +16356,7 @@ class Solution {
 }
 ```
 
-### 42.接雨水（4.21）
+### 42.接雨水
 
 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
 
@@ -16468,7 +16406,7 @@ class Solution {
 
 ```
 
-### 84.柱状图最大的图形（3.29）
+### 84.柱状图最大的图形
 
 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 
